@@ -1,0 +1,59 @@
+- Wealth Comparison
+	Compare equivalent currency of average person to top billionaires in world.
+	Use average net worth of each as conversion.
+	Example:
+		Median Net Worth of Average US Citizen: $76,000
+		Bill Gates Net Worth: $96.5 billion
+		Bill Gates $3,000,000 = Average $2.36
+		3000000*(76000/96500000000) = 2.36
+		billionaire input / billionaire net worth = avg input / avg net worth
+		avg input = billionaire input * (avg net worth / billionaire net worth)
+	List charitable donations from billionaires converted to avg equivalent
+	Include Ability to enter Custom Net Worth
+	Include options for average citizens such as limited to certain age groups. Ex. median net worth is lower for people under 35.
+	- Ex.
+	"Jeff Bezos" spending "$XXX,XXX"
+		is equivalent to
+	"Average 30 yr old" spending "$XXX"
+
+- Scrape forbes.com to create JSON for each billonaire
+
+- Provide link for source where net worth data was taken
+
+- JSON:
+{
+    "name": "Jeff Bezos",
+    "netWorth": {
+        "value": 192500000000,
+	"dateUpdated": "4/8/21",
+	"src": "src": "https://www.forbes.com/profile/jeff-bezos/?list=billionaires&sh=33d6e3461b23"
+    },
+    "stats": {
+        "age": 57,
+        "sourceOfWealth": "Amazon, Self Made",
+	"selfMadeScore": 8,
+	"philanthropyScore": 1,
+        "residence": "Seattle, Washington",
+        "citizenship": "United States",
+        "maritalStatus": "In Relationship",
+        "children": 4,
+        "education": "Bachelor of Arts/Science, Princeton University",
+    },
+    "thumbnail": {
+        "src": "https://thumbor.forbes.com/thumbor/fit-in/416x416/filters%3Aformat%28jpg%29/https%3A%2F%2Fspecials-images.forbesimg.com%2Fimageserve%2F5bb22ae84bbe6f67d2e82e05%2F0x0.jpg%3Fbackground%3D000000%26cropX1%3D560%26cropX2%3D1783%26cropY1%3D231%26cropY2%3D1455",
+        "credit": "Photo by MICHAEL PRINCE/Forbes Collection"
+    },
+    "notes": [
+	"Jeff Bezos founded e-commerce giant Amazon in 1994 out of his garage in Seattle. He will step down as CEO and become executive chairman in late 2021.",
+	"Between March and April 2020, amid the pandemic, Amazon said it hired 175,000 additional workers.",
+	...
+    ],
+    "didYouKnow": [
+	"Growing up, Jeff Bezos worked summers on his grandfather's ranch repairing Caterpillar tractors.",
+	"Bezos met Google founders Larry Page and Sergey Brin in 1998 and managed to become one of the company's first angel investors, putting in $250,000."
+    ],
+    "quoteBlock": {
+	"quote": "I didn't think I'd regret trying and failing. And I suspected I would always be haunted by a decision to not try at all.",
+	"citation": "Jeff Bezos"
+    }
+}
