@@ -1,3 +1,20 @@
+- When click to select person, open box that allows you to search/sort/filter list of people
+to select.
+	- Filter: Sex, Age slider with two points for range, 
+	  Worth slider with two points for range, Countries (multiple selected),
+	- Sort: worth, age, alphabetical
+	- Search: show possible matches as typing in search bar
+
+- Display entered amount in green text with currency symbol above text input box for every
+digit changed. Opposite amount changes automatically. May have to use reducer hook to change
+one amount state when other amount state changes.
+
+- ISSUE: If select two people and enter amount in one box, then change one of the people, which
+amount changes? Use state lastChanged to track amount that was previously changed and keep
+that the same while changing the other amount.
+
+- Use React Redux to track state changes
+
 - Wealth Comparison
 	Compare equivalent currency of average person to top billionaires in world.
 	Use average net worth of each as conversion.
