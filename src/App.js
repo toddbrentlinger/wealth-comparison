@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
 import RichPerson from './classes/RichPerson.js';
 import WealthSelector from './components/WealthSelector.js';
