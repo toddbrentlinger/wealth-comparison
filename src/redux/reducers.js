@@ -1,7 +1,7 @@
 
 import { ADD_USER } from './actions.js';
 
-function userDataReducer(state = { 'users': [] }, action) {
+function userDataReducer(state = { 'users': ['Test'] }, action) {
     switch (action.type) {
         case ADD_USER:
             return Object.assign({}, state, {

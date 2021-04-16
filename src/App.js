@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import RichPerson from './classes/RichPerson.js';
 import WealthSelector from './components/WealthSelector.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { addUser } from './redux/actions.js';
 
 // Global variable to reference RichPerson cache
 window.RichPerson = RichPerson;
@@ -15,6 +17,11 @@ function App() {
     const [secondPerson, setSecondPerson] = useState(null);
     const [secondAmount, setSecondAmount] = useState("");
     const [isLoading, setIsLoading] = useState(true);
+
+    // Variables
+
+    const users = useSelector(state => state.users);
+    const dispatch = useDispatch();
 
     // Effects
 
@@ -64,6 +71,14 @@ function App() {
         <div className="App">
             <h1>Wealth Comparison</h1>
             {isLoading ? null : wealthSelectors}
+            <div>
+                <div>{users}</div>
+                <button
+                    onClick={() => dispatch(addUser("User" + Math.random()))}
+                >
+                    Add User
+                </button>
+            </div>
         </div>
     );
 }
