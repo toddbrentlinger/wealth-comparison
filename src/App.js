@@ -4,7 +4,7 @@ import './App.css';
 import RichPerson from './classes/RichPerson.js';
 import WealthSelector from './components/WealthSelector.js';
 import { useSelector, useDispatch } from 'react-redux';
-import { addUser } from './redux/actions.js';
+import { changePerson, changeAmount } from './redux/actions.js';
 
 // Global variable to reference RichPerson cache
 window.RichPerson = RichPerson;
@@ -12,15 +12,17 @@ window.RichPerson = RichPerson;
 function App() {
     // States
 
-    const [firstPerson, setFirstPerson] = useState(null);
-    const [firstAmount, setFirstAmount] = useState("");
-    const [secondPerson, setSecondPerson] = useState(null);
-    const [secondAmount, setSecondAmount] = useState("");
+    //const [firstPerson, setFirstPerson] = useState(null);
+    //const [firstAmount, setFirstAmount] = useState("");
+    //const [secondPerson, setSecondPerson] = useState(null);
+    //const [secondAmount, setSecondAmount] = useState("");
     const [isLoading, setIsLoading] = useState(true);
 
     // Variables
 
-    const users = useSelector(state => state.users);
+    //const users = useSelector(state => state.users);
+    const first = useSelector(state => state.first);
+    const second = useSelector(state => state.second);
     const dispatch = useDispatch();
 
     // Effects
@@ -44,39 +46,64 @@ function App() {
 
     // TEMP
     useEffect(() => {
-        console.log(`First:\nPerson: ${firstPerson}\nAmount: ${firstAmount}`);
-        console.log(`Second:\nPerson: ${secondPerson}\nAmount: ${secondAmount}`);
-    }, [firstPerson, firstAmount, secondPerson, secondAmount]);
+        console.log(`First:\nPerson: ${first.person ? first.person.name : null}\nAmount: ${first.amount}`);
+        console.log(`Second:\nPerson: ${second.person ? second.person.name: null}\nAmount: ${second.amount}`);
+    }, [first, second]);
 
     // Variables
 
     const wealthSelectors = (
         <React.Fragment>
             <WealthSelector
-                person={firstPerson}
-                amount={firstAmount}
-                setPerson={setFirstPerson}
-                setAmount={setFirstAmount}
+                isFirst={true}
+                person={first.person}
+                amount={first.amount}
             />
             <WealthSelector
-                person={secondPerson}
-                amount={secondAmount}
-                setPerson={setSecondPerson}
-                setAmount={setSecondAmount}
+                isFirst={false}
+                person={second.person}
+                amount={second.amount}
             />
         </React.Fragment>
     );
+
+    function getRandomPerson() {
+        const index = Math.floor(Math.random() * RichPerson.cache.length);
+        return RichPerson.cache[index];
+    }
+
+    function getRandomAmount() {
+        return (Math.random() * 1000000).toFixed(2);
+    }
 
     return (
         <div className="App">
             <h1>Wealth Comparison</h1>
             {isLoading ? null : wealthSelectors}
             <div>
-                <div>{users}</div>
                 <button
-                    onClick={() => dispatch(addUser("User" + Math.random()))}
+                    onClick={
+                        () => dispatch(changePerson(getRandomPerson(), true))
+                    }
                 >
-                    Add User
+                    Change First Person
+                </button>
+                <button
+                    onClick={() => dispatch(changeAmount(getRandomAmount(), true))}
+                >
+                    Change First Amount
+                </button>
+                <button
+                    onClick={
+                        () => dispatch(changePerson(getRandomPerson(), false))
+                    }
+                >
+                    Change Second Person
+                </button>
+                <button
+                    onClick={() => dispatch(changeAmount(getRandomAmount(), false))}
+                >
+                    Change Second Amount
                 </button>
             </div>
         </div>

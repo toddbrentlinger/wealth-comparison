@@ -1,25 +1,32 @@
 import React from 'react';
 import PersonSelectComponent from './PersonSelectComponent.js';
 import PersonNotes from './PersonNotes.js';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeAmount } from '../redux/actions.js';
 
 /**
  * 
  * @param {Object} props
  * @param {Person} props.person
+ * @param {Number} props.amount
+ * @param {Boolean} props.isFirst
  */
 function WealthSelector(props) {
+    const selector = useSelector(state => props.isFirst ? state.first : state.second);
+    const dispatch = useDispatch();
+
     return (
         <div className="wealth-selector-container">
             <label htmlFor="currency-amount"></label>
             <input
                 name="currency-amount"
                 type="text"
-                value={props.amount}
+                value={selector.amount ? selector.amount : ""}
                 placeholder="Enter amount"
-                onChange={(e) => props.setAmount(e.target.value)}
+                onChange={(e) => dispatch(changeAmount(e.target.value, props.isFirst))}
             />
-            <PersonSelectComponent setSelectedPerson={props.setPerson} />
-            <PersonNotes person={props.person} />
+            <PersonSelectComponent isFirst={props.isFirst} />
+            <PersonNotes isFirst={props.isFirst} />
         </div>
     );
 }

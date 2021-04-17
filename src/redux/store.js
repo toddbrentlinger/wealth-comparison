@@ -1,5 +1,5 @@
 
 import { createStore } from 'redux';
-import userDataReducer from './reducers.js';
+import personDataReducer from './reducers.js';
 
-export default createStore(userDataReducer);
+export default createStore(personDataReducer);

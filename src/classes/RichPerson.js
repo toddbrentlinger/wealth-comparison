@@ -27,7 +27,7 @@ class RichPerson {
     get city() { return this.jsonObj.city; }
     get source() { return this.jsonObj.source; }
     get thumbnail() { return this.jsonObj.thumbnail; }
-    get id() { return this.naturalId; }
+    get id() { return this.jsonObj.naturalId; }
 
     // ------------------------------------
     // ---------- Public Methods ----------
@@ -42,6 +42,30 @@ class RichPerson {
     // ------------------------------------
     // ---------- Static Methods ----------
     // ------------------------------------
+
+    static checkForUniqueIds() {
+        let idSet = new Set();
+
+        this.cache.forEach(person => {
+            // If ID already in set, display error in console
+            if (idSet.has(person.id))
+                console.log(`ID: ${person.id} appears multiple times!`);
+            // Else add person to set
+            else
+                idSet.add(person.id);
+        });
+    }
+
+    /**
+     * 
+     * @param {String} id
+     */
+    static getRichPersonById(id) {
+        for (let i = 0; i < this.cache.length; i++) {
+            if (this.cache[i].id === id)
+                return this.cache[i];
+        }
+    }
 }
 
 export default RichPerson;
