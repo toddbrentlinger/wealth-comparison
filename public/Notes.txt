@@ -4,6 +4,7 @@ to select.
 	  Worth slider with two points for range, Countries (multiple selected),
 	- Sort: worth, age, alphabetical
 	- Search: show possible matches as typing in search bar
+	- Reference Santa Cruz Naturals website layout for search/sort/filter
 
 - Display entered amount in green text with currency symbol above text input box for every
 digit changed. Opposite amount changes automatically. May have to use reducer hook to change

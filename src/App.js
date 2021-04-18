@@ -45,15 +45,15 @@ function App() {
     }, []);
 
     // TEMP
-    useEffect(() => {
-        console.log(`First:\nPerson: ${first.person ? first.person.name : null}\nAmount: ${first.amount}`);
-        console.log(`Second:\nPerson: ${second.person ? second.person.name: null}\nAmount: ${second.amount}`);
-    }, [first, second]);
+    //useEffect(() => {
+    //    console.log(`First:\nPerson: ${first.person ? first.person.name : null}\nAmount: ${first.amount}`);
+    //    console.log(`Second:\nPerson: ${second.person ? second.person.name: null}\nAmount: ${second.amount}`);
+    //}, [first, second]);
 
     // Variables
 
     const wealthSelectors = (
-        <React.Fragment>
+        <div id="wealth-selector-container">
             <WealthSelector
                 isFirst={true}
                 person={first.person}
@@ -64,7 +64,7 @@ function App() {
                 person={second.person}
                 amount={second.amount}
             />
-        </React.Fragment>
+        </div>
     );
 
     function getRandomPerson() {
@@ -86,24 +86,24 @@ function App() {
                         () => dispatch(changePerson(getRandomPerson(), true))
                     }
                 >
-                    Change First Person
+                    Random First Person
                 </button>
                 <button
                     onClick={() => dispatch(changeAmount(getRandomAmount(), true))}
                 >
-                    Change First Amount
+                    Random First Amount
                 </button>
                 <button
                     onClick={
                         () => dispatch(changePerson(getRandomPerson(), false))
                     }
                 >
-                    Change Second Person
+                    Random Second Person
                 </button>
                 <button
                     onClick={() => dispatch(changeAmount(getRandomAmount(), false))}
                 >
-                    Change Second Amount
+                    Random Second Amount
                 </button>
             </div>
         </div>

@@ -3,6 +3,7 @@ import PersonSelectComponent from './PersonSelectComponent.js';
 import PersonNotes from './PersonNotes.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeAmount } from '../redux/actions.js';
+import './WealthSelector.css';
 
 /**
  * 
@@ -16,7 +17,7 @@ function WealthSelector(props) {
     const dispatch = useDispatch();
 
     return (
-        <div className="wealth-selector-container">
+        <div className="wealth-selector">
             <label htmlFor="currency-amount"></label>
             <input
                 name="currency-amount"

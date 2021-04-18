@@ -14,7 +14,6 @@
  * @param {Boolean} isFirst - If true, change first person, else change second
  */
 export function changePerson(person, isFirst) {
-    console.log(`Change person to: ${person.name}`);
     return {
         type: `CHANGE_${isFirst ? 'FIRST' : 'SECOND'}_PERSON`,
         person

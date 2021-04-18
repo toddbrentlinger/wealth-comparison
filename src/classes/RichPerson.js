@@ -28,6 +28,7 @@ class RichPerson {
     get source() { return this.jsonObj.source; }
     get thumbnail() { return this.jsonObj.thumbnail; }
     get id() { return this.jsonObj.naturalId; }
+    get worth() { return this.jsonObj.finalWorth; }
 
     // ------------------------------------
     // ---------- Public Methods ----------
@@ -65,6 +66,16 @@ class RichPerson {
             if (this.cache[i].id === id)
                 return this.cache[i];
         }
+    }
+
+    /**
+     * Returns equivalent amount of convertedPerson compared to basePerson
+     * @param {Number} amount
+     * @param {RichPerson} basePerson
+     * @param {RichPerson} convertedPerson
+     */
+    static convertAmount(amount, basePerson, convertedPerson) {
+        return (amount * convertedPerson.worth / basePerson.worth).toFixed(2);
     }
 }
 
