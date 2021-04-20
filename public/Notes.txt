@@ -1,3 +1,6 @@
+- Put each notes attribute in same container with label to ensure they line up and can add
+border between each container.
+
 - When click to select person, open box that allows you to search/sort/filter list of people
 to select.
 	- Filter: Sex, Age slider with two points for range, 

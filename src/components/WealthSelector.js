@@ -1,6 +1,5 @@
 import React from 'react';
 import PersonSelectComponent from './PersonSelectComponent.js';
-import PersonNotes from './PersonNotes.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { changeAmount } from '../redux/actions.js';
 import './WealthSelector.css';
@@ -8,8 +7,6 @@ import './WealthSelector.css';
 /**
  * 
  * @param {Object} props
- * @param {Person} props.person
- * @param {Number} props.amount
  * @param {Boolean} props.isFirst
  */
 function WealthSelector(props) {
@@ -27,7 +24,6 @@ function WealthSelector(props) {
                 onChange={(e) => dispatch(changeAmount(e.target.value, props.isFirst))}
             />
             <PersonSelectComponent isFirst={props.isFirst} />
-            <PersonNotes isFirst={props.isFirst} />
         </div>
     );
 }

@@ -1,18 +1,4 @@
-#wealth-selector-container {
-    display: flex;
-    justify-content: center;
-}
-
 .wealth-selector {
     display: flex;
     flex-direction: column;
-}
-
-#wealth-selector-container .wealth-selector:first-child {
-    padding-right: 1em;
-    border-right: solid;
-}
-
-#wealth-selector-container .wealth-selector:last-child {
-    padding-left: 1em;
 }

@@ -3,8 +3,10 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import RichPerson from './classes/RichPerson.js';
 import WealthSelector from './components/WealthSelector.js';
+import PersonNotesContainer from './components/PersonNotesContainer.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { changePerson, changeAmount } from './redux/actions.js';
+import { addCommasToNumber } from './utilities.js';
 
 // Global variable to reference RichPerson cache
 window.RichPerson = RichPerson;
@@ -52,20 +54,40 @@ function App() {
 
     // Variables
 
-    const wealthSelectors = (
-        <div id="wealth-selector-container">
-            <WealthSelector
-                isFirst={true}
-                person={first.person}
-                amount={first.amount}
-            />
-            <WealthSelector
-                isFirst={false}
-                person={second.person}
-                amount={second.amount}
-            />
+    const wealthComparisonContainer = (
+        <div id="wealth-comparison-container">
+            <div className="person-container">
+                <div>{`$${first.amount ? addCommasToNumber(first.amount) : 0}`}</div>
+                <WealthSelector isFirst={true} />
+            </div>
+            <div className="person-container">
+                <div>{`$${second.amount ? addCommasToNumber(second.amount) : 0}`}</div>
+                <WealthSelector isFirst={false} />
+            </div>
         </div>
     );
+
+    //const wealthSelectors = (
+    //    <div id="wealth-selector-container">
+    //        <WealthSelector isFirst={true} />
+    //        <WealthSelector isFirst={false} />
+    //    </div>
+    //);
+
+    const peopleNotesContainer = (
+        <div id="people-notes-container">
+        </div>
+    );
+
+    const mainApp = (
+        <main>
+            {wealthComparisonContainer}
+            {peopleNotesContainer}
+            <PersonNotesContainer />
+        </main>
+    );
+
+    // Functions
 
     function getRandomPerson() {
         const index = Math.floor(Math.random() * RichPerson.cache.length);
@@ -79,7 +101,7 @@ function App() {
     return (
         <div className="App">
             <h1>Wealth Comparison</h1>
-            {isLoading ? null : wealthSelectors}
+            {isLoading ? null : mainApp}
             <div>
                 <button
                     onClick={

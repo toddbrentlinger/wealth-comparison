@@ -26,7 +26,14 @@ class RichPerson {
     get state() { return this.jsonObj.state; }
     get city() { return this.jsonObj.city; }
     get source() { return this.jsonObj.source; }
-    get thumbnail() { return this.jsonObj.thumbnail; }
+    get thumbnail() {
+        if (!this.jsonObj.squareImage)
+            return;
+        if (this.jsonObj.squareImage.startsWith('http'))
+            return this.jsonObj.squareImage;
+        else
+            return `https:${this.jsonObj.squareImage}`;
+    }
     get id() { return this.jsonObj.naturalId; }
     get worth() { return this.jsonObj.finalWorth; }
 

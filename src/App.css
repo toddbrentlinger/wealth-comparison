@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+#wealth-comparison-container {
+    display: flex;
+    justify-content: center;
+}
+
+#wealth-comparison-container .person-container:first-child {
+    padding-right: 1em;
+    border-right: solid;
+}
+
+#wealth-comparison-container .person-container:last-child {
+    padding-left: 1em;
+}

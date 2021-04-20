@@ -1,0 +1,30 @@
+#person-notes-container {
+    display: flex;
+    justify-content: center;
+}
+
+#person-notes-container > ul {
+    padding: 0 1em;
+}
+
+#person-notes-container > ul:first-child {
+    flex: 1;
+    text-align: right;
+}
+
+#person-notes-container > ul:last-child {
+    flex: 1;
+    text-align: left;
+}
+
+#person-notes-container li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.person-notes-list img {
+    width: 50%;
+    height: auto;
+    border-radius: 50%;
+}
