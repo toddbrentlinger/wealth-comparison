@@ -74,16 +74,40 @@ function App() {
     //    </div>
     //);
 
-    const peopleNotesContainer = (
-        <div id="people-notes-container">
+    // TEMP:
+    const buttons = (
+        <div>
+            <button
+                onClick={
+                    () => dispatch(changePerson(getRandomPerson(), true))
+                }
+            >
+                Random First Person
+                </button>
+            <button
+                onClick={() => dispatch(changeAmount(getRandomAmount(), true))}
+            >
+                Random First Amount
+                </button>
+            <button
+                onClick={
+                    () => dispatch(changePerson(getRandomPerson(), false))
+                }
+            >
+                Random Second Person
+                </button>
+            <button
+                onClick={() => dispatch(changeAmount(getRandomAmount(), false))}
+            >
+                Random Second Amount
+                </button>
         </div>
     );
 
     const mainApp = (
         <main>
             {wealthComparisonContainer}
-            {peopleNotesContainer}
-            <PersonNotesContainer />
+            {first || second ? <PersonNotesContainer /> : null}
         </main>
     );
 
@@ -101,33 +125,8 @@ function App() {
     return (
         <div className="App">
             <h1>Wealth Comparison</h1>
+            {buttons}
             {isLoading ? null : mainApp}
-            <div>
-                <button
-                    onClick={
-                        () => dispatch(changePerson(getRandomPerson(), true))
-                    }
-                >
-                    Random First Person
-                </button>
-                <button
-                    onClick={() => dispatch(changeAmount(getRandomAmount(), true))}
-                >
-                    Random First Amount
-                </button>
-                <button
-                    onClick={
-                        () => dispatch(changePerson(getRandomPerson(), false))
-                    }
-                >
-                    Random Second Person
-                </button>
-                <button
-                    onClick={() => dispatch(changeAmount(getRandomAmount(), false))}
-                >
-                    Random Second Amount
-                </button>
-            </div>
         </div>
     );
 }

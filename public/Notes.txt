@@ -1,5 +1,27 @@
+- Create component for properties with array values that can toggle between them by pressing
+up or down arrows. 
+	- Use sliding animation to move between strings in array. 
+
+- Use image of bill stack to repeat as background image to represent certain amount of money.
+Show legend specifying how much one bill stack is worth.
+
+- Declare functions outside of component functions instead of inside.
+	- As a general rule of thumb, if a function doesn't rely on this, it can probably
+	 be defined outside the class. Having it be standalone makes it easier to define, 
+	read, and test.
+
 - Put each notes attribute in same container with label to ensure they line up and can add
-border between each container.
+border between each container. OR use table element.
+<table>
+    <caption></caption>
+    <tbody>
+        <tr>
+	<td>{first.person.name}</td>
+	<th scope="row">Name</th>
+	<td>{second.person.name}</td>
+	</tr>
+    </tbody>
+</table>
 
 - When click to select person, open box that allows you to search/sort/filter list of people
 to select.

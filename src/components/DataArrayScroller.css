@@ -1,0 +1,12 @@
+.data-array-scroller-container {
+    display: flex;
+}
+
+.scroll-button-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.scroll-button-container > button {
+    flex: 1;
+}

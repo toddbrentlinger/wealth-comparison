@@ -6,8 +6,8 @@ class RichPerson {
 
         // Properties that are copied by reference.
         // Use getters for primitive type properties that are copied by value
-        this.bios = jsonObj.bios;
-        this.abouts = jsonObj.abouts;
+        this.bio = jsonObj.bios;
+        this.about = jsonObj.abouts;
         this.employment = jsonObj.employment;
 
         // Add to static cache
@@ -28,7 +28,7 @@ class RichPerson {
     get source() { return this.jsonObj.source; }
     get thumbnail() {
         if (!this.jsonObj.squareImage)
-            return;
+            return null;
         if (this.jsonObj.squareImage.startsWith('http'))
             return this.jsonObj.squareImage;
         else

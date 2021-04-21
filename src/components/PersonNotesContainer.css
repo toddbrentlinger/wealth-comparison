@@ -28,3 +28,52 @@
     height: auto;
     border-radius: 50%;
 }
+
+/* --------------------------------- */
+
+#person-notes-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+#person-notes-table caption {
+    display: none;
+}
+
+#person-notes-table tr > * {
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+
+#person-notes-table tr:first-child {
+    border-bottom: none;
+}
+
+#person-notes-table tr:last-child > * {
+    border-top: none;
+}
+
+#person-notes-table tr td:first-child {
+    text-align: right;
+}
+
+#person-notes-table tr td:last-child {
+    text-align: left;
+}
+
+#person-notes-table tbody tr:first-child td:first-child {
+    display: flex;
+    justify-content:flex-end;
+}
+
+#person-notes-table tbody tr:first-child td:last-child {
+    display: flex;
+    justify-content:flex-start;
+}
+
+#person-notes-table img, #person-notes-table svg {
+    width: 50%;
+    height: auto;
+    border-radius: 50%;
+}
