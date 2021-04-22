@@ -82,6 +82,12 @@ class RichPerson {
      * @param {RichPerson} convertedPerson
      */
     static convertAmount(amount, basePerson, convertedPerson) {
+        if (!amount) return 0;
+
+        // Convert to number
+        amount = Number(amount);
+        if (isNaN(amount)) return 0;
+
         return (amount * convertedPerson.worth / basePerson.worth).toFixed(2);
     }
 }

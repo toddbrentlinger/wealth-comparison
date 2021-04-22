@@ -50,3 +50,13 @@
 #wealth-comparison-container .person-container:last-child {
     padding-left: 1em;
 }
+
+/* TEMP */
+#random-buttons {
+    display: flex;
+}
+
+#random-buttons > button {
+    flex: 2;
+    padding: 1em;
+}

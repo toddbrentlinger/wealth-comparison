@@ -52,16 +52,28 @@ function App() {
     //    console.log(`Second:\nPerson: ${second.person ? second.person.name: null}\nAmount: ${second.amount}`);
     //}, [first, second]);
 
+    // Functions
+
+    function getDisplayedAmount(amount) {
+        if (!amount) return 0;
+
+        amount = Number(amount);
+
+        if (amount <= 0) return 0;
+
+        return amount < 1000 ? amount : addCommasToNumber(amount.toFixed(0));
+    }
+
     // Variables
 
     const wealthComparisonContainer = (
         <div id="wealth-comparison-container">
             <div className="person-container">
-                <div>{`$${first.amount ? addCommasToNumber(first.amount) : 0}`}</div>
+                <div>{`$${getDisplayedAmount(first.amount)}`}</div>
                 <WealthSelector isFirst={true} />
             </div>
             <div className="person-container">
-                <div>{`$${second.amount ? addCommasToNumber(second.amount) : 0}`}</div>
+                <div>{`$${getDisplayedAmount(second.amount)}`}</div>
                 <WealthSelector isFirst={false} />
             </div>
         </div>
@@ -76,7 +88,7 @@ function App() {
 
     // TEMP:
     const buttons = (
-        <div>
+        <div id="random-buttons">
             <button
                 onClick={
                     () => dispatch(changePerson(getRandomPerson(), true))

@@ -1,12 +1,39 @@
 .data-array-scroller-container {
     display: flex;
+    height: 20vh;
+}
+
+.data-array-scroller-container.left {
+    flex-direction: row-reverse;
+}
+
+.data-array-scroller-container.right .scroll-button-container {
+    margin-left: 1em;
+}
+
+.data-array-scroller-container.left .scroll-button-container {
+    margin-right: 1em;
+}
+
+.displayed-data {
+    flex: 4;
 }
 
 .scroll-button-container {
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 .scroll-button-container > button {
     flex: 1;
+    border: 1px solid black;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+.scroll-button-container > button > .scroll-button-icon {
+    /*width: 100%;
+    height: auto;*/
+    color: gray;
 }

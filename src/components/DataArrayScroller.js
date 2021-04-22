@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronCircleUp, faChevronCircleDown, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import './DataArrayScroller.css';
 
 /**
  * 
  * @param {Object} props
- * @param {String[]} props.strArr
+ * @param {String[]} props.strArr - Array of strings to display in <p> components
+ * @param {String} props.buttonEdge - 'top/down/left/right for edge of buttons
  */
 function DataArrayScroller(props) {
     // States
@@ -18,7 +21,6 @@ function DataArrayScroller(props) {
      * @param {Number} num
      */
     function changeIndexDisplayed(num) {
-        debugger
         // Return if NOT a number
         if (isNaN(num)) return;
 
@@ -42,20 +44,26 @@ function DataArrayScroller(props) {
     //);
 
     const displayedDataComponent = (
-        <p className="displayed-data">{`${indexDisplayed + 1}. ${props.strArr[indexDisplayed]}`}</p>
+        (props.strArr.length > 1)
+            ? <p className="displayed-data">{`${indexDisplayed + 1}. ${props.strArr[indexDisplayed]}`}</p>
+            : <p className="displayed-data">{props.strArr[indexDisplayed]}</p>
     );
 
     const buttons = (
         <div className="scroll-button-container">
-            <button onClick={() => changeIndexDisplayed(indexDisplayed-1)}>UP</button>
-            <button onClick={() => changeIndexDisplayed(indexDisplayed+1)}>Down</button>
+            <button onClick={() => changeIndexDisplayed(indexDisplayed - 1)}>
+                <FontAwesomeIcon icon={faChevronUp} className="scroll-button-icon" />
+            </button>
+            <button onClick={() => changeIndexDisplayed(indexDisplayed + 1)}>
+                <FontAwesomeIcon icon={faChevronDown} className="scroll-button-icon" />
+            </button>
         </div>
     );
 
     return (
-        <div className="data-array-scroller-container">
+        <div className={`data-array-scroller-container ${props.buttonEdge}`}>
             {displayedDataComponent}
-            {buttons}
+            {props.strArr.length > 1 ? buttons : null}
         </div>
     );
 }

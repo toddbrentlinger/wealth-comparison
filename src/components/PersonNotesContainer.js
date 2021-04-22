@@ -1,10 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PersonNotes from './PersonNotes.js';
 import DataArrayScroller from './DataArrayScroller.js';
-import { addCommasToNumber, listArrayAsString } from '../utilities.js';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import { addCommasToNumber } from '../utilities.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import './PersonNotesContainer.css';
 
 /**
@@ -13,7 +12,7 @@ import './PersonNotesContainer.css';
  */
 function createUserImage(person) {
     if (!person || !person.thumbnail)
-        return <FontAwesomeIcon icon={faUser} />
+        return <FontAwesomeIcon icon={faUserCircle} />
 
     return <img src={person.thumbnail} alt={person.name} />
 }
@@ -45,7 +44,7 @@ function PersonNotesContainer() {
         <table id="person-notes-table">
             <caption>Information about each selected person or group.</caption>
             <tbody>
-                <tr>
+                <tr className="thumbnail-container">
                     <td>
                         {createUserImage(firstPerson)}
                     </td>
@@ -60,9 +59,9 @@ function PersonNotesContainer() {
                     <td>{secondPerson ? secondPerson.name : "---"}</td>
                 </tr>
                 <tr>
-                    <td>{`$${firstPerson ? addCommasToNumber(firstPerson.worth * 1000000) : "---"}`}</td>
+                    <td>{firstPerson ? `$${addCommasToNumber(firstPerson.worth * 1000000)}` : "---"}</td>
                     <th scope="row">Worth</th>
-                    <td>{`$${secondPerson ? addCommasToNumber(secondPerson.worth * 1000000) : "---"}`}</td>
+                    <td>{secondPerson ? `$${addCommasToNumber(secondPerson.worth * 1000000)}` : "---"}</td>
                 </tr>
                 <tr>
                     <td>{firstPerson ? firstPerson.age : "---"}</td>
@@ -87,20 +86,28 @@ function PersonNotesContainer() {
                 <tr>
                     <td>
                         {firstPerson && firstPerson.bio
-                            ? <DataArrayScroller strArr={firstPerson.bio} />
+                            ? <DataArrayScroller strArr={firstPerson.bio} buttonEdge="right" />
                             : "---"}
                     </td>
                     <th scope="row">Bio</th>
                     <td>
                         {secondPerson && secondPerson.bio
-                            ? <DataArrayScroller strArr={secondPerson.bio} />
+                            ? <DataArrayScroller strArr={secondPerson.bio} buttonEdge="left" />
                             : "---"}
                     </td>
                 </tr>
                 <tr>
-                    <td>{firstPerson && firstPerson.about ? listArrayAsString(firstPerson.about) : "---"}</td>
+                    <td>
+                        {firstPerson && firstPerson.about
+                            ? <DataArrayScroller strArr={firstPerson.about} buttonEdge="right" />
+                            : "---"}
+                    </td>
                     <th scope="row">About</th>
-                    <td>{secondPerson && secondPerson.about ? listArrayAsString(secondPerson.about) : "---"}</td>
+                    <td>
+                        {secondPerson && secondPerson.about
+                            ? <DataArrayScroller strArr={secondPerson.about} buttonEdge="left" />
+                            : "---"}
+                    </td>
                 </tr>
                 <tr>
                     <td>{firstPerson ? null : "---"}</td>

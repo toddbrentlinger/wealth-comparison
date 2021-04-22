@@ -46,33 +46,36 @@
     border-top: 1px solid black;
 }
 
-#person-notes-table tr:first-child {
-    border-bottom: none;
+#person-notes-table tr:first-child > * {
+    border: none;
 }
 
 #person-notes-table tr:last-child > * {
-    border-top: none;
+    border: none;
+}
+
+#person-notes-table tr th {
+    width: 20%;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+#person-notes-table tr td {
+    width: 40%;
 }
 
 #person-notes-table tr td:first-child {
     text-align: right;
+    padding-right: 1em;
 }
 
 #person-notes-table tr td:last-child {
     text-align: left;
+    padding-left: 1em;
 }
 
-#person-notes-table tbody tr:first-child td:first-child {
-    display: flex;
-    justify-content:flex-end;
-}
-
-#person-notes-table tbody tr:first-child td:last-child {
-    display: flex;
-    justify-content:flex-start;
-}
-
-#person-notes-table img, #person-notes-table svg {
+#person-notes-table tbody tr.thumbnail-container img, 
+#person-notes-table tbody tr.thumbnail-container svg {
     width: 50%;
     height: auto;
     border-radius: 50%;
