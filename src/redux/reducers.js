@@ -24,7 +24,30 @@ const initialState = {
     second: {
         person: null,
         amount: null,
-    }
+    },
+    popupSelector: {
+        isDisplayed: false,
+        sort: {
+            type: 'wealth',
+            isAscending: false,
+        },
+        filter: {
+            search: "",
+            wealth: {
+                min: 0,
+                max: -1, // Use infinite max if negative number
+            },
+            gender: {
+                male: true,
+                female: true,
+            },
+            age: {
+                min: 0,
+                max: -1, // Use infinite max if negative number
+            },
+            countries: [], // show all countries if empty
+        },
+    },
 };
 
 function personDataReducer(state = initialState, action) {
