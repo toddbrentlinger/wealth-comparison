@@ -1,5 +1,8 @@
 import React, { useReducer } from 'react';
 import RichPerson from '../classes/RichPerson.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faWindowClose, faSearch } from '@fortawesome/free-solid-svg-icons';
+import './PersonSelectorPopup.css';
 
 const initialState = {
     'displayedPeople': RichPerson.cache,
@@ -51,44 +54,69 @@ function PersonSelectorPopup(props) {
 
     return (
         <div id="person-selector-popup">
-            <div id="search-container">
-            </div>
-            <div id="filter-container">
-            </div>
-            <div id="sort-container">
-                <label htmlFor="sort-type-select">
-                    Sort:
-                    <select
-                        name="sort-type"
-                        id="sort-type-select"
-                        value={state.sort.type}
-                        onChange={(e) => {
-                            dispatch({ 'type': 'sortByType', 'value': e.target.value, });
-                        }}
+            <div className="person-selector-popup-content">
+                <div className="person-selector-popup-top-bar">
+                    <div className="top-bar-title">Select Person To Compare</div>
+                    <span
+                        className="close"
+                        onClick={() => props.setIsPersonSelectorPopupOpen(false)}
                     >
-                        <option value="none">-- Sort By --</option>
-                        <option value="worth">Worth</option>
-                        <option value="age">Age</option>
-                        <option value="alphabetical">Alphabetical</option>
-                    </select>
-                </label>
+                        <FontAwesomeIcon icon={faWindowClose} />
+                    </span>
+                </div>
+                <div className="search-container">
+                    <form>
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            name="search"
+                        />
+                        <button type="submit">
+                            <FontAwesomeIcon icon={faSearch} />
+                        </button>
+                    </form>
+                </div>
+                <div className="filter-container">
+                    Filter
+                </div>
+                <div className="sort-and-displayed-container">
+                    <div className="sort-container">
+                        <label htmlFor="sort-type-select">
+                            Sort:
+                            <select
+                                name="sort-type"
+                                id="sort-type-select"
+                                value={state.sort.type}
+                                onChange={(e) => {
+                                    dispatch({ 'type': 'sortByType', 'value': e.target.value, });
+                                }}
+                            >
+                                <option value="none">-- Sort By --</option>
+                                <option value="worth">Worth</option>
+                                <option value="age">Age</option>
+                                <option value="alphabetical">Alphabetical</option>
+                            </select>
+                        </label>
 
-                <label htmlFor="sort-direction-select">
-                    Direction:
-                    <select
-                        name="sort-direction"
-                        id="sort-direction-select"
-                        value={state.sort.isAscending ? "ascending" : "descending"}
-                        onChange={(e) => {
-                            dispatch({ 'type': 'sortByDirection', 'value': (e.target.value === "ascending") });
-                        }}
-                    >
-                        <option value="descending">Descending</option>
-                        <option value="ascending">Ascending</option>
-                    </select>
-                </label>
-            </div>
-            <div id="displayed-people-container">
+                        <label htmlFor="sort-direction-select">
+                            Direction:
+                            <select
+                                name="sort-direction"
+                                id="sort-direction-select"
+                                value={state.sort.isAscending ? "ascending" : "descending"}
+                                onChange={(e) => {
+                                    dispatch({ 'type': 'sortByDirection', 'value': (e.target.value === "ascending") });
+                                }}
+                            >
+                                <option value="descending">Descending</option>
+                                <option value="ascending">Ascending</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div className="displayed-people-container">
+                        Displayed
+                    </div>
+                </div>
             </div>
         </div>
     );

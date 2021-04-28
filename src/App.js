@@ -4,6 +4,7 @@ import './App.css';
 import RichPerson from './classes/RichPerson.js';
 import WealthSelector from './components/WealthSelector.js';
 import PersonNotesContainer from './components/PersonNotesContainer.js';
+import PersonSelectorPopup from './components/PersonSelectorPopup.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { changePerson, changeAmount } from './redux/actions.js';
 import { addCommasToNumber } from './utilities.js';
@@ -19,6 +20,7 @@ function App() {
     //const [secondPerson, setSecondPerson] = useState(null);
     //const [secondAmount, setSecondAmount] = useState("");
     const [isLoading, setIsLoading] = useState(true);
+    const [isPersonSelectorPopupOpen, setIsPersonSelectorPopupOpen] = useState(false);
 
     // Variables
 
@@ -64,6 +66,15 @@ function App() {
         return amount < 1000 ? amount : addCommasToNumber(amount.toFixed(0));
     }
 
+    /**
+     * 
+     * @param {Boolean} isFirst
+     */
+    function handlePersonSelectButtonClick(isFirst = true) {
+        setIsPersonSelectorPopupOpen(true);
+
+    }
+
     // Variables
 
     const wealthComparisonContainer = (
@@ -71,10 +82,12 @@ function App() {
             <div className="person-container">
                 <div>{`$${getDisplayedAmount(first.amount)}`}</div>
                 <WealthSelector isFirst={true} />
+                <button onClick={() => handlePersonSelectButtonClick(true)}>Change Person</button>
             </div>
             <div className="person-container">
                 <div>{`$${getDisplayedAmount(second.amount)}`}</div>
                 <WealthSelector isFirst={false} />
+                <button onClick={() => handlePersonSelectButtonClick(false)}>Change Person</button>
             </div>
         </div>
     );
@@ -118,6 +131,9 @@ function App() {
 
     const mainApp = (
         <main>
+            {isPersonSelectorPopupOpen
+                ? <PersonSelectorPopup setIsPersonSelectorPopupOpen={setIsPersonSelectorPopupOpen} />
+                : null}
             {wealthComparisonContainer}
             {first || second ? <PersonNotesContainer /> : null}
         </main>

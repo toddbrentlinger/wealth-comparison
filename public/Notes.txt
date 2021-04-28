@@ -1,9 +1,9 @@
-- ISSUE: Having one person selected and neither amounts filled in, selecting other person
+X ISSUE: Having one person selected and neither amounts filled in, selecting other person
 gives $0.00 with original person having $0.
 	- Solution: Add simplify function to only display decimal when amount is less than
 $1000. $999.99 is the max number to show decimal.
 
-- Create component for properties with array values that can toggle between them by pressing
+X Create component for properties with array values that can toggle between them by pressing
 up or down arrows. 
 	- Use sliding animation to move between strings in array. 
 
