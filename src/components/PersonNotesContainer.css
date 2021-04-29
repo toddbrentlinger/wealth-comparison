@@ -74,9 +74,8 @@
     padding-left: 1em;
 }
 
-#person-notes-table tbody tr.thumbnail-container img, 
-#person-notes-table tbody tr.thumbnail-container svg {
-    width: 50%;
+.thumbnail-container .thumbnail-image {
+    width: 30%;
     height: auto;
     border-radius: 50%;
 }

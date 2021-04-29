@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import DataArrayScroller from './DataArrayScroller.js';
 import { addCommasToNumber } from '../utilities.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { /*faUser,*/ faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import './PersonNotesContainer.css';
 
 /**
@@ -12,9 +12,9 @@ import './PersonNotesContainer.css';
  */
 function createUserImage(person) {
     if (!person || !person.thumbnail)
-        return <FontAwesomeIcon icon={faUserCircle} />
+        return <FontAwesomeIcon icon={faUserCircle} className="thumbnail-image" />
 
-    return <img src={person.thumbnail} alt={person.name} />
+    return <img src={person.thumbnail} alt={person.name} className="thumbnail-image" />
 }
 
 function PersonNotesContainer() {
@@ -44,15 +44,6 @@ function PersonNotesContainer() {
         <table id="person-notes-table">
             <caption>Information about each selected person or group.</caption>
             <tbody>
-                <tr className="thumbnail-container">
-                    <td>
-                        {createUserImage(firstPerson)}
-                    </td>
-                    <th scope="row"></th>
-                    <td>
-                        {createUserImage(secondPerson)}
-                    </td>
-                </tr>
                 <tr>
                     <td>{firstPerson ? firstPerson.name : "---"}</td>
                     <th scope="row">Name</th>
@@ -118,7 +109,15 @@ function PersonNotesContainer() {
         </table>
     );
 
-    return table;
-}
-
+    return (
+        <React.Fragment>
+            <div className="thumbnail-container">
+                {createUserImage(firstPerson)}
+                {createUserImage(secondPerson)}
+            </div>
+            {table}
+        </React.Fragment>    
+        );
+    }
+    
 export default PersonNotesContainer;

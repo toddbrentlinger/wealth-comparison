@@ -42,6 +42,10 @@
     justify-content: center;
 }
 
+#wealth-comparison-container .person-container {
+    width: 25%;
+}
+
 #wealth-comparison-container .person-container:first-child {
     padding-right: 1em;
     border-right: solid;
