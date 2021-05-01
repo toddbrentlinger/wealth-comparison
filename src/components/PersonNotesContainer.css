@@ -41,19 +41,19 @@
     display: none;
 }
 
+#person-notes-table tr:nth-child(2n+1) {
+    background-color: lightgray;
+}
+/*
 #person-notes-table tr > * {
     border-bottom: 1px solid black;
     border-top: 1px solid black;
 }
 
-#person-notes-table tr:first-child > * {
-    border: none;
-}
-
 #person-notes-table tr:last-child > * {
     border: none;
 }
-
+*/
 #person-notes-table tr th {
     width: 20%;
     border-left: 1px solid black;

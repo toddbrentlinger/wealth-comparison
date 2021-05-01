@@ -45,7 +45,7 @@ function DataArrayScroller(props) {
 
     const displayedDataComponent = (
         (props.strArr.length > 1)
-            ? <p className="displayed-data">{`${indexDisplayed + 1}. ${props.strArr[indexDisplayed]}`}</p>
+            ? <p className="displayed-data">{`${indexDisplayed + 1}/${props.strArr.length} | ${props.strArr[indexDisplayed]}`}</p>
             : <p className="displayed-data">{props.strArr[indexDisplayed]}</p>
     );
 

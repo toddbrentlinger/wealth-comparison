@@ -5,6 +5,7 @@ import RichPerson from './classes/RichPerson.js';
 import WealthSelector from './components/WealthSelector.js';
 import PersonNotesContainer from './components/PersonNotesContainer.js';
 import PersonSelectorPopup from './components/PersonSelectorPopup.js';
+import FooterCustom from './components/FooterCustom.js';
 import { useSelector, useDispatch } from 'react-redux';
 import { changePerson, changeAmount } from './redux/actions.js';
 import { addCommasToNumber } from './utilities.js';
@@ -155,6 +156,7 @@ function App() {
             <h1>Wealth Comparison</h1>
             {buttons}
             {isLoading ? null : mainApp}
+            <FooterCustom />
         </div>
     );
 }

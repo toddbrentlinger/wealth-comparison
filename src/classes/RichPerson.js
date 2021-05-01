@@ -1,5 +1,3 @@
-import { filter } from "minimatch";
-
 // TODO: Create base Person class to be extended 
 // for similar functionality with RichPerson
 class RichPerson {
@@ -27,7 +25,6 @@ class RichPerson {
     get country() { return this.jsonObj.country; }
     get state() { return this.jsonObj.state; }
     get city() { return this.jsonObj.city; }
-    get source() { return this.jsonObj.source; }
     get thumbnail() {
         if (!this.jsonObj.squareImage)
             return null;
@@ -41,13 +38,19 @@ class RichPerson {
     get gender() {
         switch (this.jsonObj.gender) {
             case 'M':
-                return 'male';
+                return 'Male';
             case 'F':
-                return 'female';
+                return 'Female';
             default:
-                return 'other';
+                return 'Other';
         }
     }
+    get industries() { return this.jsonObj.industries[0]; }
+    get source() { return this.jsonObj.source; }
+    get organization() { return this.jsonObj.organization; }
+    get selfMadeRank() { return this.jsonObj.selfMadeRank; }
+    get philanthropyScore() { return this.jsonObj.philanthropyScore; }
+    get isSelfMade() { return this.jsonObj.selfMade; }
 
     // ------------------------------------
     // ---------- Public Methods ----------
