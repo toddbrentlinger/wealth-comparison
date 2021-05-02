@@ -65,6 +65,7 @@
 /* Filter */
 
 .filter-container {
+    flex: 1;
     background-color: orange; /* TEMP FOR POSITIONING */
     height: 100%;
 }
@@ -72,7 +73,7 @@
 /* Sort and Displayed Container */
 
 .sort-and-displayed-container {
-    flex: 1;
+    flex: 2;
 }
 
 /* Sort */

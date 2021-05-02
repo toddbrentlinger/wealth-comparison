@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import MinMaxRangeSlider from './MinMaxRangeSlider.js';
 import RichPerson from '../classes/RichPerson.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose, faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -78,6 +79,7 @@ function PersonSelectorPopup(props) {
                 </div>
                 <div className="filter-container">
                     Filter
+                    <MinMaxRangeSlider />
                 </div>
                 <div className="sort-and-displayed-container">
                     <div className="sort-container">

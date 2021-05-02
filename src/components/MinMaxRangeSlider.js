@@ -1,4 +1,5 @@
 import React from 'react';
+import './MinMaxRangeSlider.css';
 
 /**
  * 
@@ -12,6 +13,14 @@ import React from 'react';
 function MinMaxRangeSlider(props) {
     return (
         <div className="min-max-range-slider">
+            <div className="slider-target">
+                <div className="slider" data-min="" data-max="">
+                    <div className="slider-bar">
+                        <span className="slider-ball-min"></span>
+                        <span className="slider-ball-max"></span>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
