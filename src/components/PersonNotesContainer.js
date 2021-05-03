@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import DataArrayScroller from './DataArrayScroller.js';
 import { addCommasToNumber } from '../utilities.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { /*faUser,*/ faUserCircle, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { /*faUser,*/ faUserCircle, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import './PersonNotesContainer.css';
 
 /**
@@ -175,44 +175,44 @@ function PersonNotesContainer() {
             <caption>Information about each selected person or group.</caption>
             <tbody>
                 <tr>
-                    <td>{firstPerson ? firstPerson.name : "---"}</td>
+                    <td><span>{firstPerson ? firstPerson.name : "---"}</span></td>
                     <th scope="row">Name</th>
-                    <td>{secondPerson ? secondPerson.name : "---"}</td>
+                    <td><span>{secondPerson ? secondPerson.name : "---"}</span></td>
                 </tr>
                 <tr>
-                    <td>{firstPerson ? `$${addCommasToNumber(firstPerson.worth * 1000000)}` : "---"}</td>
+                    <td><span>{firstPerson ? `$${addCommasToNumber(firstPerson.worth * 1000000)}` : "---"}</span></td>
                     <th scope="row">Worth</th>
-                    <td>{secondPerson ? `$${addCommasToNumber(secondPerson.worth * 1000000)}` : "---"}</td>
+                    <td><span>{secondPerson ? `$${addCommasToNumber(secondPerson.worth * 1000000)}` : "---"}</span></td>
                 </tr>
                 <tr>
-                    <td>{firstPerson ? firstPerson.source : "---"}</td>
+                    <td><span>{firstPerson ? firstPerson.source : "---"}</span></td>
                     <th scope="row">Source</th>
-                    <td>{secondPerson ? secondPerson.source : "---"}</td>
+                    <td><span>{secondPerson ? secondPerson.source : "---"}</span></td>
                 </tr>
                 <tr>
-                    <td>{firstPerson ? firstPerson.age : "---"}</td>
+                    <td><span>{firstPerson ? firstPerson.age : "---"}</span></td>
                     <th scope="row">Age</th>
-                    <td>{secondPerson ? secondPerson.age : "---"}</td>
+                    <td><span>{secondPerson ? secondPerson.age : "---"}</span></td>
                 </tr>
                 <tr>
-                    <td>{firstPerson ? firstPerson.gender : "---"}</td>
+                    <td><span>{firstPerson ? firstPerson.gender : "---"}</span></td>
                     <th scope="row">Gender</th>
-                    <td>{secondPerson ? secondPerson.gender : "---"}</td>
+                    <td><span>{secondPerson ? secondPerson.gender : "---"}</span></td>
                 </tr>
                 <tr>
-                    <td>{firstPerson ? firstPerson.city : "---"}</td>
+                    <td><span>{firstPerson ? firstPerson.city : "---"}</span></td>
                     <th scope="row">City</th>
-                    <td>{secondPerson ? secondPerson.city : "---"}</td>
+                    <td><span>{secondPerson ? secondPerson.city : "---"}</span></td>
                 </tr>
                 <tr>
-                    <td>{firstPerson ? firstPerson.state : "---"}</td>
+                    <td><span>{firstPerson ? firstPerson.state : "---"}</span></td>
                     <th scope="row">State</th>
-                    <td>{secondPerson ? secondPerson.state : "---"}</td>
+                    <td><span>{secondPerson ? secondPerson.state : "---"}</span></td>
                 </tr>
                 <tr>
-                    <td>{firstPerson ? firstPerson.country : "---"}</td>
+                    <td><span>{firstPerson ? firstPerson.country : "---"}</span></td>
                     <th scope="row">Country</th>
-                    <td>{secondPerson ? secondPerson.country : "---"}</td>
+                    <td><span>{secondPerson ? secondPerson.country : "---"}</span></td>
                 </tr>
                 <tr>
                     <td>
@@ -241,47 +241,71 @@ function PersonNotesContainer() {
                     </td>
                 </tr>
                 <tr>
-                    <td>{firstPerson && firstPerson.industries
-                        ? firstPerson.industries
-                        : "---"}
+                    <td>
+                        <span>
+                            {firstPerson && firstPerson.industries
+                                ? firstPerson.industries
+                                : "---"}
+                        </span>
                     </td>
                     <th scope="row">Industries</th>
-                    <td>{secondPerson && secondPerson.industries
-                        ? secondPerson.industries
-                        : "---"}
+                    <td>
+                        <span>
+                            {secondPerson && secondPerson.industries
+                                ? secondPerson.industries
+                                : "---"}
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <td>{firstPerson
-                        ? (firstPerson.isSelfMade ? <FontAwesomeIcon icon={faCheck} /> : null)
-                        : "---"}
+                    <td>
+                        <span>
+                            {firstPerson
+                                ? (firstPerson.isSelfMade ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimes} />)
+                                : "---"}
+                        </span>
                     </td>
                     <th scope="row">Self Made</th>
-                    <td>{secondPerson
-                        ? (secondPerson.isSelfMade ? <FontAwesomeIcon icon={faCheck} /> : null)
-                        : "---"}
+                    <td>
+                        <span>
+                            {secondPerson
+                                ? (secondPerson.isSelfMade ? <FontAwesomeIcon icon={faCheck} /> : <FontAwesomeIcon icon={faTimes} />)
+                                : "---"}
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <td>{firstPerson && firstPerson.selfMadeRank
-                        ? firstPerson.selfMadeRank
-                        : "---"}
+                    <td>
+                        <span>
+                            {firstPerson && firstPerson.selfMadeRank
+                                ? firstPerson.selfMadeRank
+                                : "---"}
+                        </span>
                     </td>
                     <th scope="row">Self Made Rank</th>
-                    <td>{secondPerson && secondPerson.selfMadeRank
-                        ? secondPerson.selfMadeRank
-                        : "---"}
+                    <td>
+                        <span>
+                            {secondPerson && secondPerson.selfMadeRank
+                                ? secondPerson.selfMadeRank
+                                : "---"}
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <td>{firstPerson && firstPerson.philanthropyScore
-                        ? firstPerson.philanthropyScore
-                        : "---"}
+                    <td>
+                        <span>
+                            {firstPerson && firstPerson.philanthropyScore
+                                ? firstPerson.philanthropyScore
+                                : "---"}
+                        </span>
                     </td>
                     <th scope="row">Philanthropy Score</th>
-                    <td>{secondPerson && secondPerson.philanthropyScore
-                        ? secondPerson.philanthropyScore
-                        : "---"}
+                    <td>
+                        <span>
+                            {secondPerson && secondPerson.philanthropyScore
+                                ? secondPerson.philanthropyScore
+                                : "---"}
+                        </span>
                     </td>
                 </tr>
             </tbody>

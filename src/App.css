@@ -37,22 +37,37 @@
   }
 }
 
+/* Wealth Comparison Container */
+
 #wealth-comparison-container {
     display: flex;
     justify-content: center;
 }
 
+
+/* Wealth Comparison Container - Person Container */
+
 #wealth-comparison-container .person-container {
-    width: 25%;
+    /*width: 25%;*/
 }
 
 #wealth-comparison-container .person-container:first-child {
     padding-right: 1em;
-    border-right: solid;
 }
 
 #wealth-comparison-container .person-container:last-child {
     padding-left: 1em;
+}
+
+/* Wealth Comparison Container - Exchange Icon */
+
+#wealth-comparison-container .exchange-icon {
+    display: flex;
+}
+
+#wealth-comparison-container .exchange-icon svg {
+    align-self: center;
+    font-size: 1.5em;
 }
 
 /* TEMP */

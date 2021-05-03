@@ -13,8 +13,6 @@
 /* Content */
 
 .person-selector-popup-content {
-    display: flex;
-    flex-wrap: wrap;
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
@@ -26,7 +24,6 @@
 
 .person-selector-popup-top-bar {
     display: flex;
-    width: 100%;
 }
 
 .top-bar-title {
@@ -53,7 +50,6 @@
 
 .search-container {
     background-color: red; /* TEMP FOR POSITIONING */
-    width: 100%;
 }
 
 .search-container form {
@@ -62,12 +58,16 @@
     justify-content: flex-end;
 }
 
-/* Filter */
+/* Filter-Sort-Displayed Container */
 
+.filter-sort-displayed-container {
+    display: flex;
+}
+
+/* Filter */
 .filter-container {
     flex: 1;
     background-color: orange; /* TEMP FOR POSITIONING */
-    height: 100%;
 }
 
 /* Sort and Displayed Container */

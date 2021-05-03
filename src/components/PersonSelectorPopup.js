@@ -77,46 +77,48 @@ function PersonSelectorPopup(props) {
                         </button>
                     </form>
                 </div>
-                <div className="filter-container">
-                    Filter
-                    <MinMaxRangeSlider />
-                </div>
-                <div className="sort-and-displayed-container">
-                    <div className="sort-container">
-                        <label htmlFor="sort-type-select">
-                            Sort:
-                            <select
-                                name="sort-type"
-                                id="sort-type-select"
-                                value={state.sort.type}
-                                onChange={(e) => {
-                                    dispatch({ 'type': 'sortByType', 'value': e.target.value, });
-                                }}
-                            >
-                                <option value="none">-- Sort By --</option>
-                                <option value="worth">Worth</option>
-                                <option value="age">Age</option>
-                                <option value="alphabetical">Alphabetical</option>
-                            </select>
-                        </label>
-
-                        <label htmlFor="sort-direction-select">
-                            Direction:
-                            <select
-                                name="sort-direction"
-                                id="sort-direction-select"
-                                value={state.sort.isAscending ? "ascending" : "descending"}
-                                onChange={(e) => {
-                                    dispatch({ 'type': 'sortByDirection', 'value': (e.target.value === "ascending") });
-                                }}
-                            >
-                                <option value="descending">Descending</option>
-                                <option value="ascending">Ascending</option>
-                            </select>
-                        </label>
+                <div className="filter-sort-displayed-container">
+                    <div className="filter-container">
+                        Filter
+                        <MinMaxRangeSlider />
                     </div>
-                    <div className="displayed-people-container">
-                        Displayed
+                    <div className="sort-and-displayed-container">
+                        <div className="sort-container">
+                            <label htmlFor="sort-type-select">
+                                Sort:
+                                <select
+                                    name="sort-type"
+                                    id="sort-type-select"
+                                    value={state.sort.type}
+                                    onChange={(e) => {
+                                        dispatch({ 'type': 'sortByType', 'value': e.target.value, });
+                                    }}
+                                >
+                                    <option value="none">-- Sort By --</option>
+                                    <option value="worth">Worth</option>
+                                    <option value="age">Age</option>
+                                    <option value="alphabetical">Alphabetical</option>
+                                </select>
+                            </label>
+
+                            <label htmlFor="sort-direction-select">
+                                Direction:
+                                <select
+                                    name="sort-direction"
+                                    id="sort-direction-select"
+                                    value={state.sort.isAscending ? "ascending" : "descending"}
+                                    onChange={(e) => {
+                                        dispatch({ 'type': 'sortByDirection', 'value': (e.target.value === "ascending") });
+                                    }}
+                                >
+                                    <option value="descending">Descending</option>
+                                    <option value="ascending">Ascending</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div className="displayed-people-container">
+                            Displayed
+                        </div>
                     </div>
                 </div>
             </div>

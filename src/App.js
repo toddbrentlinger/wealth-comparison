@@ -6,6 +6,8 @@ import WealthSelector from './components/WealthSelector.js';
 import PersonNotesContainer from './components/PersonNotesContainer.js';
 import PersonSelectorPopup from './components/PersonSelectorPopup.js';
 import FooterCustom from './components/FooterCustom.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { changePerson, changeAmount } from './redux/actions.js';
 import { addCommasToNumber } from './utilities.js';
@@ -85,6 +87,9 @@ function App() {
                 <WealthSelector isFirst={true} />
                 <button onClick={() => handlePersonSelectButtonClick(true)}>Change Person</button>
             </div>
+            <div className="exchange-icon">
+                <FontAwesomeIcon icon={faExchangeAlt} />
+            </div>
             <div className="person-container">
                 <div>{`$${getDisplayedAmount(second.amount)}`}</div>
                 <WealthSelector isFirst={false} />
@@ -156,6 +161,7 @@ function App() {
             <h1>Wealth Comparison</h1>
             {buttons}
             {isLoading ? null : mainApp}
+            {buttons}
             <FooterCustom />
         </div>
     );

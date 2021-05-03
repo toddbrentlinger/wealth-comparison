@@ -6,7 +6,7 @@
 .data-array-scroller-container.left {
     flex-direction: row-reverse;
 }
-
+/*
 .data-array-scroller-container.right .scroll-button-container {
     margin-left: 1em;
 }
@@ -14,9 +14,11 @@
 .data-array-scroller-container.left .scroll-button-container {
     margin-right: 1em;
 }
-
+*/
 .displayed-data {
     flex: 4;
+    padding: 0 .5em;
+    overflow-y: auto;
 }
 
 .scroll-button-container {
