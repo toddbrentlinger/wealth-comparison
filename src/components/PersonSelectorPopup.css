@@ -1,4 +1,8 @@
 #person-selector-popup {
+    border: 2px solid black; /* TEMP */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
@@ -53,7 +57,6 @@
 }
 
 .search-container form {
-    width: 50%;
     display: flex;
     justify-content: flex-end;
 }
@@ -80,6 +83,8 @@
 
 .sort-container {
     background-color: yellow; /* TEMP FOR POSITIONING */
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* Displayed */
