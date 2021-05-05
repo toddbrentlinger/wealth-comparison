@@ -1,5 +1,4 @@
 #person-selector-popup {
-    border: 2px solid black; /* TEMP */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,11 +16,14 @@
 /* Content */
 
 .person-selector-popup-content {
+    display: flex;
+    flex-direction: column;
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    /*margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
-    border: 1px solid #888;
+    /*border: 1px solid #888;*/
     width: 80%;
+    height: 80%;
 }
 
 /* Top Bar */
@@ -64,6 +66,7 @@
 /* Filter-Sort-Displayed Container */
 
 .filter-sort-displayed-container {
+    flex: 1;
     display: flex;
 }
 
@@ -77,6 +80,8 @@
 
 .sort-and-displayed-container {
     flex: 2;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Sort */
@@ -87,8 +92,13 @@
     justify-content: flex-end;
 }
 
+.sort-container select {
+    padding-left: .5em;
+}
+
 /* Displayed */
 
 .displayed-people-container {
+    flex: 1;
     background-color: green; /* TEMP FOR POSITIONING */
 }

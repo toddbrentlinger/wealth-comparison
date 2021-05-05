@@ -53,6 +53,13 @@ function PersonSelectorPopup(props) {
 
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    const displayedPeopleElements = state.displayedPeople
+        .map(person =>
+            <div className="displayed-person">
+                <span>{person.name}</span>
+            </div>
+        );
+
     return (
         <div id="person-selector-popup">
             <div className="person-selector-popup-content">
@@ -117,7 +124,7 @@ function PersonSelectorPopup(props) {
                             </label>
                         </div>
                         <div className="displayed-people-container">
-                            Displayed
+                            {displayedPeopleElements}
                         </div>
                     </div>
                 </div>
