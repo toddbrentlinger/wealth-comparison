@@ -47,3 +47,15 @@ export function listArrayAsString(stringArray) {
     if (typeof stringArray === 'string')
         return stringArray;
 }
+
+/**
+ * Sort callback function for Array sort method to sort alphabetically.
+ * @param {String} firstStr
+ * @param {String} secondStr
+ * @returns {Number}
+ */
+export function sortTwoStringsAlphabetically(firstStr, secondStr) {
+    if (firstStr < secondStr) return -1;
+    if (firstStr > secondStr) return 1;
+    return 0; // strings must be equal
+}

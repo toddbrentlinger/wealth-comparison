@@ -21,6 +21,8 @@ class RichPerson {
     // Use getters to reference JSON obj properties that are primitive
     // types and would normally be copied by value, NOT reference
     get name() { return this.jsonObj.personName; }
+    get firstName() { return this.jsonObj.firstName; }
+    get lastName() { return this.jsonObj.lastName; }
     get age() { return this.jsonObj.age; }
     get country() { return this.jsonObj.country; }
     get state() { return this.jsonObj.state; }
