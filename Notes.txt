@@ -1,9 +1,24 @@
-- ISSUE: Having one person selected and neither amounts filled in, selecting other person
+- Info to compare: Category, X-Industries[] (similar to category), X-Source, Organization, 
+X-Self Made (bool), X-Gender, Birthday, Title, Employment (object: name, title, government
+revenue, revenueYear), X-Philanthropy Score, X-Self Made Rank
+
+- Source for animating sprites on canvas to compare amounts of money. Need images to
+represent each bulk of money: 1,100,10.000,1.000.000,...each value is 100 times the previous
+value. Maybe 1,000 or 10,000 instead? So stack of bills to represent 1M should be 100 times
+the size of 10K
+n	10^n		1	2	3	4	5
+------------------------------------------------------------
+1	10		10	100	1K	10K	100K
+*2	100		100	10K	1M	100M	10B
+3	1,000		1K	1M	1B	1T
+https://spicyyoghurt.com/tutorials/html5-javascript-game-development/images-and-sprite-animations
+
+X ISSUE: Having one person selected and neither amounts filled in, selecting other person
 gives $0.00 with original person having $0.
 	- Solution: Add simplify function to only display decimal when amount is less than
 $1000. $999.99 is the max number to show decimal.
 
-- Create component for properties with array values that can toggle between them by pressing
+X Create component for properties with array values that can toggle between them by pressing
 up or down arrows. 
 	- Use sliding animation to move between strings in array. 
 
@@ -15,7 +30,7 @@ Show legend specifying how much one bill stack is worth.
 	 be defined outside the class. Having it be standalone makes it easier to define, 
 	read, and test.
 
-- Put each notes attribute in same container with label to ensure they line up and can add
+X Put each notes attribute in same container with label to ensure they line up and can add
 border between each container. OR use table element.
 <table>
     <caption></caption>
