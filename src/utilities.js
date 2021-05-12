@@ -59,3 +59,45 @@ export function sortTwoStringsAlphabetically(firstStr, secondStr) {
     if (firstStr > secondStr) return 1;
     return 0; // strings must be equal
 }
+
+/**
+ * Converts number to simplified string of number with letter at the end.
+ * @param {Number} num
+ */
+export function convertNumToSimplifiedString(num) {
+    if (Number.isNaN(num)) {
+        num = Number(num);
+        if (Number.isNaN(num)) {
+            console.error(`Parameter is NOT a number.`);
+        }
+    }
+
+    if (num < 1000)
+        return num.toString();
+
+    // If reach here, num is more than or equal to 1,000
+
+    let pow = 0;
+    while (num >= 1000 && pow < 15) {
+        pow += 3;
+        num /= 1000;
+    }
+
+    switch (pow) {
+        case 0:
+            // Case should be unreachable
+            return num.toString();
+        case 3:
+            return num + 'K';
+        case 6:
+            return num + 'M';
+        case 9:
+            return num + 'B';
+        case 12:
+            return num + 'T';
+        case 15:
+            return num + 'Q';
+        default:
+            return num.toString();
+    }
+}

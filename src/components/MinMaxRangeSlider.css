@@ -4,6 +4,10 @@
     --min-max-range-slider-ball-height: 12px;
 }
 
+.min-max-range-slider select.hidden {
+    display: none;
+}
+
 .slider {
     position: relative;
     width: 100%;

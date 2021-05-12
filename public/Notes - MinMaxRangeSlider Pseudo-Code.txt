@@ -1,0 +1,95 @@
+MinMaxRangeSlider Pseudo-Code:
+
+constructor(
+    e
+    element,
+    {
+        startingMin,
+	startingMax,
+	ResultsElement, // element reference
+	MessageHandler // X custom element class reference
+    } = {}
+) {
+    // Properties
+    this.values = [];
+    this.minValue = startingMin || 0; // percentage for min value
+    this.maxValue = startingMax || 100; // percentage for max value
+    this.slider = null; // element reference
+    this.sliderBar = null; // element reference
+    this.sliderBarStart = null; // element reference
+    this.sliderBarEnd = null; // element reference
+
+    // Event Properties
+    this.startX = 0; // starting x-position when click ball
+    this.currentX = 0; // current x-position when dragging ball
+    this.targetX = 0;
+    this.target = null; // slider ball element reference
+    this.targetBCR = null; // slider ball bounding client rect
+    this.sliderBCR = null; // slider bounding client rect
+    this.sliderStartX = null; // sliderBCR.left
+    this.sliderEndX = null; // sliderBCR.right
+    this.draggingBall = false;
+    
+    // External Elements
+    this.ResultsElement = ResultsElement || false; // element that shows min/max results
+    this.MessageHandler = MessageHandler || false; // X
+    
+    	// Internal Elements
+    	this.rootElement = element;
+	this.minControlElement = element.querySelector('#slider-min-control'); // reference to select element for min value
+    	this.maxControlElement = element.querySelector('#slider-max-control'); // reference to select element for max value
+    	this.sliderTarget = element.querySelector('#slider-target'); // reference to element containing slider bar and balls
+    
+    	// Bind methods
+    	this.addEventListeners = this.addEventListeners.bind(this);
+    	this.onStart = this.onStart.bind(this);
+    	this.onMove = this.onMove.bind(this);
+    	this.onEnd = this.onEnd.bind(this);
+    	this.extractValues = this.extractValues.bind(this);
+    	this.hideControlElements = this.hideControlElements.bind(this);
+    	this.updateSliderValues = this.updateSliderValues.bind(this);
+    	this.updateResults = this.updateResults.bind(this);
+
+    	this.addEventListeners(); // adds event listeners for onStart, onMove, onEnd
+    	this.init();
+	
+    	requestAnimationFrame(this.updateSliderValues);
+}
+
+addEventListeners () {
+    document.addEventListener('touchstart', this.onStart);
+    document.addEventListener('touchmove', this.onMove);
+    document.addEventListener('touchend', this.onEnd);
+    
+    document.addEventListener('mousedown', this.onStart);
+    document.addEventListener('mousemove', this.onMove);
+    document.addEventListener('mouseup', this.onEnd);
+}
+  
+init () {
+    this.extractValues();
+    this.hideControlElements();
+    
+    this.slider = document.createElement('div');
+    this.sliderBar = document.createElement('div');
+    this.sliderBarStart = document.createElement('span');
+    this.sliderBarEnd = document.createElement('span');
+    
+    this.slider.classList.add('slider');
+    this.slider.dataset.min = "";
+    this.slider.dataset.max = "";
+    
+    this.sliderBar.classList.add('slider__bar');
+    this.sliderBarStart.classList.add('slider__ball');
+    this.sliderBarEnd.classList.add('slider__ball');
+    
+    this.sliderBarStart.id = "min";
+    this.sliderBarEnd.id = "max";
+    
+    this.sliderBar.appendChild(this.sliderBarStart);
+    this.sliderBar.appendChild(this.sliderBarEnd);
+    this.slider.appendChild(this.sliderBar);
+    
+    this.sliderTarget.appendChild(this.slider);
+    this.updateSliderValues(this.minValue, this.maxValue);
+}

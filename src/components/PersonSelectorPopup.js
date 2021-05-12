@@ -176,7 +176,7 @@ function PersonSelectorPopup(props) {
                 <div className="filter-sort-displayed-container">
                     <div className="filter-container">
                         Filter
-                        <MinMaxRangeSlider />
+                        <MinMaxRangeSlider startingMin={15} startingMax={75} />
                     </div>
                     <div className="sort-and-displayed-container">
                         <div className="sort-container">
