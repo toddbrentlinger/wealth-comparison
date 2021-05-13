@@ -41,10 +41,15 @@
     transform: scale(1.2);
 }
 
-.slider-bar-min {
-    left: 6px;
+.slider-ball-min {
+    left: -6px;
 }
 
-.slider-bar-max {
-    right: 6px;
+.slider-ball-max {
+    right: -6px;
+}
+
+.results {
+    display: flex;
+    justify-content: space-between;
 }

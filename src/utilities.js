@@ -63,12 +63,14 @@ export function sortTwoStringsAlphabetically(firstStr, secondStr) {
 /**
  * Converts number to simplified string of number with letter at the end.
  * @param {Number} num
+ * @returns {String}
  */
 export function convertNumToSimplifiedString(num) {
-    if (Number.isNaN(num)) {
-        num = Number(num);
-        if (Number.isNaN(num)) {
+    if (Number.isNaN(num)) { // if num is Not A Number
+        num = Number(num); // try to convert parameter to Number
+        if (Number.isNaN(num)) { // if num is still Not A Number
             console.error(`Parameter is NOT a number.`);
+            return;
         }
     }
 
@@ -82,22 +84,23 @@ export function convertNumToSimplifiedString(num) {
         pow += 3;
         num /= 1000;
     }
-
+    /*
     switch (pow) {
-        case 0:
-            // Case should be unreachable
-            return num.toString();
-        case 3:
-            return num + 'K';
-        case 6:
-            return num + 'M';
-        case 9:
-            return num + 'B';
-        case 12:
-            return num + 'T';
-        case 15:
-            return num + 'Q';
-        default:
-            return num.toString();
+        case 0: return num.toString(); // Case should be unreachable
+        case 3: return num + 'K';
+        case 6: return num + 'M';
+        case 9: return num + 'B';
+        case 12: return num + 'T';
+        case 15: return num + 'Q';
+        default: return num.toString();
     }
+    */
+    // Alternate to switch to consider all possible pow values
+    if (pow < 3) return num.toString();
+    if (pow < 6) return num + 'K';
+    if (pow < 9) return num + 'M';
+    if (pow < 12) return num + 'B';
+    if (pow < 15) return num + 'T';
+    // If reach here, pow is 15 or more
+    return num + 'Q';
 }

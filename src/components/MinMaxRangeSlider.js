@@ -12,7 +12,7 @@ import './MinMaxRangeSlider.css';
  */
 function MinMaxRangeSlider(props) {
     // States
-    const [values, setValues] = useState([]);
+    //const [values, setValues] = useState([]);
     const [minValue, setMinValue] = useState(props.startingMin || 0);
     const [maxValue, setMaxValue] = useState(props.startingMax || 100);
 
@@ -28,28 +28,76 @@ function MinMaxRangeSlider(props) {
 
     const resultsElement = useRef(null);
 
+    //const minValue = useRef(props.startingMin || 0);
+    //const maxValue = useRef(props.startingMax || 100);
+    const startX = useRef(0);
+    const currentX = useRef(0);
+    const target = useRef(null);
+    const targetBCR = useRef(null);
+    const sliderBCR = useRef(null);
+    const sliderStartX = useRef(null);
+    const sliderEndX = useRef(null);
+    const draggingBall = useRef(false);
+
     // Effects
 
     useEffect(() => {
         extractValues();
-        updateSliderValues();
+        //updateSliderValues();
+        requestAnimationFrame(updateSliderValues);
     }, []);
+
+    useEffect(() => {
+        updateSliderValues();
+    });
 
     // Functions
 
     function onStart(e) {
         console.log(`onStart runs`);
-        if (!e.target.classList.contains('slider-ball')) return;
+
+        target.current = e.target;
+        sliderBCR.current = slider.current.getBoundingClientRect();
+        targetBCR.current = target.current.getBoundingClientRect();
+
+        sliderStartX.current = sliderBCR.current.left;
+        sliderEndX.current = sliderBCR.current.right;
+
+        startX.current = e.pageX || e.touches[0].pageX;
+        currentX.current = startX.current;
+
+        draggingBall.current = true;
 
         e.preventDefault();
     }
 
     function onMove(e) {
-        console.log(`onMove runs`);
+        if (!draggingBall.current || !target.current) return;
+
+        console.log(`onMove starts`);
+
+        currentX.current = e.pageX || e.touches[0].pageX;
+
+        if (currentX.current < sliderStartX.current || currentX.current > sliderEndX.current)
+            return;
+
+        if (target.current === sliderBarStart.current)
+            setMinValue(calculatePercentage(currentX.current - sliderStartX.current));
+
+        if (target.current === sliderBarEnd.current)
+            setMaxValue(calculatePercentage(currentX.current - sliderStartX.current));
+
+        console.log(`onMove completes`);
     }
 
     function onEnd(e) {
-        console.log(`onEnd runs`);
+        console.log(`onEnd starts`);
+
+        if (!draggingBall.current || !target.current) return;
+
+        draggingBall.current = false;
+
+        console.log(`onEnd completes`);
     }
 
     function extractValues() {
@@ -57,11 +105,16 @@ function MinMaxRangeSlider(props) {
     }
 
     function updateSliderValues() {
+        console.log(`updateSliderValues starts`);
         let tempMinValue = Math.round(minValue);
         let tempMaxValue = Math.round(maxValue);
 
         sliderBar.current.style.left = `${tempMinValue}%`;
         sliderBar.current.style.right = `${100 - tempMaxValue}%`;
+    }
+
+    function calculatePercentage(positionInSlider) {
+        return positionInSlider / sliderBCR.current.width * 100;
     }
 
     return (
@@ -105,9 +158,8 @@ function MinMaxRangeSlider(props) {
                 </div>
             </div>
             <div className="results" ref={resultsElement}>
-                <h5 className="results-title">Results</h5>
-                <p>Min: <span className="min-result"></span></p>
-                <p>Max: <span className="max-result"></span></p>
+                <p>Min: <span className="min-result">{minValue.toFixed(0)}</span></p>
+                <p>Max: <span className="max-result">{maxValue.toFixed(0)}</span></p>
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronCircleUp, faChevronCircleDown, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { /*faChevronCircleUp, faChevronCircleDown,*/ faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import './DataArrayScroller.css';
 
 /**
