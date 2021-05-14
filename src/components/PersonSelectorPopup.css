@@ -111,4 +111,14 @@
     left: 0;
     bottom: 0;
     right: 0;
+    margin: 0 1em;
+}
+
+.displayed-person {
+    display: flex;
+    justify-content: space-between;
+}
+
+.displayed-person > span:nth-child(1) {
+
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import DataArrayScroller from './DataArrayScroller.js';
-import { addCommasToNumber } from '../utilities.js';
+import { addCommasToNumber, convertNumToSimplifiedString } from '../utilities.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { /*faUser,*/ faUserCircle, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import './PersonNotesContainer.css';
@@ -62,9 +62,9 @@ function PersonNotesContainer() {
             <tbody>
                 {createPersonNotesTableRow("Name", "name")}
                 <tr>
-                    <td>{firstPerson ? `$${addCommasToNumber(firstPerson.worth * 1000000)}` : "---"}</td>
+                    <td>{firstPerson ? `$${addCommasToNumber(firstPerson.worth * 1000000)} ($${convertNumToSimplifiedString(firstPerson.worth * 1000000)})` : "---"}</td>
                     <th scope="row">Worth</th>
-                    <td>{secondPerson ? `$${addCommasToNumber(secondPerson.worth * 1000000)}` : "---"}</td>
+                    <td>{secondPerson ? `$${addCommasToNumber(secondPerson.worth * 1000000)} ($${convertNumToSimplifiedString(secondPerson.worth * 1000000)})` : "---"}</td>
                 </tr>
                 <tr>
                     <td>{firstPerson ? firstPerson.source : "---"}</td>
@@ -180,9 +180,9 @@ function PersonNotesContainer() {
                     <td><span>{secondPerson ? secondPerson.name : "---"}</span></td>
                 </tr>
                 <tr>
-                    <td><span>{firstPerson ? `$${addCommasToNumber(firstPerson.worth * 1000000)}` : "---"}</span></td>
+                    <td><span>{firstPerson ? `$${addCommasToNumber(firstPerson.worth * 1000000)} ($${convertNumToSimplifiedString(firstPerson.worth * 1000000)})` : "---"}</span></td>
                     <th scope="row">Worth</th>
-                    <td><span>{secondPerson ? `$${addCommasToNumber(secondPerson.worth * 1000000)}` : "---"}</span></td>
+                    <td><span>{secondPerson ? `$${addCommasToNumber(secondPerson.worth * 1000000)} ($${convertNumToSimplifiedString(secondPerson.worth * 1000000)})` : "---"}</span></td>
                 </tr>
                 <tr>
                     <td><span>{firstPerson ? firstPerson.source : "---"}</span></td>

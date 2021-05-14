@@ -1,6 +1,7 @@
 import React, { useReducer, useEffect } from 'react';
 import MinMaxRangeSlider from './MinMaxRangeSlider.js';
 import RichPerson from '../classes/RichPerson.js';
+import { convertNumToSimplifiedString } from '../utilities.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose, faSearch } from '@fortawesome/free-solid-svg-icons';
 import './PersonSelectorPopup.css';
@@ -142,12 +143,76 @@ function PersonSelectorPopup(props) {
 
     // Variables
 
-    const displayedPeopleElements = state.displayedPeople
+    const displayedPeopleElementsOld = state.displayedPeople
         .map(person =>
             <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
                 <span>{person.name}</span>
+                <span>{convertNumToSimplifiedString(person.worth * 1000000)}</span>
+                <span>{person.age}</span>
             </div>
         );
+
+    const displayedPeopleElements = state.displayedPeople
+        .map(person => createPersonElement(person)); 
+
+    function createPersonElement(person) {
+        switch (state.sort.type) {
+            case 'worth':
+                return (
+                    <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
+                        <span>{`$${convertNumToSimplifiedString(person.worth * 1000000)}`}</span>
+                        <span>{person.name}</span>
+                    </div>
+                );
+            case 'age':
+                return (
+                    <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
+                        <span>{person.age}</span>
+                        <span>{person.name}</span>
+                    </div>
+                );
+            case 'first-name':
+                return (
+                    <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
+                        <span>{person.name}</span>
+                        <span>{`$${convertNumToSimplifiedString(person.worth * 1000000)}`}</span>
+                    </div>
+                );
+            case 'last-name':
+                return (
+                    <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
+                        <span>{`${person.lastName}, ${person.firstName}`}</span>
+                        <span>{`$${convertNumToSimplifiedString(person.worth * 1000000)}`}</span>
+                    </div>
+                );
+            default:
+                return (
+                    <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
+                        <span>{person.name}</span>
+                        <span>{`$${convertNumToSimplifiedString(person.worth * 1000000)}`}</span>
+                        <span>{person.age}</span>
+                    </div>
+                );
+        }
+    }
+
+    const peopleListTable = (
+        <table>
+            <caption></caption>
+            <tbody>
+                <tr>
+                    <th></th>
+                </tr>
+                {
+                    state.displayedPeople.map(person => (
+                        <tr className="displayed-person" key={`${person.lastName}-${person.id}`}>
+                            
+                        </tr>
+                    ))
+                }
+            </tbody>
+        </table>
+    );
 
     return (
         <div id="person-selector-popup">
