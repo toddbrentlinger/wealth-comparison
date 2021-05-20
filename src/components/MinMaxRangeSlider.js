@@ -68,6 +68,8 @@ function MinMaxRangeSlider(props) {
 
         draggingBall.current = true;
 
+        document.addEventListener('onMouseMove', onMove);
+
         e.preventDefault();
     }
 
@@ -96,6 +98,8 @@ function MinMaxRangeSlider(props) {
         if (!draggingBall.current || !target.current) return;
 
         draggingBall.current = false;
+
+        document.removeEventListener('onMouseMove', onMove);
 
         console.log(`onEnd completes`);
     }
@@ -140,6 +144,7 @@ function MinMaxRangeSlider(props) {
                             onMouseDown={onStart}
                             onMouseMove={onMove}
                             onMouseUp={onEnd}
+                            onMouseLeave={onEnd}
                             onTouchStart={onStart}
                             onTouchMove={onMove}
                             onTouchEnd={onEnd}
@@ -150,6 +155,7 @@ function MinMaxRangeSlider(props) {
                             onMouseDown={onStart}
                             onMouseMove={onMove}
                             onMouseUp={onEnd}
+                            onMouseLeave={onEnd}
                             onTouchStart={onStart}
                             onTouchMove={onMove}
                             onTouchEnd={onEnd}
