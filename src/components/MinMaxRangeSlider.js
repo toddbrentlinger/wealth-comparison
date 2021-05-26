@@ -4,11 +4,16 @@ import './MinMaxRangeSlider.css';
 /**
  * 
  * @param {Object} props
- * @param {Number} props.min
- * @param {Number} props.max
- * @param {Number} props.step
- * @param {Number} props.initialLow
- * @param {Number} props.initialHigh
+ * @param {Number} props.minLimit
+ * @param {Number} props.maxLimit
+ * @param {Number} props.step - change in value with each tick (determines number of ticks)
+ * @param {Number} props.initialMin - starting min value (checked value is between min/max limits)
+ * @param {Number} props.initialMax - starting max value (checked value is between min/max limits)
+ * @param {Function} props.handleMinChange - function to run when min is changed (ex. action function for Redux to send through dispatch)
+ * @param {Function} props.handleMaxChange - function to run when max is changed (ex. action function for Redux to send through dispatch)
+ * 
+ * TODO:
+ * - 
  */
 function MinMaxRangeSlider(props) {
     // States
@@ -22,8 +27,8 @@ function MinMaxRangeSlider(props) {
     const sliderBarStart = useRef(null);
     const sliderBarEnd = useRef(null);
 
-    const minControlElement = useRef(null);
-    const maxControlElement = useRef(null);
+    const minControlElement = useRef(null); // NOT NEEDED
+    const maxControlElement = useRef(null); // NOT NEEDED
     const sliderTarget = useRef(null);
 
     const resultsElement = useRef(null);
