@@ -4,6 +4,10 @@
     --min-max-range-slider-ball-height: 12px;
 }
 
+.min-max-range-slider {
+    padding: 0 1em;
+}
+
 .min-max-range-slider select.hidden {
     display: none;
 }

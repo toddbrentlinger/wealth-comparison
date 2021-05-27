@@ -7,10 +7,10 @@ import './MinMaxRangeSlider.css';
  * @param {Number} props.minLimit
  * @param {Number} props.maxLimit
  * @param {Number} props.step - change in value with each tick (determines number of ticks)
- * @param {Number} props.initialMin - starting min value (checked value is between min/max limits)
- * @param {Number} props.initialMax - starting max value (checked value is between min/max limits)
- * @param {Function} props.handleMinChange - function to run when min is changed (ex. action function for Redux to send through dispatch)
- * @param {Function} props.handleMaxChange - function to run when max is changed (ex. action function for Redux to send through dispatch)
+ * @param {Number} props.startingMin - starting min value (checked value is between min/max limits)
+ * @param {Number} props.startingMax - starting max value (checked value is between min/max limits)
+ * @param {Function} props.onMinChange - function to run when min is changed (ex. action function for Redux to send through dispatch)
+ * @param {Function} props.onMaxChange - function to run when max is changed (ex. action function for Redux to send through dispatch)
  * 
  * TODO:
  * - 
@@ -22,27 +22,27 @@ function MinMaxRangeSlider(props) {
     const [maxValue, setMaxValue] = useState(props.startingMax || 100);
 
     // Refs
-    const slider = useRef(null);
-    const sliderBar = useRef(null);
-    const sliderBarStart = useRef(null);
-    const sliderBarEnd = useRef(null);
+    const slider = useRef(null); // element reference
+    const sliderBar = useRef(null); // element reference
+    const sliderBarStart = useRef(null); // min ball element reference
+    const sliderBarEnd = useRef(null); // max ball element reference
 
     const minControlElement = useRef(null); // NOT NEEDED
     const maxControlElement = useRef(null); // NOT NEEDED
-    const sliderTarget = useRef(null);
+    const sliderTarget = useRef(null); //
 
     const resultsElement = useRef(null);
 
     //const minValue = useRef(props.startingMin || 0);
     //const maxValue = useRef(props.startingMax || 100);
-    const startX = useRef(0);
-    const currentX = useRef(0);
-    const target = useRef(null);
-    const targetBCR = useRef(null);
-    const sliderBCR = useRef(null);
-    const sliderStartX = useRef(null);
-    const sliderEndX = useRef(null);
-    const draggingBall = useRef(false);
+    const startX = useRef(0); // starting x-position when first click ball
+    const currentX = useRef(0); // curretn x-position when dragging ball
+    const target = useRef(null); // element reference to min/max ball that is moving
+    const targetBCR = useRef(null); // moving slider ball bounding client rect (DOMRect object)
+    const sliderBCR = useRef(null); // slider bar bounding client rect (DOMRect object)
+    const sliderStartX = useRef(null); // sliderBCR.left
+    const sliderEndX = useRef(null); // sliderBCR.right
+    const isDraggingBall = useRef(false);
 
     // Effects
 
@@ -71,7 +71,7 @@ function MinMaxRangeSlider(props) {
         startX.current = e.pageX || e.touches[0].pageX;
         currentX.current = startX.current;
 
-        draggingBall.current = true;
+        isDraggingBall.current = true;
 
         document.addEventListener('onMouseMove', onMove);
 
@@ -79,7 +79,7 @@ function MinMaxRangeSlider(props) {
     }
 
     function onMove(e) {
-        if (!draggingBall.current || !target.current) return;
+        if (!isDraggingBall.current || !target.current) return;
 
         console.log(`onMove starts`);
 
@@ -100,9 +100,9 @@ function MinMaxRangeSlider(props) {
     function onEnd(e) {
         console.log(`onEnd starts`);
 
-        if (!draggingBall.current || !target.current) return;
+        if (!isDraggingBall.current || !target.current) return;
 
-        draggingBall.current = false;
+        isDraggingBall.current = false;
 
         document.removeEventListener('onMouseMove', onMove);
 
