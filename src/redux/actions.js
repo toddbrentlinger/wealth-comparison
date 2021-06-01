@@ -31,3 +31,27 @@ export function changeAmount(amount, isFirst) {
         amount
     };
 }
+
+/**
+ * 
+ * @param {Number} value
+ * @param {Boolean} isMin
+ */
+export function changeFilterAge(value, isMin) {
+    return {
+        type: `CHANGE_FILTER_${isMin ? 'MIN' : 'MAX'}_AGE`,
+        value
+    };
+}
+
+/**
+ * 
+ * @param {Number} amount
+ * @param {Boolean} isMin
+ */
+export function changeFilterWealth(amount, isMin) {
+    return {
+        type: `CHANGE_FILTER_${isMin ? 'MIN' : 'MAX'}_WEALTH`,
+        amount
+    };
+}

@@ -27,19 +27,17 @@ const initialState = {
     },
     popupSelector: {
         isDisplayed: false,
+        displayedPeople: RichPerson.cache,
         sort: {
-            type: 'wealth',
             isAscending: false,
+            type: 'wealth',
         },
         filter: {
             search: "",
+            gender: "all",
             wealth: {
                 min: 0,
                 max: -1, // Use infinite max if negative number
-            },
-            gender: {
-                male: true,
-                female: true,
             },
             age: {
                 min: 0,
@@ -96,6 +94,69 @@ function personDataReducer(state = initialState, action) {
                 newState.first.amount = RichPerson.convertAmount(action.amount, state.second.person, state.first.person);
             }
             return newState;
+        case 'CHANGE_FILTER_MIN_AGE':
+            return {
+                ...state,
+                popupSelector: {
+                    ...state.popupSelector,
+                    filter: {
+                        ...state.popupSelector.filter,
+                        age: {
+                            ...state.popupSelector.filter.age,
+                            min: action.value
+                        }
+                    }
+                }
+            };
+        case 'CHANGE_FILTER_MAX_AGE':
+            return {
+                ...state,
+                popupSelector: {
+                    ...state.popupSelector,
+                    filter: {
+                        ...state.popupSelector.filter,
+                        age: {
+                            ...state.popupSelector.filter.age,
+                            max: action.value
+                        }
+                    }
+                }
+            };
+        case 'CHANGE_FILTER_MIN_WEALTH':
+            return {
+                ...state,
+                popupSelector: {
+                    ...state.popupSelector,
+                    filter: {
+                        ...state.popupSelector.filter,
+                        wealth: {
+                            ...state.popupSelector.filter.wealth,
+                            min: action.amount
+                        }
+                    }
+                }
+            };
+        case 'CHANGE_FILTER_MAX_WEALTH':
+            return {
+                ...state,
+                popupSelector: {
+                    ...state.popupSelector,
+                    filter: {
+                        ...state.popupSelector.filter,
+                        wealth: {
+                            ...state.popupSelector.filter.wealth,
+                            max: action.amount
+                        }
+                    }
+                }
+            };
+        case 'CHANGE_SORT_TYPE':
+            let newDisplayedPeople = state.displayedPeople.slice();
+            let newSortObj = { ...state.popupSelector.sort, 'type': action.type };
+
+        case 'CHANGE_SORT_DIRECTION':
+        case 'CHANGE_SEARCH':
+        case 'CHANGE_FILTER':
         default:
             return state;
     }

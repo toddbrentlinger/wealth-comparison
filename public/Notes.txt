@@ -1,3 +1,42 @@
+TEMP
+In sequence of numbers, each entry can only be 10 values (0-9). 
+In sequence of letters, each entry can be 52 values (a-z,A-Z)
+				2 digits	3 digits
+Numbers (0-9)		10	100		1,000
+
+Letters (a-z, A-Z)	52	2,704		140,608
+
+min = 10, max = 60, startMin = 20, startMax = 40
+
+(startMin - min)/(max - min) = (20-10)/(60-10) = 10/50 = .2 starting min percentage
+(startMax - min)/(max - min) = (40-10)/(60-10) = 30/50 = .6 starting max percentage
+
+Value at given percentage?
+ex. 50% should return 35
+min + percentage*(max - min) = 10 + .5*(60-10) = 10 + 25 = 35
+
+Round number to smallest nth multiple (steps of length n)
+Ex. Round number to nearest step of length 8
+value		returned step
+1			8
+9
+Should return the step when the value is half step less or more than step
+Ex. Step of 5, returns: (half step = Math.floor(step/2))
+	0 for values 0-2
+	5 for values 3-7
+	...
+	15 for values 13-17
+	20 for values 18-22
+	25 for values 23-27
+What about for steps of even value where odd number of values between steps 
+OR value exactly in middle of two steps?
+Round up at 50% between two steps
+Ex. Step of 4, returns:
+	4 for values 
+	8 for values 6-9
+	12 for values 10-13
+_______________________________________________________________________________________________
+
 - Function to convert number to string version simplified with letter, ex. 1K for thousand, 1M for million
 Number		String		10^n		Letter
 ---------------------------------------------------------

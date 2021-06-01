@@ -2,8 +2,13 @@ import React, { useReducer, useEffect } from 'react';
 import MinMaxRangeSlider from './MinMaxRangeSlider.js';
 import RichPerson from '../classes/RichPerson.js';
 import { convertNumToSimplifiedString } from '../utilities.js';
+// Redux
+import { useSelector, useDispatch } from 'react-redux';
+import { changeFilterAge, changeFilterWealth } from '../redux/actions.js';
+// Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose, faSearch } from '@fortawesome/free-solid-svg-icons';
+// Stylesheets
 import './PersonSelectorPopup.css';
 
 /**
@@ -133,9 +138,15 @@ function reducer(prevState, action) {
 function PersonSelectorPopup(props) {
     // Reducer
 
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatchReducer] = useReducer(reducer, initialState);
 
-    // Functions
+    // Redux
+    const wealthFilter = useSelector(state => state.popupSelector.filter.wealth);
+    //const genderFilter = useSelector(state => state.popupSelector.filter.search);
+    const ageFilter = useSelector(state => state.popupSelector.filter.age);
+    const dispatch = useDispatch();
+
+    // Hooks
 
     useEffect(() => {
 
@@ -243,13 +254,26 @@ function PersonSelectorPopup(props) {
                         Filter
                         <MinMaxRangeSlider
                             minLimit={0}
-                            maxLimit={100}
+                            maxLimit={120}
                             step={1}
-                            startingMin={15}
-                            startingMax={75}
-                            onMinChange={() => { }}
-                            onMaxChange={() => { }}
+                            startingMin={18}
+                            startingMax={100}
+                            onMinChange={ val => dispatch(changeFilterAge(val, true)) }
+                            onMaxChange={ val => dispatch(changeFilterAge(val, false)) }
                         />
+                        <p>State Age Min: <span>{ageFilter.min}</span></p>
+                        <p>State Age Max: <span>{ageFilter.max}</span></p>
+                        <MinMaxRangeSlider
+                            minLimit={0}
+                            maxLimit={1000000000000}
+                            step={1000000}
+                            startingMin={1000000}
+                            startingMax={1000000000000}
+                            onMinChange={val => dispatch(changeFilterWealth(val, true))}
+                            onMaxChange={val => dispatch(changeFilterWealth(val, false))}
+                        />
+                        <p>State Wealth Min: <span>{wealthFilter.min}</span></p>
+                        <p>State Wealth Max: <span>{wealthFilter.max}</span></p>
                     </div>
                     <div className="sort-and-displayed-container">
                         <div className="sort-container">
@@ -260,7 +284,7 @@ function PersonSelectorPopup(props) {
                                     id="sort-type-select"
                                     value={state.sort.type}
                                     onChange={(e) => {
-                                        dispatch({ 'type': 'sortByType', 'value': e.target.value, });
+                                        dispatchReducer({ 'type': 'sortByType', 'value': e.target.value, });
                                     }}
                                 >
                                     <option value="none">-- Sort By --</option>
@@ -278,7 +302,7 @@ function PersonSelectorPopup(props) {
                                     id="sort-direction-select"
                                     value={state.sort.isAscending ? "ascending" : "descending"}
                                     onChange={(e) => {
-                                        dispatch({ 'type': 'sortByDirection', 'value': (e.target.value === "ascending") });
+                                        dispatchReducer({ 'type': 'sortByDirection', 'value': (e.target.value === "ascending") });
                                     }}
                                 >
                                     <option value="descending">Descending</option>
