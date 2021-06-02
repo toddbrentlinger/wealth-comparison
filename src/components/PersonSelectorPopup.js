@@ -253,17 +253,19 @@ function PersonSelectorPopup(props) {
                     <div className="filter-container">
                         Filter
                         <MinMaxRangeSlider
+                            title="Age"
                             minLimit={0}
                             maxLimit={120}
                             step={1}
                             startingMin={18}
                             startingMax={100}
-                            onMinChange={ val => dispatch(changeFilterAge(val, true)) }
-                            onMaxChange={ val => dispatch(changeFilterAge(val, false)) }
+                            onMinChange={val => dispatch(changeFilterAge(val, true))}
+                            onMaxChange={val => dispatch(changeFilterAge(val, false))}
                         />
                         <p>State Age Min: <span>{ageFilter.min}</span></p>
                         <p>State Age Max: <span>{ageFilter.max}</span></p>
                         <MinMaxRangeSlider
+                            title="Wealth"
                             minLimit={0}
                             maxLimit={1000000000000}
                             step={1000000}
@@ -271,9 +273,10 @@ function PersonSelectorPopup(props) {
                             startingMax={1000000000000}
                             onMinChange={val => dispatch(changeFilterWealth(val, true))}
                             onMaxChange={val => dispatch(changeFilterWealth(val, false))}
+                            convertValueToDisplay={val => convertNumToSimplifiedString(val)}
                         />
-                        <p>State Wealth Min: <span>{wealthFilter.min}</span></p>
-                        <p>State Wealth Max: <span>{wealthFilter.max}</span></p>
+                        <p>State Wealth Min: <span>{convertNumToSimplifiedString(wealthFilter.min.toFixed(0))}</span></p>
+                        <p>State Wealth Max: <span>{convertNumToSimplifiedString(wealthFilter.max.toFixed(0))}</span></p>
                     </div>
                     <div className="sort-and-displayed-container">
                         <div className="sort-container">

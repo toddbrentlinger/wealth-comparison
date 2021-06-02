@@ -167,6 +167,7 @@ function MinMaxRangeSlider(props) {
                 <option value="3">3</option>
                 <option value="4">4</option>
             </select>
+            <div className="slider-title">{props.title}</div>
             <div className="slider-target" ref={sliderTarget}>
                 <div
                     className="slider"
