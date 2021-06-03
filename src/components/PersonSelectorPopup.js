@@ -149,7 +149,7 @@ function PersonSelectorPopup(props) {
     // Hooks
 
     useEffect(() => {
-
+        window.convertNumToSimplifiedString = convertNumToSimplifiedString;
     }, []);
 
     // Variables
@@ -225,6 +225,12 @@ function PersonSelectorPopup(props) {
         </table>
     );
 
+    
+    function handleWealthConvertValueToDisplay(val) {
+        //console.log(`handleWealthConvertValueToDisplay starts with val: ${val}`);
+        return convertNumToSimplifiedString(Math.pow(10, val));
+    }
+
     return (
         <div id="person-selector-popup">
             <div className="person-selector-popup-content">
@@ -267,13 +273,13 @@ function PersonSelectorPopup(props) {
                         <MinMaxRangeSlider
                             title="Wealth"
                             minLimit={0}
-                            maxLimit={1000000000000}
-                            step={1000000}
-                            startingMin={1000000}
-                            startingMax={1000000000000}
+                            maxLimit={12}
+                            step={1}
+                            startingMin={3}
+                            startingMax={9}
                             onMinChange={val => dispatch(changeFilterWealth(val, true))}
                             onMaxChange={val => dispatch(changeFilterWealth(val, false))}
-                            convertValueToDisplay={val => convertNumToSimplifiedString(val)}
+                            convertValueToDisplay={handleWealthConvertValueToDisplay}
                         />
                         <p>State Wealth Min: <span>{convertNumToSimplifiedString(wealthFilter.min.toFixed(0))}</span></p>
                         <p>State Wealth Max: <span>{convertNumToSimplifiedString(wealthFilter.max.toFixed(0))}</span></p>

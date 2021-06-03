@@ -84,6 +84,10 @@ export function convertNumToSimplifiedString(num) {
         pow += 3;
         num /= 1000;
     }
+
+    // Remove any fractional part of num
+    num = num.toFixed(0);
+
     /*
     switch (pow) {
         case 0: return num.toString(); // Case should be unreachable

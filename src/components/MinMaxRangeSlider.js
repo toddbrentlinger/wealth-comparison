@@ -67,19 +67,6 @@ function MinMaxRangeSlider(props) {
     useEffect(() => {
         updateSliderValues();
     });
-    /*
-    useEffect(() => {
-        console.log('minValue has changed');
-        props.onMinChange(minValue);
-    }, [minValue]);
-
-    useEffect(() => {
-        console.log('maxValue has changed');
-        props.onMaxChange(maxValue);
-    }, [maxValue]);
-    */
-
-    // Functions
 
     function onStart(e) {
         //console.log(`onStart runs`);
@@ -142,15 +129,30 @@ function MinMaxRangeSlider(props) {
         sliderBar.current.style.right = `${100 - tempMaxValue}%`;
     }
 
+    /**
+     * Calculates percentage (0-100%) of position along slider
+     * @param {Number} positionInSlider
+     */
     function calculatePercentage(positionInSlider) {
         return positionInSlider / sliderBCR.current.width * 100;
     }
 
+    /**
+     * Calculates value using position along slider and min/max limits
+     * @param {Number} positionInSlider
+     */
     function calculateValue(positionInSlider) {
         const percentage = positionInSlider / sliderBCR.current.width;
-        const value = props.minLimit + percentage * (props.maxLimit - props.minLimit);
+        const value = convertPercentageToValueInRange(percentage);
+        return props.step * Math.round(value / props.step);
+    }
 
-        return value;
+    /**
+     * Calculates value from percentage and min/max limits.
+     * @param {Number} percentage
+     */
+    function convertPercentageToValueInRange(percentage) {
+        return props.minLimit + percentage * (props.maxLimit - props.minLimit);
     }
 
     return (
@@ -199,8 +201,8 @@ function MinMaxRangeSlider(props) {
                 </div>
             </div>
             <div className="results" ref={resultsElement}>
-                <p>Min: <span className="min-result">{minValue.toFixed(0)}</span></p>
-                <p>Max: <span className="max-result">{maxValue.toFixed(0)}</span></p>
+                <p>Min: <span className="min-result">{props.convertValueToDisplay ? props.convertValueToDisplay(convertPercentageToValueInRange(minValue / 100)) : minValue.toFixed(0)}</span></p>
+                <p>Max: <span className="max-result">{props.convertValueToDisplay ? props.convertValueToDisplay(convertPercentageToValueInRange(maxValue / 100)) : maxValue.toFixed(0)}</span></p>
             </div>
         </div>
     );
