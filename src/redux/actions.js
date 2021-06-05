@@ -32,6 +32,36 @@ export function changeAmount(amount, isFirst) {
     };
 }
 
+// --------------------------
+// ---------- SORT ----------
+// --------------------------
+
+/**
+ * 
+ * @param {String} value
+ */
+export function changeSortType(value) {
+    return {
+        type: `CHANGE_SORT_TYPE`,
+        value
+    };
+}
+
+/**
+ * 
+ * @param {Boolean} isAscending
+ */
+export function changeSortIsAscending(isAscending = false) {
+    return {
+        type: `CHANGE_SORT_DIRECTION`,
+        value: isAscending
+    };
+}
+
+// ----------------------------
+// ---------- FILTER ----------
+// ----------------------------
+
 /**
  * 
  * @param {Number} value
@@ -49,9 +79,9 @@ export function changeFilterAge(value, isMin) {
  * @param {Number} amount
  * @param {Boolean} isMin
  */
-export function changeFilterWealth(amount, isMin) {
+export function changeFilterWorth(amount, isMin) {
     return {
-        type: `CHANGE_FILTER_${isMin ? 'MIN' : 'MAX'}_WEALTH`,
+        type: `CHANGE_FILTER_${isMin ? 'MIN' : 'MAX'}_WORTH`,
         amount
     };
 }

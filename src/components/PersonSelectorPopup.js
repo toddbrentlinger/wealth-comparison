@@ -4,7 +4,7 @@ import RichPerson from '../classes/RichPerson.js';
 import { convertNumToSimplifiedString } from '../utilities.js';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
-import { changeFilterAge, changeFilterWealth } from '../redux/actions.js';
+import { changeSortType, changeSortIsAscending, changeFilterAge, changeFilterWorth } from '../redux/actions.js';
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose, faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -141,33 +141,30 @@ function PersonSelectorPopup(props) {
     const [state, dispatchReducer] = useReducer(reducer, initialState);
 
     // Redux
-    const wealthFilter = useSelector(state => state.popupSelector.filter.wealth);
+    const displayedPeople = useSelector(state => state.popupSelector.displayedPeople);
+    const sortObj = useSelector(state => state.popupSelector.sort);
+    const wealthFilter = useSelector(state => state.popupSelector.filter.worth);
     //const genderFilter = useSelector(state => state.popupSelector.filter.search);
     const ageFilter = useSelector(state => state.popupSelector.filter.age);
     const dispatch = useDispatch();
 
     // Hooks
 
-    useEffect(() => {
-        window.convertNumToSimplifiedString = convertNumToSimplifiedString;
-    }, []);
-
     // Variables
 
-    const displayedPeopleElementsOld = state.displayedPeople
-        .map(person =>
-            <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
-                <span>{person.name}</span>
-                <span>{convertNumToSimplifiedString(person.worth * 1000000)}</span>
-                <span>{person.age}</span>
-            </div>
-        );
+    const displayedPeopleElementsOld = state.displayedPeople.map(person =>
+        <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
+            <span>{person.name}</span>
+            <span>{convertNumToSimplifiedString(person.worth * 1000000)}</span>
+            <span>{person.age}</span>
+        </div>
+    );
 
-    const displayedPeopleElements = state.displayedPeople
+    const displayedPeopleElements = displayedPeople
         .map(person => createPersonElement(person)); 
 
     function createPersonElement(person) {
-        switch (state.sort.type) {
+        switch (sortObj.type) {
             case 'worth':
                 return (
                     <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
@@ -271,18 +268,18 @@ function PersonSelectorPopup(props) {
                         <p>State Age Min: <span>{ageFilter.min}</span></p>
                         <p>State Age Max: <span>{ageFilter.max}</span></p>
                         <MinMaxRangeSlider
-                            title="Wealth"
-                            minLimit={0}
+                            title="Worth"
+                            minLimit={3}
                             maxLimit={12}
                             step={1}
-                            startingMin={3}
+                            startingMin={6}
                             startingMax={9}
-                            onMinChange={val => dispatch(changeFilterWealth(val, true))}
-                            onMaxChange={val => dispatch(changeFilterWealth(val, false))}
+                            onMinChange={val => dispatch(changeFilterWorth(val, true))}
+                            onMaxChange={val => dispatch(changeFilterWorth(val, false))}
                             convertValueToDisplay={handleWealthConvertValueToDisplay}
                         />
-                        <p>State Wealth Min: <span>{convertNumToSimplifiedString(wealthFilter.min.toFixed(0))}</span></p>
-                        <p>State Wealth Max: <span>{convertNumToSimplifiedString(wealthFilter.max.toFixed(0))}</span></p>
+                        <p>State Worth Min: <span>{convertNumToSimplifiedString(wealthFilter.min.toFixed(0))}</span></p>
+                        <p>State Worth Max: <span>{convertNumToSimplifiedString(wealthFilter.max.toFixed(0))}</span></p>
                     </div>
                     <div className="sort-and-displayed-container">
                         <div className="sort-container">
@@ -291,9 +288,10 @@ function PersonSelectorPopup(props) {
                                 <select
                                     name="sort-type"
                                     id="sort-type-select"
-                                    value={state.sort.type}
+                                    value={sortObj.type}
                                     onChange={(e) => {
-                                        dispatchReducer({ 'type': 'sortByType', 'value': e.target.value, });
+                                        //dispatchReducer({ 'type': 'sortByType', 'value': e.target.value, });
+                                        dispatch(changeSortType(e.target.value));
                                     }}
                                 >
                                     <option value="none">-- Sort By --</option>
@@ -309,9 +307,10 @@ function PersonSelectorPopup(props) {
                                 <select
                                     name="sort-direction"
                                     id="sort-direction-select"
-                                    value={state.sort.isAscending ? "ascending" : "descending"}
+                                    value={sortObj.isAscending ? "ascending" : "descending"}
                                     onChange={(e) => {
-                                        dispatchReducer({ 'type': 'sortByDirection', 'value': (e.target.value === "ascending") });
+                                        //dispatchReducer({ 'type': 'sortByDirection', 'value': (e.target.value === "ascending") });
+                                        dispatch(changeSortIsAscending(e.target.value === "ascending"));
                                     }}
                                 >
                                     <option value="descending">Descending</option>

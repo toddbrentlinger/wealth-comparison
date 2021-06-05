@@ -155,6 +155,16 @@ function MinMaxRangeSlider(props) {
         return props.minLimit + percentage * (props.maxLimit - props.minLimit);
     }
 
+    /**
+     * Converts percentage to value for display that accounts for step and min/max
+     * @param {Number} percentage
+     * @returns {Number}
+     */
+    function getDisplayValue(percentage) {
+        const value = convertPercentageToValueInRange(percentage);
+        return props.step * Math.round(value / props.step);
+    }
+
     return (
         <div className="min-max-range-slider">
             <select name="slider-min" className="slider-min-control hidden" ref={minControlElement}>
@@ -201,8 +211,24 @@ function MinMaxRangeSlider(props) {
                 </div>
             </div>
             <div className="results" ref={resultsElement}>
-                <p>Min: <span className="min-result">{props.convertValueToDisplay ? props.convertValueToDisplay(convertPercentageToValueInRange(minValue / 100)) : minValue.toFixed(0)}</span></p>
-                <p>Max: <span className="max-result">{props.convertValueToDisplay ? props.convertValueToDisplay(convertPercentageToValueInRange(maxValue / 100)) : maxValue.toFixed(0)}</span></p>
+                <p>Min:
+                    <span className="min-result">
+                        {
+                            props.convertValueToDisplay
+                                ? props.convertValueToDisplay(convertPercentageToValueInRange(minValue / 100))
+                                : getDisplayValue(minValue/100)
+                        }
+                    </span>
+                </p>
+                <p>Max:
+                    <span className="max-result">
+                        {
+                            props.convertValueToDisplay
+                                ? props.convertValueToDisplay(convertPercentageToValueInRange(maxValue / 100))
+                                : getDisplayValue(maxValue/100)
+                        }
+                    </span>
+                </p>
             </div>
         </div>
     );
