@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import './MinMaxRangeSlider.css';
 
+// TODO: Move to utilities.js
 function getPercentageOfValueBetweenTwoValues(val, min, max) {
     return (val - min) / (max - min);
 }
@@ -39,16 +40,12 @@ function MinMaxRangeSlider(props) {
     const sliderBarStart = useRef(null); // min ball element reference
     const sliderBarEnd = useRef(null); // max ball element reference
 
-    const minControlElement = useRef(null); // NOT NEEDED
-    const maxControlElement = useRef(null); // NOT NEEDED
-    const sliderTarget = useRef(null); // NOT NEEDED
-
-    const resultsElement = useRef(null); // NOT NEEDED
+    const resultsElement = useRef(null); // element reference
 
     //const minValue = useRef(props.startingMin || 0);
     //const maxValue = useRef(props.startingMax || 100);
     const startX = useRef(0); // starting x-position when first click ball
-    const currentX = useRef(0); // curretn x-position when dragging ball
+    const currentX = useRef(0); // current x-position when dragging ball
     const target = useRef(null); // element reference to min/max ball that is moving
     const targetBCR = useRef(null); // moving slider ball bounding client rect (DOMRect object)
     const sliderBCR = useRef(null); // slider bar bounding client rect (DOMRect object)
@@ -106,7 +103,7 @@ function MinMaxRangeSlider(props) {
         //console.log(`onMove completes`);
     }
 
-    function onEnd(e) {
+    function onEnd() {
         //console.log(`onEnd starts`);
 
         if (!isDraggingBall.current || !target.current) return;
@@ -138,7 +135,15 @@ function MinMaxRangeSlider(props) {
     }
 
     /**
-     * Calculates value using position along slider and min/max limits
+     * Calculates value from percentage and min/max limits.
+     * @param {Number} percentage
+     */
+    function convertPercentageToValueInRange(percentage) {
+        return props.minLimit + percentage * (props.maxLimit - props.minLimit);
+    }
+
+    /**
+     * Calculates value using position along slider, step, and min/max limits
      * @param {Number} positionInSlider
      */
     function calculateValue(positionInSlider) {
@@ -148,47 +153,27 @@ function MinMaxRangeSlider(props) {
     }
 
     /**
-     * Calculates value from percentage and min/max limits.
-     * @param {Number} percentage
-     */
-    function convertPercentageToValueInRange(percentage) {
-        return props.minLimit + percentage * (props.maxLimit - props.minLimit);
-    }
-
-    /**
      * Converts percentage to value for display that accounts for step and min/max
      * @param {Number} percentage
      * @returns {Number}
      */
-    function getDisplayValue(percentage) {
+    function getDisplayValueFromPercentage(percentage) {
         const value = convertPercentageToValueInRange(percentage);
         return props.step * Math.round(value / props.step);
     }
 
     return (
         <div className="min-max-range-slider">
-            <select name="slider-min" className="slider-min-control hidden" ref={minControlElement}>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
-            <select name="slider-max" className="slider-max-control hidden" ref={maxControlElement}>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
             <div className="slider-title">{props.title}</div>
-            <div className="slider-target" ref={sliderTarget}>
+            <div
+                className="slider-target"
+                onMouseMove={onMove}
+                onMouseLeave={onEnd}
+                onTouchMove={onMove}
+            >
                 <div
                     className="slider"
                     ref={slider}
-                    onMouseMove={onMove}
-                    onMouseLeave={onEnd}
-                    onTouchMove={onMove}
-                    data-min=""
-                    data-max=""
                 >
                     <div className="slider-bar" ref={sliderBar}>
                         <span
@@ -211,24 +196,24 @@ function MinMaxRangeSlider(props) {
                 </div>
             </div>
             <div className="results" ref={resultsElement}>
-                <p>Min:
+                <div>Min:
                     <span className="min-result">
                         {
                             props.convertValueToDisplay
-                                ? props.convertValueToDisplay(convertPercentageToValueInRange(minValue / 100))
-                                : getDisplayValue(minValue/100)
+                                ? props.convertValueToDisplay(getDisplayValueFromPercentage(minValue / 100))
+                                : getDisplayValueFromPercentage(minValue / 100)
                         }
                     </span>
-                </p>
-                <p>Max:
+                </div>
+                <div>Max:
                     <span className="max-result">
                         {
                             props.convertValueToDisplay
-                                ? props.convertValueToDisplay(convertPercentageToValueInRange(maxValue / 100))
-                                : getDisplayValue(maxValue/100)
+                                ? props.convertValueToDisplay(getDisplayValueFromPercentage(maxValue / 100))
+                                : getDisplayValueFromPercentage(maxValue / 100)
                         }
                     </span>
-                </p>
+                </div>
             </div>
         </div>
     );

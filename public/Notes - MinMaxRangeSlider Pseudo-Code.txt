@@ -1,6 +1,5 @@
 MinMaxRangeSlider Pseudo-Code:
 
-
 Sam Christiensen
 Dentist
 

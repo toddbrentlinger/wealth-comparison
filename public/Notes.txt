@@ -1,3 +1,14 @@
+6/7/21
+
+- ISSUE: MinMaxRangeSlider component has own min/max states AND use function sent as property
+to change global min/max state values. 
+- SOLUTION: Remove min/max state from MinMaxRangeSlider component. Use properties on component:
+	min/max = manually set
+	initialMin/Max = initial value from redux state using dispatch (limit values between min/max)
+	setMin/Max = action function to change redux state
+	step
+___________________________________________________________________________________________
+
 TEMP
 In sequence of numbers, each entry can only be 10 values (0-9). 
 In sequence of letters, each entry can be 52 values (a-z,A-Z)
