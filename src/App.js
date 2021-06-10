@@ -12,6 +12,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { changePerson, changeAmount } from './redux/actions.js';
 import { addCommasToNumber, convertNumToSimplifiedString } from './utilities.js';
 
+import ReduxStateDisplay from './components/ReduxStateDisplay.js';
+
 // TEMP
 window.convertNumToSimplifiedString = convertNumToSimplifiedString;
 
@@ -166,6 +168,7 @@ function App() {
             {isLoading ? null : mainApp}
             {buttons}
             <FooterCustom />
+            <ReduxStateDisplay/>
         </div>
     );
 }

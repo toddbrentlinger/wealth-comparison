@@ -1,3 +1,7 @@
+6/9/21
+
+- Fetch the JSON from the Forbe's website and use saved list as backup.
+
 6/7/21
 
 - ISSUE: MinMaxRangeSlider component has own min/max states AND use function sent as property
