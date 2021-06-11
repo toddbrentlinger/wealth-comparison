@@ -2,6 +2,16 @@
 
 - Fetch the JSON from the Forbe's website and use saved list as backup.
 
+- ReduxStateDisplay component: Only render object and array states if click "Show" button.
+Add onClick function that adds html element as child.
+Create separate component:
+	props: key, value
+	state: isValueShowing = false
+	if (!isValueShowing)
+		return JSX showing key, value properties, and '+' button
+	else
+		return JSX showing key, value, and '-' button
+
 6/7/21
 
 - ISSUE: MinMaxRangeSlider component has own min/max states AND use function sent as property
