@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { clampValue } from '../utilities.js';
+import './ReduxStateDisplay.css';
 
 // TODO: Send state as property so can re-use component for any Redux state/store
 function ReduxStateDisplay() {
+    // Redux
     const reduxState = useSelector(state => state);
 
-    const displayStyle = {
-        position: "fixed",
-        zIndex: "100",
-        left: "0",
-        top: "0",
-        border: "1px solid black",
-        background: "white"
-    };
+    // State
 
-    const propertyStyle = {
-        display: "flex"
-    };
+    const [isDragging, setIsDragging] = useState(false);
+    const [position, setPosition] = useState({top: 0, left: 0});
+    
+    //const propertyStyle = {
+    //    display: "flex"
+    //};
 
     /**
      * Recursive function to display each property in Redux state store
@@ -24,6 +23,7 @@ function ReduxStateDisplay() {
      * @param {String} key
      * @param {any} value
      */
+    /*
     function createPropertyDisplay(key, value) {
         // String
         if (typeof value === 'string') {
@@ -72,16 +72,95 @@ function ReduxStateDisplay() {
             </div>
         );
     }
+    */
+
+    const draggableNodeRef = useRef(null);
+    const cornerDiff = useRef(null);
+    const rect = useRef(null);
+
+    // Drag
+
+    function handleDragStart(e) {
+        console.log(`Drag Starts`);
+        e.dataTransfer.dropEffect = "copy";
+    }
+
+    function handleDragMove(e) {
+
+    }
+
+    function handleDragEnd(e) {
+
+    }
+
+    // Mouse
+
+    function handleMouseDown(e) {
+        setIsDragging(true);
+        rect.current = draggableNodeRef.current.getBoundingClientRect();
+        cornerDiff.current = {
+            x: e.clientX - rect.current.left,
+            y: e.clientY - rect.current.top
+        };
+    }
+
+    function handleMouseMove(e) {
+        if (!isDragging) return;
+        //console.log(`X: ${e.clientX}\nY: ${e.clientY}`);
+        draggableNodeRef.current.style.left = e.clientX - cornerDiff.current.x;
+        draggableNodeRef.current.style.top = e.clientY - cornerDiff.current.y;
+        //console.log(`Mouse Move:\nTop: ${e.clientY - cornerDiff.current.y}\nLeft: ${e.clientX - cornerDiff.current.x}`);
+
+        // Check that values are within limits
+        let windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+        let windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        let newPosition = {
+            top: clampValue(e.clientY - cornerDiff.current.y, 0, windowHeight - rect.current.top),
+            left: clampValue(e.clientX - cornerDiff.current.x, 0, windowWidth - rect.current.left)
+        };
+
+        setPosition(newPosition);
+        return;
+
+        setPosition({
+            top: e.clientY - cornerDiff.current.y,
+            left: e.clientX - cornerDiff.current.x
+        });
+    }
+
+    function handleMouseUp(e) {
+        setIsDragging(false);
+        cornerDiff.current = null;
+        console.log(`Mouse Up`);
+    }
 
     return (
-        <div className="redux-state-display-container" style={displayStyle}>
-            {
-                Object.entries(reduxState).map(entry =>
-                    <React.Fragment key={entry[0]}>
-                        <PropertyDisplay title={entry[0]} value={entry[1]} />
-                    </React.Fragment>    
-                )
-            }
+        <div
+            className="redux-state-display-container"
+            style={{ top: position.top, left: position.left }}
+            //draggable={true}
+            ref={draggableNodeRef}
+            onMouseMove={handleMouseMove}
+        >
+            <div
+                className="title-bar"
+                onDragStart={handleDragStart}
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+            >
+                Redux
+            </div>
+            <table>
+                <tbody>
+                    {
+                        Object.entries(reduxState).map(entry =>
+                            <React.Fragment key={entry[0]}>
+                                <PropertyDisplay title={entry[0]} value={entry[1]} />
+                            </React.Fragment>    
+                        )
+                    }
+                </tbody>
+            </table>
         </div>
     );
     /*
@@ -101,12 +180,110 @@ function ReduxStateDisplay() {
  */
 function PropertyDisplay(props) {
     // State
+
     const [isValueShowing, setIsValueShowing] = useState(false);
 
     // Variables
+
     const propertyStyle = {
         display: "flex"
     };
+
+    // Functions
+
+    /**
+     * 
+     * @param {any} value
+     * @returns {Element}
+     */
+    function createPropertyNode(value) {
+        let valueNode;
+        // Boolean
+        if (typeof value === 'boolean') {
+            valueNode = (<td className="value">{value ? 'TRUE' : 'FALSE'}</td>);
+        }
+        // String or Number
+        else if (typeof value === 'string' || typeof value === 'number') {
+            valueNode = (<td className="value">{value}</td>);
+        }
+        // Array
+        else if (Array.isArray(value)) {
+            if (!isValueShowing) {
+                valueNode = (
+                    <React.Fragment>
+                        <td className="value">{`Array(length: ${value.length})`}</td>
+                        <td>
+                            <button onClick={() => setIsValueShowing(true)}>+</button>
+                        </td>
+                    </React.Fragment>
+                );
+            } else {
+                valueNode = (
+                    <React.Fragment>
+                        <td className="value">
+                            {
+                                value.map((val, index) =>
+                                    <React.Fragment key={index}>
+                                        <PropertyDisplay title={index} value={val} />
+                                    </React.Fragment>)
+                            }
+                        </td>
+                        <td>
+                            <button onClick={() => setIsValueShowing(false)}>-</button>
+                        </td>
+                    </React.Fragment>
+                );
+            }
+        }
+        // Object
+        else if (typeof value === 'object' && value !== null) {
+            if (!isValueShowing) {
+                valueNode = (
+                    <React.Fragment>
+                        <td className="value">{`Object[${Object.keys(value).length} keys]`}</td>
+                        <td>
+                            <button onClick={() => setIsValueShowing(true)}>+</button>
+                        </td>
+                    </React.Fragment>
+                );
+            } else {
+                valueNode = (
+                    <React.Fragment>
+                        <td className="value">
+                            <table>
+                                <tbody>
+                                    {
+                                        Object.entries(value).map((entry) =>
+                                            <React.Fragment key={entry[0]}>
+                                                <PropertyDisplay title={entry[0]} value={entry[1]} />
+                                            </React.Fragment>)
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <button onClick={() => setIsValueShowing(false)}>-</button>
+                        </td>
+                    </React.Fragment>
+                );
+            }
+        }
+        // Other
+        else {
+            valueNode = (<td className="value">{`Other [${typeof value}]`}</td>);
+        }
+
+        return (
+            <tr className="property">
+                <td className="key">{props.title}</td>
+                {valueNode}
+            </tr>
+        );
+    }
+
+    return createPropertyNode(props.value);
+
+    // -----------------------------------------------------------
 
     // Boolean
     if (typeof props.value === 'boolean') {

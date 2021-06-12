@@ -1,0 +1,37 @@
+.redux-state-display-container {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    border: 1px solid black;
+    background: white;
+    padding-left: 0.5em;
+}
+
+.redux-state-display-container .title-bar {
+    cursor: move;
+}
+
+.redux-state-display-container .title-bar.isDragging {
+    cursor: grabbing;
+}
+
+.redux-state-display-container .property {
+    display: flex;
+}
+
+.redux-state-display-container .key {
+    padding-right: 0.5em;
+    border-right: 1px solid black;
+}
+
+.redux-state-display-container .value {
+}
+
+.redux-state-display-container .property td button {
+    height: 100%;
+}
+
+.redux-state-display-container tr {
+    border: 1px solid black;
+}

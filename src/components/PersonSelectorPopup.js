@@ -265,8 +265,6 @@ function PersonSelectorPopup(props) {
                             onMinChange={val => dispatch(changeFilterAge(val, true))}
                             onMaxChange={val => dispatch(changeFilterAge(val, false))}
                         />
-                        <p>State Age Min: <span>{ageFilter.min}</span></p>
-                        <p>State Age Max: <span>{ageFilter.max}</span></p>
                         <MinMaxRangeSlider
                             title="Worth"
                             minLimit={3}
@@ -278,8 +276,6 @@ function PersonSelectorPopup(props) {
                             onMaxChange={val => dispatch(changeFilterWorth(val, false))}
                             convertValueToDisplay={handleWealthConvertValueToDisplay}
                         />
-                        <p>State Worth Min: <span>{convertNumToSimplifiedString(wealthFilter.min.toFixed(0))}</span></p>
-                        <p>State Worth Max: <span>{convertNumToSimplifiedString(wealthFilter.max.toFixed(0))}</span></p>
                     </div>
                     <div className="sort-and-displayed-container">
                         <div className="sort-container">

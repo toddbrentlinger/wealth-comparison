@@ -108,3 +108,15 @@ export function convertNumToSimplifiedString(num) {
     // If reach here, pow is 15 or more
     return num + 'Q';
 }
+
+/**
+ * Clamps val between min and max
+ * @param {any} val
+ * @param {any} min
+ * @param {any} max
+ */
+export function clampValue(val, min, max) {
+    if (val < min) return min;
+    if (val > max) return max;
+    return val;
+}
