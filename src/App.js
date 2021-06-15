@@ -9,7 +9,7 @@ import FooterCustom from './components/FooterCustom.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { changePerson, changeAmount } from './redux/actions.js';
+import { changePerson, changeAmount, changePopupSelectorIsDisplayed } from './redux/actions.js';
 import { addCommasToNumber, convertNumToSimplifiedString } from './utilities.js';
 
 import ReduxStateDisplay from './components/ReduxStateDisplay.js';
@@ -28,13 +28,14 @@ function App() {
     //const [secondPerson, setSecondPerson] = useState(null);
     //const [secondAmount, setSecondAmount] = useState("");
     const [isLoading, setIsLoading] = useState(true);
-    const [isPersonSelectorPopupOpen, setIsPersonSelectorPopupOpen] = useState(false);
+    //const [isPersonSelectorPopupOpen, setIsPersonSelectorPopupOpen] = useState(false);
 
     // Variables
 
     //const users = useSelector(state => state.users);
     const first = useSelector(state => state.first);
     const second = useSelector(state => state.second);
+    const selectorModal = useSelector(state => state.popupSelector);
     const dispatch = useDispatch();
 
     // Effects
@@ -79,8 +80,8 @@ function App() {
      * @param {Boolean} isFirst
      */
     function handlePersonSelectButtonClick(isFirst = true) {
-        setIsPersonSelectorPopupOpen(true);
-
+        //setIsPersonSelectorPopupOpen(true);
+        dispatch(changePopupSelectorIsDisplayed(true));
     }
 
     // Variables
@@ -142,8 +143,11 @@ function App() {
 
     const mainApp = (
         <main>
-            {isPersonSelectorPopupOpen
-                ? <PersonSelectorPopup setIsPersonSelectorPopupOpen={setIsPersonSelectorPopupOpen} />
+            {selectorModal.isDisplayed
+                ? <PersonSelectorPopup
+                    //setIsPersonSelectorPopupOpen={setIsPersonSelectorPopupOpen}
+                    setIsPersonSelectorPopupOpen={(val) => dispatch(changePopupSelectorIsDisplayed(val))}
+                />
                 : null}
             {wealthComparisonContainer}
             {first || second ? <PersonNotesContainer /> : null}

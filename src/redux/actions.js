@@ -32,6 +32,17 @@ export function changeAmount(amount, isFirst) {
     };
 }
 
+// --------------------------------------------------
+// ---------- Popup Selector - isDisplayed ----------
+// --------------------------------------------------
+
+export function changePopupSelectorIsDisplayed(value) {
+    return {
+        type: 'CHANGE_POPUP_SELECTOR_IS_DISPLAYED',
+        value
+    };
+}
+
 // --------------------------
 // ---------- SORT ----------
 // --------------------------

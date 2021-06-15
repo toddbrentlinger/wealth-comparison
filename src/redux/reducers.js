@@ -172,6 +172,15 @@ function personDataReducer(state = initialState, action) {
                 newState.first.amount = RichPerson.convertAmount(action.amount, state.second.person, state.first.person);
             }
             return newState;
+        case 'CHANGE_POPUP_SELECTOR_IS_DISPLAYED':
+            newState = {
+                ...state,
+                popupSelector: {
+                    ...state.popupSelector,
+                    isDisplayed: action.value
+                }
+            };
+            return newState;
         case 'CHANGE_FILTER_MIN_AGE':
             newState = {
                 ...state.popupSelector.filter,
