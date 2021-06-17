@@ -10,6 +10,7 @@ function ReduxStateDisplay() {
 
     // State
 
+    const [isOpen, setIsOpen] = useState(true);
     const [isDragging, setIsDragging] = useState(false);
     const [position, setPosition] = useState({top: 0, left: 0});
     
@@ -134,6 +135,22 @@ function ReduxStateDisplay() {
         console.log(`Mouse Up`);
     }
 
+    function createTable() {
+        return (
+            <table className={isOpen ? null : 'hide'}>
+                <tbody>
+                    {
+                        Object.entries(reduxState).map(entry =>
+                            <React.Fragment key={entry[0]}>
+                                <PropertyDisplay title={entry[0]} value={entry[1]} />
+                            </React.Fragment>
+                        )
+                    }
+                </tbody>
+            </table>
+        );
+    }
+
     return (
         <div
             className="redux-state-display-container"
@@ -149,18 +166,9 @@ function ReduxStateDisplay() {
                 onMouseUp={handleMouseUp}
             >
                 Redux
+                <button onClick={() => setIsOpen(!isOpen)}>{isOpen ? 'X' : 'O'}</button>
             </div>
-            <table>
-                <tbody>
-                    {
-                        Object.entries(reduxState).map(entry =>
-                            <React.Fragment key={entry[0]}>
-                                <PropertyDisplay title={entry[0]} value={entry[1]} />
-                            </React.Fragment>    
-                        )
-                    }
-                </tbody>
-            </table>
+            {createTable()}
         </div>
     );
     /*

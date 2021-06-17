@@ -4,7 +4,7 @@ import RichPerson from '../classes/RichPerson.js';
 import { convertNumToSimplifiedString } from '../utilities.js';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
-import { changeSortType, changeSortIsAscending, changeFilterAge, changeFilterWorth } from '../redux/actions.js';
+import { changePerson, changeSortType, changeSortIsAscending, changeFilterAge, changeFilterWorth } from '../redux/actions.js';
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose, faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -141,6 +141,7 @@ function PersonSelectorPopup(props) {
     const [state, dispatchReducer] = useReducer(reducer, initialState);
 
     // Redux
+    const willChangeFirstPerson = useSelector(state => state.popupSelector.willChangeFirstPerson);
     const displayedPeople = useSelector(state => state.popupSelector.displayedPeople);
     const sortObj = useSelector(state => state.popupSelector.sort);
     const wealthFilter = useSelector(state => state.popupSelector.filter.worth);
@@ -170,6 +171,7 @@ function PersonSelectorPopup(props) {
                     <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
                         <span>{`$${convertNumToSimplifiedString(person.worth * 1000000)}`}</span>
                         <span>{person.name}</span>
+                        <button onClick={() => handlePersonSelect(person)}>SELECT</button>
                     </div>
                 );
             case 'age':
@@ -177,6 +179,7 @@ function PersonSelectorPopup(props) {
                     <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
                         <span>{person.age}</span>
                         <span>{person.name}</span>
+                        <button onClick={() => handlePersonSelect(person)}>SELECT</button>
                     </div>
                 );
             case 'first-name':
@@ -184,6 +187,7 @@ function PersonSelectorPopup(props) {
                     <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
                         <span>{person.name}</span>
                         <span>{`$${convertNumToSimplifiedString(person.worth * 1000000)}`}</span>
+                        <button onClick={() => handlePersonSelect(person)}>SELECT</button>
                     </div>
                 );
             case 'last-name':
@@ -191,6 +195,7 @@ function PersonSelectorPopup(props) {
                     <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
                         <span>{`${person.lastName}, ${person.firstName}`}</span>
                         <span>{`$${convertNumToSimplifiedString(person.worth * 1000000)}`}</span>
+                        <button onClick={() => handlePersonSelect(person)}>SELECT</button>
                     </div>
                 );
             default:
@@ -199,9 +204,14 @@ function PersonSelectorPopup(props) {
                         <span>{person.name}</span>
                         <span>{`$${convertNumToSimplifiedString(person.worth * 1000000)}`}</span>
                         <span>{person.age}</span>
+                        <button onClick={() => handlePersonSelect(person)}>SELECT</button>
                     </div>
                 );
         }
+    }
+
+    function handlePersonSelect(person) {
+        dispatch(changePerson(person, willChangeFirstPerson));
     }
 
     const peopleListTable = (

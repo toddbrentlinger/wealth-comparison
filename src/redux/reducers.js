@@ -28,6 +28,7 @@ const initialState = {
     },
     popupSelector: {
         isDisplayed: false,
+        willChangeFirstPerson: true,
         displayedPeople: RichPerson.cache,
         sort: {
             isAscending: false,
@@ -134,6 +135,10 @@ function personDataReducer(state = initialState, action) {
                 first: {
                     ...state.first,
                     person: action.person
+                },
+                popupSelector: {
+                    ...state.popupSelector,
+                    isDisplayed: false
                 }
             });
             if (action.person && state.second.person)
@@ -155,6 +160,10 @@ function personDataReducer(state = initialState, action) {
                 second: {
                     ...state.second,
                     person: action.person
+                },
+                popupSelector: {
+                    ...state.popupSelector,
+                    isDisplayed: false
                 }
             });
             if (action.person && state.first.person)
@@ -177,7 +186,27 @@ function personDataReducer(state = initialState, action) {
                 ...state,
                 popupSelector: {
                     ...state.popupSelector,
-                    isDisplayed: action.value
+                    isDisplayed: action.value.isDisplayed,
+                    willChangeFirstPerson: action.value.willChangeFirstPerson
+                }
+            };
+            return newState;
+        case 'OPEN_POPUP_SELECTOR':
+            newState = {
+                ...state,
+                popupSelector: {
+                    ...state.popupSelector,
+                    isDisplayed: true,
+                    willChangeFirstPerson: action.willChangeFirstPerson
+                }
+            };
+            return newState;
+        case 'CLOSE_POPUP_SELECTOR':
+            newState = {
+                ...state,
+                popupSelector: {
+                    ...state.popupSelector,
+                    isDisplayed: false
                 }
             };
             return newState;

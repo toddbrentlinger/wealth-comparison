@@ -9,6 +9,8 @@
 }
 
 .redux-state-display-container .title-bar {
+    display: flex;
+    justify-content: space-between;
     cursor: move;
 }
 
@@ -34,4 +36,8 @@
 
 .redux-state-display-container tr {
     border: 1px solid black;
+}
+
+.redux-state-display-container .hide {
+    display: none;
 }

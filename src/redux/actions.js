@@ -36,10 +36,24 @@ export function changeAmount(amount, isFirst) {
 // ---------- Popup Selector - isDisplayed ----------
 // --------------------------------------------------
 
-export function changePopupSelectorIsDisplayed(value) {
+export function changePopupSelectorIsDisplayed(value, willChangeFirstPerson = true) {
     return {
         type: 'CHANGE_POPUP_SELECTOR_IS_DISPLAYED',
-        value
+        value: {isDisplayed: value, willChangeFirstPerson}
+    };
+}
+
+export function openPopupSelector(willChangeFirstPerson = true) {
+    return {
+        type: 'OPEN_POPUP_SELECTOR',
+        willChangeFirstPerson
+    };
+}
+
+export function closePopupSelector(personToSelect = null) {
+    return {
+        type: 'CLOSE_POPUP_SELECTOR',
+        personToSelect
     };
 }
 

@@ -81,7 +81,7 @@ function App() {
      */
     function handlePersonSelectButtonClick(isFirst = true) {
         //setIsPersonSelectorPopupOpen(true);
-        dispatch(changePopupSelectorIsDisplayed(true));
+        dispatch(changePopupSelectorIsDisplayed(true, isFirst));
     }
 
     // Variables

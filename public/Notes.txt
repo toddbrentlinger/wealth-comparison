@@ -1,3 +1,19 @@
+6/16/21
+
+- Use redux actions openPopupSelector and closePopupSelector instead of changePopupSelectorIsDisplayed
+
+- Use redux dispatch in PersonSelectorPopup component to change isDisplayed state instead of passing
+it as a prop from the parent component.
+
+- In ReduxStateDisplay component, move close/open button next to key instead of after value
+which makes it hard to know which button controls which key.
+
+X In ReduxStateDisplay component, add button to top bar to minimize or maximize window.
+	ISSUE: How to remember which properties are expanded? Keep rendered but just hide 
+	in CSS.
+
+- In ReduxStateDisplay component, add table header
+
 6/9/21
 
 - Fetch the JSON from the Forbe's website and use saved list as backup.
