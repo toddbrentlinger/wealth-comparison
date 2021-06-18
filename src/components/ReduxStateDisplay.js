@@ -10,7 +10,7 @@ function ReduxStateDisplay() {
 
     // State
 
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const [position, setPosition] = useState({top: 0, left: 0});
     

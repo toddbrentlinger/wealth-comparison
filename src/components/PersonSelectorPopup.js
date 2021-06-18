@@ -4,7 +4,7 @@ import RichPerson from '../classes/RichPerson.js';
 import { convertNumToSimplifiedString } from '../utilities.js';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
-import { changePerson, changeSortType, changeSortIsAscending, changeFilterAge, changeFilterWorth } from '../redux/actions.js';
+import { changePerson, closePopupSelector, changeSortType, changeSortIsAscending, changeFilterAge, changeFilterWorth } from '../redux/actions.js';
 // Font Awesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWindowClose, faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -245,7 +245,8 @@ function PersonSelectorPopup(props) {
                     <div className="top-bar-title">Select Person To Compare</div>
                     <span
                         className="close"
-                        onClick={() => props.setIsPersonSelectorPopupOpen(false)}
+                        //onClick={() => props.setIsPersonSelectorPopupOpen(false)}
+                        onClick={() => dispatch(closePopupSelector())}
                     >
                         <FontAwesomeIcon icon={faWindowClose} />
                     </span>
@@ -270,8 +271,8 @@ function PersonSelectorPopup(props) {
                             minLimit={0}
                             maxLimit={120}
                             step={1}
-                            startingMin={18}
-                            startingMax={100}
+                            startingMin={ageFilter.min}
+                            startingMax={ageFilter.max}
                             onMinChange={val => dispatch(changeFilterAge(val, true))}
                             onMaxChange={val => dispatch(changeFilterAge(val, false))}
                         />
@@ -280,8 +281,8 @@ function PersonSelectorPopup(props) {
                             minLimit={3}
                             maxLimit={12}
                             step={1}
-                            startingMin={6}
-                            startingMax={9}
+                            startingMin={wealthFilter.min}
+                            startingMax={wealthFilter.max}
                             onMinChange={val => dispatch(changeFilterWorth(val, true))}
                             onMaxChange={val => dispatch(changeFilterWorth(val, false))}
                             convertValueToDisplay={handleWealthConvertValueToDisplay}

@@ -38,12 +38,12 @@ const initialState = {
             search: "",
             gender: "all",
             worth: { // 10^n - use Math.pow(10,n) to get value
-                min: 0,
-                max: -1, // Use infinite max if negative number
+                min: 6,
+                max: 9, // Use infinite max if negative number
             },
             age: {
-                min: 0,
-                max: -1, // Use infinite max if negative number
+                min: 18,
+                max: 100, // Use infinite max if negative number
             },
             countries: [], // show all countries if empty
         },
@@ -181,6 +181,7 @@ function personDataReducer(state = initialState, action) {
                 newState.first.amount = RichPerson.convertAmount(action.amount, state.second.person, state.first.person);
             }
             return newState;
+        // NOT NEEDED
         case 'CHANGE_POPUP_SELECTOR_IS_DISPLAYED':
             newState = {
                 ...state,

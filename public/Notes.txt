@@ -1,8 +1,20 @@
+6/17/21
+
+- Check that reducer action type 'CHANGE_POPUP_SELECTOR_IS_DISPLAYED' is not needed before
+removing
+
+X Set intial values of MinMaxRangeSliders component to equal the redux state values.
+
+- Acount for negative max value in MinMaxRangeSlider component to represent infinite max.
+
+- Inside canvas element, provide fallback content. When canvas is not supported, any
+children of the canvas will be rendered instead.
+
 6/16/21
 
-- Use redux actions openPopupSelector and closePopupSelector instead of changePopupSelectorIsDisplayed
+X Use redux actions openPopupSelector and closePopupSelector instead of changePopupSelectorIsDisplayed
 
-- Use redux dispatch in PersonSelectorPopup component to change isDisplayed state instead of passing
+X Use redux dispatch in PersonSelectorPopup component to change isDisplayed state instead of passing
 it as a prop from the parent component.
 
 - In ReduxStateDisplay component, move close/open button next to key instead of after value
@@ -12,7 +24,7 @@ X In ReduxStateDisplay component, add button to top bar to minimize or maximize 
 	ISSUE: How to remember which properties are expanded? Keep rendered but just hide 
 	in CSS.
 
-- In ReduxStateDisplay component, add table header
+- In PersonSelectorPopup component, add table header
 
 6/9/21
 

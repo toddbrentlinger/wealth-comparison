@@ -5,11 +5,12 @@ import RichPerson from './classes/RichPerson.js';
 import WealthSelector from './components/WealthSelector.js';
 import PersonNotesContainer from './components/PersonNotesContainer.js';
 import PersonSelectorPopup from './components/PersonSelectorPopup.js';
+import WealthDisplayCanvas from './components/WealthDisplayCanvas.js';
 import FooterCustom from './components/FooterCustom.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExchangeAlt } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { changePerson, changeAmount, changePopupSelectorIsDisplayed } from './redux/actions.js';
+import { changePerson, changeAmount, openPopupSelector } from './redux/actions.js';
 import { addCommasToNumber, convertNumToSimplifiedString } from './utilities.js';
 
 import ReduxStateDisplay from './components/ReduxStateDisplay.js';
@@ -81,7 +82,8 @@ function App() {
      */
     function handlePersonSelectButtonClick(isFirst = true) {
         //setIsPersonSelectorPopupOpen(true);
-        dispatch(changePopupSelectorIsDisplayed(true, isFirst));
+        //dispatch(changePopupSelectorIsDisplayed(true, isFirst));
+        dispatch(openPopupSelector(isFirst));
     }
 
     // Variables
@@ -146,9 +148,10 @@ function App() {
             {selectorModal.isDisplayed
                 ? <PersonSelectorPopup
                     //setIsPersonSelectorPopupOpen={setIsPersonSelectorPopupOpen}
-                    setIsPersonSelectorPopupOpen={(val) => dispatch(changePopupSelectorIsDisplayed(val))}
+                    //setIsPersonSelectorPopupOpen={(val) => dispatch(changePopupSelectorIsDisplayed(val))}
                 />
                 : null}
+            <WealthDisplayCanvas />
             {wealthComparisonContainer}
             {first || second ? <PersonNotesContainer /> : null}
         </main>
