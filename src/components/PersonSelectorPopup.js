@@ -138,7 +138,7 @@ function reducer(prevState, action) {
 function PersonSelectorPopup(props) {
     // Reducer
 
-    const [state, dispatchReducer] = useReducer(reducer, initialState);
+    //const [state, dispatchReducer] = useReducer(reducer, initialState);
 
     // Redux
     const willChangeFirstPerson = useSelector(state => state.popupSelector.willChangeFirstPerson);
@@ -153,13 +153,13 @@ function PersonSelectorPopup(props) {
 
     // Variables
 
-    const displayedPeopleElementsOld = state.displayedPeople.map(person =>
-        <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
-            <span>{person.name}</span>
-            <span>{convertNumToSimplifiedString(person.worth * 1000000)}</span>
-            <span>{person.age}</span>
-        </div>
-    );
+    //const displayedPeopleElementsOld = state.displayedPeople.map(person =>
+    //    <div className="displayed-person" key={`${person.lastName}-${person.id}`}>
+    //        <span>{person.name}</span>
+    //        <span>{convertNumToSimplifiedString(person.worth * 1000000)}</span>
+    //        <span>{person.age}</span>
+    //    </div>
+    //);
 
     const displayedPeopleElements = displayedPeople
         .map(person => createPersonElement(person)); 
@@ -222,7 +222,7 @@ function PersonSelectorPopup(props) {
                     <th></th>
                 </tr>
                 {
-                    state.displayedPeople.map(person => (
+                    displayedPeople.map(person => (
                         <tr className="displayed-person" key={`${person.lastName}-${person.id}`}>
                             
                         </tr>

@@ -1,3 +1,10 @@
+6/21/21
+
+- Could add symbol and color of currency specified in slider. Ex. show dollar sign with green
+bills for US, 
+	- https://www.money.co.uk/guides/colour-of-currency.htm#:~:text=The%20colour%20of%20currency%20map,photographic%20knockoffs%20in%20the%201860s.
+- OR could use database of images for different currency bills to distort and appear as stack.
+
 6/17/21
 
 - Check that reducer action type 'CHANGE_POPUP_SELECTOR_IS_DISPLAYED' is not needed before

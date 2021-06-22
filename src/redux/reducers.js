@@ -39,7 +39,7 @@ const initialState = {
             gender: "all",
             worth: { // 10^n - use Math.pow(10,n) to get value
                 min: 6,
-                max: 9, // Use infinite max if negative number
+                max: 12, // Use infinite max if negative number
             },
             age: {
                 min: 18,
