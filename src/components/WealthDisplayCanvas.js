@@ -1,5 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './WealthDisplayCanvas.css';
+import { nbind } from 'q';
 
 /**
  * 
@@ -48,8 +49,9 @@ function drawBillStackOld(ctx, x, y, dx1, dy1, dx2, dy2, t) {
  * @param {Number} ds.y
  * @param {Number} tBill thickness of bill
  * @param {Number} tWrap thickness of bill wrap
+ * @param {Number} nBills number of lines to represent bills in stack
  */
-function drawBillStack(ctx, x, y, dl, ds, tBill, tWrap) {
+function drawBillStack(ctx, x, y, dl, ds, tBill, tWrap, nBills = 10) {
     let posX = x, posY = y;
 
     // Properties
@@ -92,7 +94,7 @@ function drawBillStack(ctx, x, y, dl, ds, tBill, tWrap) {
     posX = x + ds.x;
     posY = y + ds.y;
     const verticalLimit = posY + tBill;
-    const step = tBill / 10;
+    const step = tBill / nBills;
     ctx.moveTo(posX, posY += step);
     while (posY < verticalLimit) {
         ctx.lineTo(posX -= ds.x, posY -= ds.y);
@@ -131,12 +133,16 @@ function drawBillStackAtScale(ctx, scale, x, y) {
         ctx, x, y,
         { x: scale * ratio.long.x, y: scale * ratio.long.y },
         { x: scale * ratio.short.x, y: scale * ratio.short.y },
-        scale * ratio.short.x / 2, scale * ratio.short.x / 2
+        scale * ratio.short.x / 2, scale * ratio.short.x / 2, scale
     );
 }
 
 function WealthDisplayCanvas(props) {
+    // States
+    const [canvasSize, setCanvasSize] = useState({ width: 600, height: 300 });
+
     // Refs
+    const canvasContainerRef = useRef(null);
     const canvasRef = useRef(null);
     const ctx = useRef(null);
 
@@ -148,56 +154,76 @@ function WealthDisplayCanvas(props) {
             return;
         }
 
+        //canvasRef.current.width = canvasRef.current.offsetWidth;
+        //canvasRef.current.height = canvasRef.current.offsetHeight;
+        //setCanvasSize({ width: canvasRef.current.offsetWidth, height: canvasRef.current.offsetHeight });
         ctx.current = canvasRef.current.getContext('2d');
 
+        draw();
+    }, []);
+
+    // Functions
+
+    function draw() {
         // TEMP - Clears canvas
         ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-        ctx.current.fillStyle = 'rgb(200, 0, 0)';
-        ctx.current.fillRect(10, 10, 50, 50);
+        //ctx.current.fillStyle = 'rgb(200, 0, 0)';
+        //ctx.current.fillRect(10, 10, 50, 50);
 
-        ctx.current.fillStyle = 'rgba(0, 0, 200, 0.5)';
-        ctx.current.fillRect(30, 30, 50, 50);
+        //ctx.current.fillStyle = 'rgba(0, 0, 200, 0.5)';
+        //ctx.current.fillRect(30, 30, 50, 50);
 
         // Custom Bill Stack
         //drawBillStack(ctx.current, 10, 150, 200, 100, 100, 30, 50);
-        drawBillStack(ctx.current, 10, 150, { x: 200, y: 100 }, { x: 100, y: 30 }, 50, 50);
-        drawBillStackAtScale(ctx.current, 5, 300, 150);
+        //drawBillStack(ctx.current, 10, 150, { x: 200, y: 100 }, { x: 100, y: 30 }, 50, 50);
+        //drawBillStackAtScale(ctx.current, 5, 300, 150);
 
-        let sep = 27;
-        for (let counter = 0, pos = {x: 150, y: 300}; counter < 10; counter++, pos.y -= sep) {
-            drawBillStackAtScale(ctx.current, 5, pos.x, pos.y);
-        }
-        sep = 12;
-        for (let counter = 0, pos = { x: 500, y: 270 }; counter < 20; counter++ , pos.y -= sep) {
-            drawBillStackAtScale(ctx.current, 2, pos.x, pos.y);
-        }
+        //let sep = 27;
+        //for (let counter = 0, pos = { x: 150, y: 300 }; counter < 10; counter++ , pos.y -= sep) {
+        //    drawBillStackAtScale(ctx.current, 5, pos.x, pos.y);
+        //}
+        //sep = 12;
+        //for (let counter = 0, pos = { x: 500, y: 270 }; counter < 20; counter++ , pos.y -= sep) {
+        //    drawBillStackAtScale(ctx.current, 2, pos.x, pos.y);
+        //}
 
         let counter = 1;
-        let pos = { x: 400, y: 270 };
+        let pos = { x: canvasSize.height - 50, y: 270 };
+        let xDist = [canvasSize.width / 3, 2 * canvasSize.width / 3];
         let n = 20;
-        sep = 12;
+        let sep = 12;
         setTimeout(() => {
             let interval = setInterval(() => {
                 if (counter > n)
                     clearInterval(interval);
-                drawBillStackAtScale(ctx.current, 2, pos.x, pos.y);
+                drawBillStackAtScale(ctx.current, 2, xDist[0], pos.y);
+                drawBillStackAtScale(ctx.current, 2, xDist[1], pos.y);
                 counter++;
                 pos.y -= sep;
             }, 100);
-        }, 1000);
-    }, []);
+        }, 500);
+    }
+
+    function handleClickShowAnimation() {
+        draw();
+    }
 
     return (
-        <div className="canvas-container">
+        <div className="canvas-container" ref={canvasContainerRef}>
             <canvas
                 ref={canvasRef}
                 id="wealth-comparison-canvas"
-                width="600" // Default: 300
-                height="300" // Default: 150
-                style={{border: "1px solid black", margin: "1em"}}
+                width={canvasSize.width} // Default: 300 - 600
+                height={canvasSize.height} // Default: 150 - 300
+                onResize={() => {
+                    if (!canvasRef.current) return;
+                    canvasRef.current.width = canvasRef.current.offsetWidth;
+                    canvasRef.current.height = canvasRef.current.offsetHeight;
+                }}
             >
             </canvas>
+            <button onClick={handleClickShowAnimation}>Show Animation</button>
         </div>
     );
 }
