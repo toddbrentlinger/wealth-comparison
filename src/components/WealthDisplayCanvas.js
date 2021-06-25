@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './WealthDisplayCanvas.css';
-import { nbind } from 'q';
+import { useSelector } from 'react-redux';
 
 /**
  * 
@@ -137,7 +137,11 @@ function drawBillStackAtScale(ctx, scale, x, y) {
     );
 }
 
-function WealthDisplayCanvas(props) {
+function WealthDisplayCanvas() {
+    // Redux
+    const first = useSelector(state => state.first);
+    const second = useSelector(state => state.second);
+
     // States
     const [canvasSize, setCanvasSize] = useState({ width: 600, height: 300 });
 
@@ -161,6 +165,10 @@ function WealthDisplayCanvas(props) {
 
         draw();
     }, []);
+
+    useEffect(() => {
+        draw();
+    }, [first.amount, second.amount]);
 
     // Functions
 
@@ -190,19 +198,32 @@ function WealthDisplayCanvas(props) {
 
         let counter = 1;
         let pos = { x: canvasSize.height - 50, y: 270 };
-        let xDist = [canvasSize.width / 3, 2 * canvasSize.width / 3];
-        let n = 20;
-        let sep = 12;
+        let xDist = [Math.floor(canvasSize.width / 3), Math.floor(2 * canvasSize.width / 3)];
+        const n = 10; // max number of bill stacks in column
+        let firstStackAmount = Math.ceil(first.amount / 10000);
+        let secondstackAmount = Math.ceil(second.amount / 10000);
+        if (first.amount > second.amount) {
+            firstStackAmount = n;
+            secondstackAmount = Math.round(n * second.amount / first.amount);
+        } else {
+            secondstackAmount = n;
+            firstStackAmount = Math.round(n * first.amount / second.amount);
+        }
+        let sep = 12; // Distance between stacks of bills
         setTimeout(() => {
             let interval = setInterval(() => {
-                if (counter > n)
+                if (counter > firstStackAmount && counter > secondstackAmount)
                     clearInterval(interval);
-                drawBillStackAtScale(ctx.current, 2, xDist[0], pos.y);
-                drawBillStackAtScale(ctx.current, 2, xDist[1], pos.y);
+                // First stack
+                if (counter <= firstStackAmount)
+                    drawBillStackAtScale(ctx.current, 2, xDist[0], pos.y);
+                // Second stack
+                if (counter <= secondstackAmount)
+                    drawBillStackAtScale(ctx.current, 2, xDist[1], pos.y);
                 counter++;
                 pos.y -= sep;
             }, 100);
-        }, 500);
+        }, 300);
     }
 
     function handleClickShowAnimation() {
