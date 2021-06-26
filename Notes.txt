@@ -1,3 +1,52 @@
+6/21/21
+
+- Could add symbol and color of currency specified in slider. Ex. show dollar sign with green
+bills for US, 
+	- https://www.money.co.uk/guides/colour-of-currency.htm#:~:text=The%20colour%20of%20currency%20map,photographic%20knockoffs%20in%20the%201860s.
+- OR could use database of images for different currency bills to distort and appear as stack.
+
+6/17/21
+
+- Check that reducer action type 'CHANGE_POPUP_SELECTOR_IS_DISPLAYED' is not needed before
+removing
+
+X Set intial values of MinMaxRangeSliders component to equal the redux state values.
+
+- Acount for negative max value in MinMaxRangeSlider component to represent infinite max.
+
+- Inside canvas element, provide fallback content. When canvas is not supported, any
+children of the canvas will be rendered instead.
+
+6/16/21
+
+X Use redux actions openPopupSelector and closePopupSelector instead of changePopupSelectorIsDisplayed
+
+X Use redux dispatch in PersonSelectorPopup component to change isDisplayed state instead of passing
+it as a prop from the parent component.
+
+- In ReduxStateDisplay component, move close/open button next to key instead of after value
+which makes it hard to know which button controls which key.
+
+X In ReduxStateDisplay component, add button to top bar to minimize or maximize window.
+	ISSUE: How to remember which properties are expanded? Keep rendered but just hide 
+	in CSS.
+
+- In PersonSelectorPopup component, add table header
+
+6/9/21
+
+- Fetch the JSON from the Forbe's website and use saved list as backup.
+
+- ReduxStateDisplay component: Only render object and array states if click "Show" button.
+Add onClick function that adds html element as child.
+Create separate component:
+	props: key, value
+	state: isValueShowing = false
+	if (!isValueShowing)
+		return JSX showing key, value properties, and '+' button
+	else
+		return JSX showing key, value, and '-' button
+
 6/7/21
 
 - ISSUE: MinMaxRangeSlider component has own min/max states AND use function sent as property
