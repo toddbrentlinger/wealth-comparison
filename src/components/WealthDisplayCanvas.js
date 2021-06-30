@@ -163,6 +163,8 @@ function WealthDisplayCanvas() {
         //setCanvasSize({ width: canvasRef.current.offsetWidth, height: canvasRef.current.offsetHeight });
         ctx.current = canvasRef.current.getContext('2d');
 
+        setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: canvasContainerRef.current.offsetHeight });
+
         draw();
     }, []);
 
@@ -170,11 +172,30 @@ function WealthDisplayCanvas() {
         draw();
     }, [first.amount, second.amount]);
 
+    useEffect(() => {
+        function handleResize() {
+            //console.log(`handleResize runs\nwidth: ${canvasContainerRef.current.offsetWidth}\nheight: ${canvasContainerRef.current.offsetHeight}`);
+            setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: canvasContainerRef.current.offsetHeight });
+        }
+
+        console.log('Component mounts');
+        window.addEventListener('resize', handleResize);
+
+        // Cleanup (returned function runs when component unmounts)
+        return (() => {
+            console.log('Component unmounts');
+            window.removeEventListener('resize', handleResize);
+        });
+    }, []);
+
     // Functions
 
     function draw() {
         // TEMP - Clears canvas
         ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+        // Check for zero amounts
+        if (!first.amount && !second.amount) return;
 
         //ctx.current.fillStyle = 'rgb(200, 0, 0)';
         //ctx.current.fillRect(10, 10, 50, 50);
@@ -195,14 +216,13 @@ function WealthDisplayCanvas() {
         //for (let counter = 0, pos = { x: 500, y: 270 }; counter < 20; counter++ , pos.y -= sep) {
         //    drawBillStackAtScale(ctx.current, 2, pos.x, pos.y);
         //}
-
         let counter = 1;
-        let pos = { x: canvasSize.height - 50, y: 270 };
+        let pos = { x: canvasSize.height - 50, y: canvasSize.height - 50 };
         let xDist = [Math.floor(canvasSize.width / 3), Math.floor(2 * canvasSize.width / 3)];
-        const n = 10; // max number of bill stacks in column
+        const n = 20; // max number of bill stacks in column
         let firstStackAmount = Math.ceil(first.amount / 10000);
         let secondstackAmount = Math.ceil(second.amount / 10000);
-        if (first.amount > second.amount) {
+        if (firstStackAmount > secondstackAmount) {
             firstStackAmount = n;
             secondstackAmount = Math.round(n * second.amount / first.amount);
         } else {
@@ -210,20 +230,33 @@ function WealthDisplayCanvas() {
             firstStackAmount = Math.round(n * first.amount / second.amount);
         }
         let sep = 12; // Distance between stacks of bills
-        setTimeout(() => {
-            let interval = setInterval(() => {
-                if (counter > firstStackAmount && counter > secondstackAmount)
-                    clearInterval(interval);
-                // First stack
-                if (counter <= firstStackAmount)
-                    drawBillStackAtScale(ctx.current, 2, xDist[0], pos.y);
-                // Second stack
-                if (counter <= secondstackAmount)
-                    drawBillStackAtScale(ctx.current, 2, xDist[1], pos.y);
-                counter++;
-                pos.y -= sep;
-            }, 100);
-        }, 300);
+        let interval = setInterval(() => {
+            if (counter > firstStackAmount && counter > secondstackAmount)
+                clearInterval(interval);
+            // First stack
+            if (counter <= firstStackAmount)
+                drawBillStackAtScale(ctx.current, 2, xDist[0], pos.y);
+            // Second stack
+            if (counter <= secondstackAmount)
+                drawBillStackAtScale(ctx.current, 2, xDist[1], pos.y);
+            counter++;
+            pos.y -= sep;
+        }, 100);
+
+        //setTimeout(() => {
+        //    let interval = setInterval(() => {
+        //        if (counter > firstStackAmount && counter > secondstackAmount)
+        //            clearInterval(interval);
+        //        // First stack
+        //        if (counter <= firstStackAmount)
+        //            drawBillStackAtScale(ctx.current, 2, xDist[0], pos.y);
+        //        // Second stack
+        //        if (counter <= secondstackAmount)
+        //            drawBillStackAtScale(ctx.current, 2, xDist[1], pos.y);
+        //        counter++;
+        //        pos.y -= sep;
+        //    }, 100);
+        //}, 300);
     }
 
     function handleClickShowAnimation() {
@@ -231,21 +264,18 @@ function WealthDisplayCanvas() {
     }
 
     return (
-        <div className="canvas-container" ref={canvasContainerRef}>
-            <canvas
-                ref={canvasRef}
-                id="wealth-comparison-canvas"
-                width={canvasSize.width} // Default: 300 - 600
-                height={canvasSize.height} // Default: 150 - 300
-                onResize={() => {
-                    if (!canvasRef.current) return;
-                    canvasRef.current.width = canvasRef.current.offsetWidth;
-                    canvasRef.current.height = canvasRef.current.offsetHeight;
-                }}
-            >
-            </canvas>
+        <React.Fragment>
+            <div className="canvas-container" ref={canvasContainerRef}>
+                <canvas
+                    ref={canvasRef}
+                    id="wealth-comparison-canvas"
+                    width={canvasSize.width} // Default: 300 - 600
+                    height={canvasSize.height} // Default: 150 - 300
+                >
+                </canvas>
+            </div>
             <button onClick={handleClickShowAnimation}>Show Animation</button>
-        </div>
+        </React.Fragment>
     );
 }
 

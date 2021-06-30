@@ -49,8 +49,7 @@ Create separate component:
 
 6/7/21
 
-- ISSUE: MinMaxRangeSlider component has own min/max states AND use function sent as property
-to change global min/max state values. 
+- ISSUE: MinMaxRangeSlider component has own min/max states AND use function sent as property to change global min/max state values. 
 - SOLUTION: Remove min/max state from MinMaxRangeSlider component. Use properties on component:
 	min/max = manually set
 	initialMin/Max = initial value from redux state using dispatch (limit values between min/max)
