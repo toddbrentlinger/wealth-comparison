@@ -1,0 +1,72 @@
+{
+  "": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "\u0024",
+    "description": ""
+  },
+  "AUD": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "AU\u0024",
+    "description": "Australian dollar"
+  },
+  "BHD": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "\u0024",
+    "description": "Bahrain dinar"
+  },
+  "BND": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "B\u0024",
+    "description": "Brunei dollar"
+  },
+  "CAD": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "\u0024",
+    "description": "Canadian dollar"
+  },
+  "CHF": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "\u0043",
+    "description": "Swiss franc"
+  },
+  "EUR": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "\u20ac",
+    "description": "Euro"
+  },
+  "GBP": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "\u00a3",
+    "description": "Great British pound"
+  },
+  "GIP": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "\u00a3",
+    "description": "Gibraltar pound"
+  },
+  "KWD": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "",
+    "description": "Kuwait dinar"
+  },
+  "KYD": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "C\u0024",
+    "description": "Cayman Islands dollar"
+  },
+  "NZD": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "NZ\u0024",
+    "description": "New Zealand dollar"
+  },
+  "SGD": {
+    "color": "rgb(0, 0, 0)",
+    "unicodeSymbol": "S\u0024",
+    "description": "Singapore dollar"
+  },
+  "USD": {
+    "color": "rgb(0, 200, 0)",
+    "unicodeSymbol": "\u0024",
+    "description": "United States dollar"
+  }
+}

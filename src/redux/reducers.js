@@ -182,16 +182,16 @@ function personDataReducer(state = initialState, action) {
             }
             return newState;
         // NOT NEEDED
-        case 'CHANGE_POPUP_SELECTOR_IS_DISPLAYED':
-            newState = {
-                ...state,
-                popupSelector: {
-                    ...state.popupSelector,
-                    isDisplayed: action.value.isDisplayed,
-                    willChangeFirstPerson: action.value.willChangeFirstPerson
-                }
-            };
-            return newState;
+        //case 'CHANGE_POPUP_SELECTOR_IS_DISPLAYED':
+        //    newState = {
+        //        ...state,
+        //        popupSelector: {
+        //            ...state.popupSelector,
+        //            isDisplayed: action.value.isDisplayed,
+        //            willChangeFirstPerson: action.value.willChangeFirstPerson
+        //        }
+        //    };
+        //    return newState;
         case 'OPEN_POPUP_SELECTOR':
             newState = {
                 ...state,

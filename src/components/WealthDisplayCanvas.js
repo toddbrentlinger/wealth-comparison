@@ -122,6 +122,26 @@ function drawBillStack(ctx, x, y, dl, ds, tBill, tWrap, nBills = 10) {
     ctx.moveTo(posX, posY);
     ctx.lineTo(posX += dWrap.x, posY -= dWrap.y);
     ctx.stroke();
+
+    // Currency Symbol
+    ctx.font = `${tWrap / 2}px arial,sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'black';
+    //ctx.setTransform(1, -0.3, 0, 1, 0, 0); // skew transform
+    // TEMP Start
+    let pos = {
+        x: x + dl.x / 2 + ds.x / 2,
+        y: y - dl.y / 2 + ds.y / 2
+    };
+    ctx.translate(pos.x, pos.y); // move canvas origin
+    ctx.rotate(Math.atan(ds.y / ds.x)); // rotate canvas
+    ctx.transform(1, 0, -1.1, 1, 0, 0); // skew transform
+    ctx.beginPath();
+    //ctx.arc(0, 0, 3, 0, 2 * Math.PI); // debug circle at origin
+    ctx.stroke();
+    // TEMP End
+    ctx.fillText('US\u0024', 0, tWrap / 5);
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
 }
 
 function drawBillStackAtScale(ctx, scale, x, y) {
@@ -191,11 +211,13 @@ function WealthDisplayCanvas() {
     // Functions
 
     function draw() {
-        // TEMP - Clears canvas
+        // Clears canvas
         ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
         // Check for zero amounts
         if (!first.amount && !second.amount) return;
+
+        drawBillStackAtScale(ctx.current, 10, canvasSize.width / 3, canvasSize.height / 2);
 
         //ctx.current.fillStyle = 'rgb(200, 0, 0)';
         //ctx.current.fillRect(10, 10, 50, 50);

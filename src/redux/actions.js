@@ -37,12 +37,12 @@ export function changeAmount(amount, isFirst) {
 // --------------------------------------------------
 
 // NOT NEEDED
-export function changePopupSelectorIsDisplayed(value, willChangeFirstPerson = true) {
-    return {
-        type: 'CHANGE_POPUP_SELECTOR_IS_DISPLAYED',
-        value: {isDisplayed: value, willChangeFirstPerson}
-    };
-}
+//export function changePopupSelectorIsDisplayed(value, willChangeFirstPerson = true) {
+//    return {
+//        type: 'CHANGE_POPUP_SELECTOR_IS_DISPLAYED',
+//        value: {isDisplayed: value, willChangeFirstPerson}
+//    };
+//}
 
 export function openPopupSelector(willChangeFirstPerson = true) {
     return {

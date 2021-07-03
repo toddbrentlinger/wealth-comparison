@@ -1,6 +1,26 @@
+Wealth Comparison Notes:
+
+Strongest Currencies In The World:
+KWD - Kuwait dinar
+BHD - Bahrain dinar
+OMR - Omani rial
+JOD - Jordan dinar
+GBP - Great British pound, the pound sterling - \u00a3
+GIP - Gibraltar pound - \u00a3
+KYD - Cayman Islands dollar - C\u0024
+EUR - Euro - 20ac
+CHF - Swiss franc - 43,48,46
+USD - US dollar - \u0024
+CAD - Canadian dollar - \u0024
+LYD - Libyan dinar
+BND - Brunei dollar - B\u0024
+SGD - Singapore dollar - S\u0024
+AUD - Australian dollar - AU\u0024
+NZD - New Zealand dollar - NZ\u0024
+
 6/21/21
 
-- Could add symbol and color of currency specified in slider. Ex. show dollar sign with green
+- Could add unicode symbol and color of currency specified in slider. Ex. show dollar sign with green
 bills for US, 
 	- https://www.money.co.uk/guides/colour-of-currency.htm#:~:text=The%20colour%20of%20currency%20map,photographic%20knockoffs%20in%20the%201860s.
 - OR could use database of images for different currency bills to distort and appear as stack.
