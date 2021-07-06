@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './WealthDisplayCanvas.css';
 import { useSelector } from 'react-redux';
 
@@ -13,28 +13,28 @@ import { useSelector } from 'react-redux';
  * @param {Number} dy2 - change in y-coords to bottom corner, short side
  * @param {Number} t - thickness
  */
-function drawBillStackOld(ctx, x, y, dx1, dy1, dx2, dy2, t) {
-    ctx.fillStyle = 'rgb(0, 200, 0)';
-    ctx.beginPath();
-    // Top
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + dx1, y - dy1);
-    ctx.lineTo(x + dx1 + dx2, y - dy1 + dy2);
-    ctx.lineTo(x + dx2, y + dy2);
-    ctx.lineTo(x, y);
-    // Short Side
-    ctx.lineTo(x, y + t);
-    ctx.lineTo(x + dx2, y + t + dy2);
-    //ctx.lineTo(x + dx2, y + dy2);
-    // Long Side
-    //ctx.moveTo(x + dx2, y + t + dy2);
-    ctx.lineTo(x + dx2 + dx1, y + t + dy2 - dy1);
-    ctx.lineTo(x + dx1 + dx2, y - dy1 + dy2);
-    // Fill
-    ctx.fill();
-    // Stroke
-    ctx.stroke();
-}
+//function drawBillStackOld(ctx, x, y, dx1, dy1, dx2, dy2, t) {
+//    ctx.fillStyle = 'rgb(0, 200, 0)';
+//    ctx.beginPath();
+//    // Top
+//    ctx.moveTo(x, y);
+//    ctx.lineTo(x + dx1, y - dy1);
+//    ctx.lineTo(x + dx1 + dx2, y - dy1 + dy2);
+//    ctx.lineTo(x + dx2, y + dy2);
+//    ctx.lineTo(x, y);
+//    // Short Side
+//    ctx.lineTo(x, y + t);
+//    ctx.lineTo(x + dx2, y + t + dy2);
+//    //ctx.lineTo(x + dx2, y + dy2);
+//    // Long Side
+//    //ctx.moveTo(x + dx2, y + t + dy2);
+//    ctx.lineTo(x + dx2 + dx1, y + t + dy2 - dy1);
+//    ctx.lineTo(x + dx1 + dx2, y - dy1 + dy2);
+//    // Fill
+//    ctx.fill();
+//    // Stroke
+//    ctx.stroke();
+//}
 
 /**
  * 
@@ -170,8 +170,69 @@ function WealthDisplayCanvas() {
     const canvasRef = useRef(null);
     const ctx = useRef(null);
 
+    // Callbacks
+
+    const draw = useCallback(() => {
+        console.log(`draw useCallback runs`);
+        // Clears canvas
+        ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+        // Check for zero amounts
+        if (!first.amount && !second.amount) return;
+
+        drawBillStackAtScale(ctx.current, 10, canvasSize.width / 3, canvasSize.height / 2);
+
+        //ctx.current.fillStyle = 'rgb(200, 0, 0)';
+        //ctx.current.fillRect(10, 10, 50, 50);
+
+        //ctx.current.fillStyle = 'rgba(0, 0, 200, 0.5)';
+        //ctx.current.fillRect(30, 30, 50, 50);
+
+        // Custom Bill Stack
+        //drawBillStack(ctx.current, 10, 150, 200, 100, 100, 30, 50);
+        //drawBillStack(ctx.current, 10, 150, { x: 200, y: 100 }, { x: 100, y: 30 }, 50, 50);
+        //drawBillStackAtScale(ctx.current, 5, 300, 150);
+
+        //let sep = 27;
+        //for (let counter = 0, pos = { x: 150, y: 300 }; counter < 10; counter++ , pos.y -= sep) {
+        //    drawBillStackAtScale(ctx.current, 5, pos.x, pos.y);
+        //}
+        //sep = 12;
+        //for (let counter = 0, pos = { x: 500, y: 270 }; counter < 20; counter++ , pos.y -= sep) {
+        //    drawBillStackAtScale(ctx.current, 2, pos.x, pos.y);
+        //}
+        let counter = 1;
+        let pos = { x: canvasSize.height - 50, y: canvasSize.height - 50 };
+        let xDist = [Math.floor(canvasSize.width / 3), Math.floor(2 * canvasSize.width / 3)];
+        const n = 20; // max number of bill stacks in column
+        let firstStackAmount = Math.ceil(first.amount / 10000);
+        let secondstackAmount = Math.ceil(second.amount / 10000);
+        if (firstStackAmount > secondstackAmount) {
+            firstStackAmount = n;
+            secondstackAmount = Math.round(n * second.amount / first.amount);
+        } else {
+            secondstackAmount = n;
+            firstStackAmount = Math.round(n * first.amount / second.amount);
+        }
+        let sep = 12; // Distance between stacks of bills
+        let interval = setInterval(() => {
+            if (counter > firstStackAmount && counter > secondstackAmount)
+                clearInterval(interval);
+            // First stack
+            if (counter <= firstStackAmount)
+                drawBillStackAtScale(ctx.current, 2, xDist[0], pos.y);
+            // Second stack
+            if (counter <= secondstackAmount)
+                drawBillStackAtScale(ctx.current, 2, xDist[1], pos.y);
+            counter++;
+            pos.y -= sep;
+        }, 100);
+    }, [canvasSize, first.amount, second.amount]);
+
     // Effects
 
+    // TODO - make function that returns new canvas size to run as parameter as 
+    // initial state when creating the useState above
     useEffect(() => {
         if (!canvasRef.current.getContext) {
             // Fallback code here if canvas NOT supported
@@ -184,13 +245,11 @@ function WealthDisplayCanvas() {
         ctx.current = canvasRef.current.getContext('2d');
 
         setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: canvasContainerRef.current.offsetHeight });
-
-        draw();
     }, []);
 
     useEffect(() => {
         draw();
-    }, [first.amount, second.amount]);
+    }, [first.amount, second.amount, draw]);
 
     useEffect(() => {
         function handleResize() {
@@ -200,7 +259,7 @@ function WealthDisplayCanvas() {
 
         console.log('Component mounts');
         window.addEventListener('resize', handleResize);
-
+         
         // Cleanup (returned function runs when component unmounts)
         return (() => {
             console.log('Component unmounts');
@@ -210,7 +269,7 @@ function WealthDisplayCanvas() {
 
     // Functions
 
-    function draw() {
+    function drawOld() {
         // Clears canvas
         ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 

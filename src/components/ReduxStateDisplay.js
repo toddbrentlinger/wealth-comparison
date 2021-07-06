@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { clampValue } from '../utilities.js';
 import './ReduxStateDisplay.css';
@@ -121,12 +121,12 @@ function ReduxStateDisplay() {
         };
 
         setPosition(newPosition);
-        return;
+        //return;
 
-        setPosition({
-            top: e.clientY - cornerDiff.current.y,
-            left: e.clientX - cornerDiff.current.x
-        });
+        //setPosition({
+        //    top: e.clientY - cornerDiff.current.y,
+        //    left: e.clientX - cornerDiff.current.x
+        //});
     }
 
     function handleMouseUp(e) {
@@ -190,12 +190,6 @@ function PropertyDisplay(props) {
     // State
 
     const [isValueShowing, setIsValueShowing] = useState(false);
-
-    // Variables
-
-    const propertyStyle = {
-        display: "flex"
-    };
 
     // Functions
 
@@ -283,7 +277,9 @@ function PropertyDisplay(props) {
 
         return (
             <tr className="property">
-                <td className="key">{props.title}</td>
+                <td className="key">
+                    {props.title}
+                </td>
                 {valueNode}
             </tr>
         );
@@ -292,7 +288,7 @@ function PropertyDisplay(props) {
     return createPropertyNode(props.value);
 
     // -----------------------------------------------------------
-
+    /*
     // Boolean
     if (typeof props.value === 'boolean') {
         return (
@@ -371,6 +367,7 @@ function PropertyDisplay(props) {
             <div className="value">{`Other [${typeof props.value}]`}</div>
         </div>
     );
+    */
 }
 
 export default ReduxStateDisplay;

@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React from 'react';
 import MinMaxRangeSlider from './MinMaxRangeSlider.js';
 import RichPerson from '../classes/RichPerson.js';
 import { convertNumToSimplifiedString } from '../utilities.js';
@@ -18,51 +18,51 @@ import './PersonSelectorPopup.css';
  * @param {String} filterObj.search
  * @returns {RichPerson[]}
  */
-function filterDisplayedPeople(filterObj) {
-    let newDisplayedPeople = RichPerson.cache.slice();
-    // 
-}
+//function filterDisplayedPeople(filterObj) {
+//    let newDisplayedPeople = RichPerson.cache.slice();
+//    // 
+//}
 
 /**
  * Sorts RichPerson array in-place with sortObj parameter
  * @param {RichPerson[]} displayedPeople
  * @param {Object} sortObj
  */
-function sortDisplayedPeople(displayedPeople, sortObj) {
-    // If sort type is 'none', return
-    if (sortObj.type === 'none') return;
+//function sortDisplayedPeople(displayedPeople, sortObj) {
+//    // If sort type is 'none', return
+//    if (sortObj.type === 'none') return;
 
-    // Sort in ascending order
-    displayedPeople.sort((first, second) => {
-        switch (sortObj.type) {
-            // Age
-            case 'age':
-                return first.age - second.age;
+//    // Sort in ascending order
+//    displayedPeople.sort((first, second) => {
+//        switch (sortObj.type) {
+//            // Age
+//            case 'age':
+//                return first.age - second.age;
 
-            // Alphabetical
-            case 'first-name':
-                return sortTwoStringsAlphabetically(
-                    first.firstName.toUpperCase(), second.firstName.toUpperCase()
-                );
+//            // Alphabetical
+//            case 'first-name':
+//                return sortTwoStringsAlphabetically(
+//                    first.firstName.toUpperCase(), second.firstName.toUpperCase()
+//                );
 
-            case 'last-name':
-                return sortTwoStringsAlphabetically(
-                    first.lastName.toUpperCase(), second.lastName.toUpperCase()
-                );
+//            case 'last-name':
+//                return sortTwoStringsAlphabetically(
+//                    first.lastName.toUpperCase(), second.lastName.toUpperCase()
+//                );
 
-            // Worth
-            case 'worth':
-                return first.worth - second.worth;
+//            // Worth
+//            case 'worth':
+//                return first.worth - second.worth;
 
-            default:
-                return 0;
-        }
-    });
+//            default:
+//                return 0;
+//        }
+//    });
 
-    // Reverse array if isAscending is false
-    if (!sortObj.isAscending)
-        displayedPeople.reverse();
-}
+//    // Reverse array if isAscending is false
+//    if (!sortObj.isAscending)
+//        displayedPeople.reverse();
+//}
 
 /**
  * Sort callback function for Array sort method to sort alphabetically.
@@ -70,12 +70,12 @@ function sortDisplayedPeople(displayedPeople, sortObj) {
  * @param {String} secondStr
  * @returns {Number}
  */
-function sortTwoStringsAlphabetically(firstStr, secondStr) {
-    if (firstStr < secondStr) return -1;
-    if (firstStr > secondStr) return 1;
-    return 0; // strings must be equal
-}
-
+//function sortTwoStringsAlphabetically(firstStr, secondStr) {
+//    if (firstStr < secondStr) return -1;
+//    if (firstStr > secondStr) return 1;
+//    return 0; // strings must be equal
+//}
+/*
 const initialState = {
     'displayedPeople': RichPerson.cache,
     'sort': {
@@ -128,7 +128,7 @@ function reducer(prevState, action) {
             return prevState;
     }
 }
-
+*/
 /**
  * React component popup box to sort/filter/search list of people before selecting one
  * @param {Object} props
@@ -214,6 +214,7 @@ function PersonSelectorPopup(props) {
         dispatch(changePerson(person, willChangeFirstPerson));
     }
 
+    // TODO
     const peopleListTable = (
         <table>
             <caption></caption>

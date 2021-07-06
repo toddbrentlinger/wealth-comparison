@@ -58,7 +58,7 @@ function MinMaxRangeSlider(props) {
     useEffect(() => {
         extractValues();
         //updateSliderValues();
-        requestAnimationFrame(updateSliderValues);
+        //requestAnimationFrame(updateSliderValues);
     }, []);
 
     useEffect(() => {

@@ -18,6 +18,14 @@ SGD - Singapore dollar - S\u0024
 AUD - Australian dollar - AU\u0024
 NZD - New Zealand dollar - NZ\u0024
 
+7/5/21
+
+- When nothing is being displayed on the canvas (if one amount is undefined), hide the canvas.
+Only show when both amounts have value.
+
+- Reference: What does one TRILLION dollars look like?
+http://www.pagetutor.com/trillion/index.html
+
 6/21/21
 
 - Could add unicode symbol and color of currency specified in slider. Ex. show dollar sign with green
