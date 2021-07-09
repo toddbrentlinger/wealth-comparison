@@ -1,5 +1,7 @@
 Wealth Comparison Notes:
 
+Start utilizing image of bill stack inside canvas
+
 Strongest Currencies In The World:
 KWD - Kuwait dinar
 BHD - Bahrain dinar

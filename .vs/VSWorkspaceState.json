@@ -7,6 +7,6 @@
     "\\src\\components",
     "\\src\\redux"
   ],
-  "SelectedNode": "\\public\\forbesData.json",
+  "SelectedNode": "\\src\\components\\PersonSelectorPopup.js",
   "PreviewInSolutionExplorer": false
 }

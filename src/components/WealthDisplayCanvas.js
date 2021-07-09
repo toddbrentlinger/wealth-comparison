@@ -178,7 +178,18 @@ function WealthDisplayCanvas() {
         ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
         // Check for zero amounts
-        if (!first.amount && !second.amount) return;
+        if (!first.amount && !second.amount) {
+            if (!ctx.current.hidden)
+                ctx.current.hidden = true;
+            console.log('Canvas Hidden');
+            return;
+        }
+        if (ctx.current.hidden) {
+            ctx.current.hidden = false;
+            setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: canvasContainerRef.current.offsetHeight });
+        }
+        console.log('Canvas Visible');
+        //debugger
 
         drawBillStackAtScale(ctx.current, 10, canvasSize.width / 3, canvasSize.height / 2);
 
@@ -253,7 +264,7 @@ function WealthDisplayCanvas() {
 
     useEffect(() => {
         function handleResize() {
-            //console.log(`handleResize runs\nwidth: ${canvasContainerRef.current.offsetWidth}\nheight: ${canvasContainerRef.current.offsetHeight}`);
+            console.log(`handleResize runs\nwidth: ${canvasContainerRef.current.offsetWidth}\nheight: ${canvasContainerRef.current.offsetHeight}`);
             setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: canvasContainerRef.current.offsetHeight });
         }
 
@@ -346,7 +357,10 @@ function WealthDisplayCanvas() {
 
     return (
         <React.Fragment>
-            <div className="canvas-container" ref={canvasContainerRef}>
+            <div
+                className={"canvas-container" + (!first.amount && !second.amount ? " hide" : "")}
+                ref={canvasContainerRef}
+            >
                 <canvas
                     ref={canvasRef}
                     id="wealth-comparison-canvas"
@@ -355,6 +369,7 @@ function WealthDisplayCanvas() {
                 >
                 </canvas>
             </div>
+            <div>{`W:${canvasSize.width}\nH:${canvasSize.height}`}</div>
             <button onClick={handleClickShowAnimation}>Show Animation</button>
         </React.Fragment>
     );
