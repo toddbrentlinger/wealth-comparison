@@ -166,7 +166,7 @@ function ReduxStateDisplay() {
                 onMouseUp={handleMouseUp}
             >
                 Redux
-                <button onClick={() => setIsOpen(!isOpen)}>{isOpen ? 'X' : 'O'}</button>
+                <button onClick={() => setIsOpen(!isOpen)}>{isOpen ? '-' : '+'}</button>
             </div>
             {createTable()}
         </div>

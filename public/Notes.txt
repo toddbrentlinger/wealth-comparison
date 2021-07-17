@@ -20,6 +20,16 @@ SGD - Singapore dollar - S\u0024
 AUD - Australian dollar - AU\u0024
 NZD - New Zealand dollar - NZ\u0024
 
+7/16/21
+
+- Create new Image object with drawing function inside the Image onload method.
+var img = new Image();
+img.onload = function() { 
+	ctx.drawImage(img, 0, 0);
+	drawing instructions 
+};
+img.src = 'background-image';
+
 7/5/21
 
 - When nothing is being displayed on the canvas (if one amount is undefined), hide the canvas.

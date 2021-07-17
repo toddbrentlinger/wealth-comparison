@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './WealthDisplayCanvas.css';
 import { useSelector } from 'react-redux';
+import billStackImage from '../images/bill_stack_alpha_800w.png';
 
 /**
  * 
@@ -157,6 +158,22 @@ function drawBillStackAtScale(ctx, scale, x, y) {
     );
 }
 
+function drawBillStackImage(ctx, x, y, scale = 1) {
+    const img = new Image();
+    img.addEventListener('load', function () {
+        // Change x,y to correlate with center of scaled image
+        x -= scale * img.width / 2;
+        y -= scale * img.height / 2;
+
+        for (let i = 0; i < 10; i++) {
+            ctx.drawImage(img, x, y, scale * img.width, scale * img.height);
+            // Increment height for next bill stack
+            y -= scale * img.height * 0.21;
+        }
+    });
+    img.src = billStackImage;
+} 
+
 function WealthDisplayCanvas() {
     // Redux
     const first = useSelector(state => state.first);
@@ -172,24 +189,83 @@ function WealthDisplayCanvas() {
 
     // Callbacks
 
-    const draw = useCallback(() => {
+    const drawImage = useCallback(() => {
         console.log(`draw useCallback runs`);
         // Clears canvas
-        ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        //ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        ctx.current.clearRect(0, 0, ctx.current.canvas.width, ctx.current.canvas.height);
 
         // Check for zero amounts
         if (!first.amount && !second.amount) {
-            if (!ctx.current.hidden)
+            if (!ctx.current.hidden) {
                 ctx.current.hidden = true;
-            console.log('Canvas Hidden');
+                console.log('Canvas Hidden');
+            }
             return;
         }
         if (ctx.current.hidden) {
             ctx.current.hidden = false;
+            console.log('Canvas Visible');
             setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: canvasContainerRef.current.offsetHeight });
         }
-        console.log('Canvas Visible');
-        //debugger
+
+        let counter = 1;
+        let xDist = [Math.floor(canvasSize.width / 3), Math.floor(2 * canvasSize.width / 3)];
+        const n = 20; // max number of bill stacks in column
+        let firstStackAmount = Math.ceil(first.amount / 10000);
+        let secondstackAmount = Math.ceil(second.amount / 10000);
+        if (firstStackAmount > secondstackAmount) {
+            firstStackAmount = n;
+            secondstackAmount = Math.round(n * second.amount / first.amount);
+        } else {
+            secondstackAmount = n;
+            firstStackAmount = Math.round(n * first.amount / second.amount);
+        }
+
+        //let interval = setInterval(() => {
+        //    if (counter > firstStackAmount && counter > secondstackAmount)
+        //        clearInterval(interval);
+        //    // First stack
+        //    if (counter <= firstStackAmount) {
+        //        ctx.drawImage(img, xDist[0], y, scale * img.width, scale * img.height);
+        //    }
+        //    // Second stack
+        //    if (counter <= secondstackAmount) {
+        //        ctx.drawImage(img, xDist[1], y, scale * img.width, scale * img.height);
+        //    }
+        //    // Increment height for next bill stack
+        //    y -= scale * img.height * 0.21;
+        //    counter++;
+        //}, 100);
+    }, [canvasSize, first.amount, second.amount]);
+
+    const draw = useCallback(() => {
+        console.log(`draw useCallback runs`);
+        // Clears canvas
+        //ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        ctx.current.clearRect(0, 0, ctx.current.canvas.width, ctx.current.canvas.height);
+
+        // Check for zero amounts
+        if (!first.amount && !second.amount) {
+            if (!ctx.current.hidden) {
+                ctx.current.hidden = true;
+                console.log('Canvas Hidden');
+            }
+            return;
+        }
+        if (ctx.current.hidden) {
+            ctx.current.hidden = false;
+            console.log('Canvas Visible');
+            setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: canvasContainerRef.current.offsetHeight });
+        }
+
+        // TEMP
+        drawBillStackImage(
+            ctx.current,
+            ctx.current.canvas.width / 2,
+            ctx.current.canvas.height * 0.8,
+            0.2);
+        return;
 
         drawBillStackAtScale(ctx.current, 10, canvasSize.width / 3, canvasSize.height / 2);
 
