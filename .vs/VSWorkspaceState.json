@@ -5,8 +5,9 @@
     "\\src",
     "\\src\\classes",
     "\\src\\components",
+    "\\src\\images",
     "\\src\\redux"
   ],
-  "SelectedNode": "\\src\\components\\PersonSelectorPopup.js",
+  "SelectedNode": "\\src\\images",
   "PreviewInSolutionExplorer": false
 }
