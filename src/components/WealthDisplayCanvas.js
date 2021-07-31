@@ -172,7 +172,33 @@ function drawBillStackImage(ctx, x, y, scale = 1) {
         }
     });
     img.src = billStackImage;
-} 
+}
+
+/**
+ * 
+ * @param {Image} image Image of bill stack with height and width cropped to bill stack edges
+ * @param {Number} scale Scale applied to default image size
+ * @param {Number} deltaHeightPercentage Vertical distance between individual bill stacks as a percentage of image height where 1.0 is 100%
+ * @param {Number} n Number of single bill stacks in total stack
+ */
+function getHeightOfStack(image, scale, deltaHeightPercentage, n) {
+    /*
+     * image: w x h
+     * next stack at 21% height
+     * Stacked		Height
+     * 1		    h
+     * 2		    1h + .21h = 1.21h
+     * 3		    1h + .21h + .21h = 1.42h
+     * n		    1h + (n-1)*.21h
+     * 
+     * if height of next stack = d:
+     * 1h + dh(n - 1)
+     * 1h + dhn - dh
+     * h(1 + dn - d)
+     * h[1 + d(n - 1)]
+     */
+    return Math.ceil(scale * image.height * (1 + deltaHeightPercentage * (n - 1)));
+}
 
 function WealthDisplayCanvas() {
     // Redux
@@ -192,10 +218,11 @@ function WealthDisplayCanvas() {
     // Callbacks
 
     const draw = useCallback(() => {
-        console.log(`draw useCallback runs`);
+        console.log(`draw useCallback starts`);
 
         // Clear previous interval in case it's still running
         if (intervalRef.current) {
+            console.log(`draw useCallback clears interval`);
             clearInterval(intervalRef.current);
         }
 
@@ -220,32 +247,50 @@ function WealthDisplayCanvas() {
         const n = 10; // max number of bill stacks in column
         let firstStackAmount = Math.ceil(first.amount / 10000);
         let secondstackAmount = Math.ceil(second.amount / 10000);
-        if (firstStackAmount > secondstackAmount) {
-            firstStackAmount = n;
-            secondstackAmount = Math.round(n * second.amount / first.amount);
-        } else {
-            secondstackAmount = n;
-            firstStackAmount = Math.round(n * first.amount / second.amount);
-        }
+        //if (firstStackAmount > secondstackAmount) {
+        //    firstStackAmount = n;
+        //    secondstackAmount = Math.round(n * second.amount / first.amount);
+        //} else {
+        //    secondstackAmount = n;
+        //    firstStackAmount = Math.round(n * first.amount / second.amount);
+        //}
 
-        const scale = 0.2;
-        let counter = 1;
-        let x = [
+        const scale = 0.1;
+        const xStack = [
             Math.floor(ctx.current.canvas.width / 3) - scale * billStackImg.current.width / 2,
             Math.floor(2 * ctx.current.canvas.width / 3) - scale * billStackImg.current.width / 2
         ];
-        let y = ctx.current.canvas.height * 0.8 - scale * billStackImg.current.height / 2;
+        let yStack = ctx.current.canvas.height - scale * billStackImg.current.height;
+        let counter = 1;
+
+        // TEMP START
+
+        const fullHeight = getHeightOfStack(
+            billStackImg.current, scale, .21,
+            Math.max(firstStackAmount, secondstackAmount)
+        );
+        ctx.current.strokeRect(
+            xStack[0], ctx.current.canvas.height - fullHeight,
+            billStackImg.current.width / 2, fullHeight
+        );
+        if (canvasSize.height !== fullHeight) {
+            setCanvasSize({ width: ctx.current.canvas.width, height: fullHeight });
+        }
+
+        // TEMP END
 
         intervalRef.current = setInterval(() => {
-            if (counter > firstStackAmount && counter > secondstackAmount)
+            if (counter > firstStackAmount && counter > secondstackAmount) {
+                console.log(`draw useCallback clears interval`);
                 clearInterval(intervalRef.current);
+            }
 
             // First stack
             if (counter <= firstStackAmount) {
                 ctx.current.drawImage(
                     billStackImg.current,
-                    x[0],
-                    y,
+                    xStack[0],
+                    yStack,
                     scale * billStackImg.current.width,
                     scale * billStackImg.current.height
                 );
@@ -254,17 +299,19 @@ function WealthDisplayCanvas() {
             if (counter <= secondstackAmount) {
                 ctx.current.drawImage(
                     billStackImg.current,
-                    x[1],
-                    y,
+                    xStack[1],
+                    yStack,
                     scale * billStackImg.current.width,
                     scale * billStackImg.current.height
                 );
             }
 
-            // Increment height for next bill stack
-            y -= scale * billStackImg.current.height * 0.21;
+            // Increment height for next bill stack (% of height)
+            yStack -= scale * billStackImg.current.height * 0.21;
             counter++;
         }, 100);
+
+        console.log(`draw useCallback ends`);
     }, [first.amount, second.amount]);
 
     const drawManual = useCallback(() => {
