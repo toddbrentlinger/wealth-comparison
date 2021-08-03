@@ -52,6 +52,7 @@ import billStackImage from '../images/bill_stack_alpha_800w.png';
  * @param {Number} tWrap thickness of bill wrap
  * @param {Number} nBills number of lines to represent bills in stack
  */
+// Used in drawBillStackAtScale function
 function drawBillStack(ctx, x, y, dl, ds, tBill, tWrap, nBills = 10) {
     let posX = x, posY = y;
 
@@ -145,6 +146,7 @@ function drawBillStack(ctx, x, y, dl, ds, tBill, tWrap, nBills = 10) {
     ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
 }
 
+// Used in drawManual callback
 function drawBillStackAtScale(ctx, scale, x, y) {
     const ratio = {
         long: { x: 20, y: 10 }, short: { x: 10, y: 3 }
@@ -158,6 +160,7 @@ function drawBillStackAtScale(ctx, scale, x, y) {
     );
 }
 
+// Used in drawManual callback
 function drawBillStackImage(ctx, x, y, scale = 1) {
     const img = new Image();
     img.addEventListener('load', function () {
@@ -191,7 +194,7 @@ function getHeightOfStack(image, scale, deltaHeightPercentage, n) {
      * 3		    1h + .21h + .21h = 1.42h
      * n		    1h + (n-1)*.21h
      * 
-     * if height of next stack = d:
+     * if height of next stack as ratio of height = d:
      * 1h + dh(n - 1)
      * 1h + dhn - dh
      * h(1 + dn - d)
@@ -217,12 +220,68 @@ function WealthDisplayCanvas() {
 
     // Callbacks
 
+    // arr - [2, 2, 2, 2, 2]
+    // start - 1
+    // end - 3
+    // n = 6
+    // new arr - [2, 4, 4, 4, 2]
+    function distributeStacks(arr, n, start = 0, end = arr.length - 1) {
+        const addPerStack = Math.floor(n / (end - start + 1));
+        // Check if n is less than the number of column stacks to add it to (addPerStack = 0)
+        if (!addPerStack && n) {
+            distributeStacks(arr, n, start, --end);
+            return arr;
+        }
+        // Check that start is less than end
+        if (start >= end) {
+            arr[end] += n;
+            return arr;
+        }
+
+        let newTotal = n;
+        for (let i = start; i <= end; i++) {
+            arr[i] += addPerStack;
+            newTotal -= addPerStack;
+        }
+        if (newTotal > 0) {
+            distributeStacks(arr, newTotal, ++start, --end);
+        }
+        return arr;
+    }
+
+    function drawNStacks(nColumns, nBillStacks) {
+        // Distribute total number of bills to each column stack
+        let stackCountsArr = new Array(nColumns);
+        distributeStacks(stackCountsArr, nBillStacks);
+
+        const scale = 0.5;
+        let x = ctx.current.canvas.width / 3;
+        let y = ctx.current.canvas.height / 2;
+        ctx.current.drawImage(
+            billStackImg.current,
+            x,
+            y,
+            scale * billStackImg.current.width,
+            scale * billStackImg.current.height
+        );
+        x += 0.30 * scale * billStackImg.current.width;
+        y += 0.24 * scale * billStackImg.current.height;
+        ctx.current.drawImage(
+            billStackImg.current,
+            x,
+            y,
+            scale * billStackImg.current.width,
+            scale * billStackImg.current.height
+        );
+    }
+
     const draw = useCallback(() => {
-        console.log(`draw useCallback starts`);
+        //debugger
+        console.log(`draw callback starts`);
 
         // Clear previous interval in case it's still running
         if (intervalRef.current) {
-            console.log(`draw useCallback clears interval`);
+            console.log(`draw callback clears previous interval`);
             clearInterval(intervalRef.current);
         }
 
@@ -237,16 +296,15 @@ function WealthDisplayCanvas() {
             }
             return;
         }
-        
+
         if (ctx.current.hidden) {
             ctx.current.hidden = false;
             console.log('Show Canvas');
-            setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: canvasContainerRef.current.offsetHeight });
         }
 
-        const n = 10; // max number of bill stacks in column
         let firstStackAmount = Math.ceil(first.amount / 10000);
         let secondstackAmount = Math.ceil(second.amount / 10000);
+        //const n = 10; // max number of bill stacks in column
         //if (firstStackAmount > secondstackAmount) {
         //    firstStackAmount = n;
         //    secondstackAmount = Math.round(n * second.amount / first.amount);
@@ -269,19 +327,22 @@ function WealthDisplayCanvas() {
             billStackImg.current, scale, .21,
             Math.max(firstStackAmount, secondstackAmount)
         );
+        if (canvasSize.height !== fullHeight) {
+            setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: fullHeight });
+            return;
+        }
+        //drawNStacks(2, 10);
+        //return;
         ctx.current.strokeRect(
             xStack[0], ctx.current.canvas.height - fullHeight,
             billStackImg.current.width / 2, fullHeight
         );
-        if (canvasSize.height !== fullHeight) {
-            setCanvasSize({ width: ctx.current.canvas.width, height: fullHeight });
-        }
 
         // TEMP END
 
         intervalRef.current = setInterval(() => {
             if (counter > firstStackAmount && counter > secondstackAmount) {
-                console.log(`draw useCallback clears interval`);
+                console.log(`draw callback clears interval`);
                 clearInterval(intervalRef.current);
             }
 
@@ -311,8 +372,8 @@ function WealthDisplayCanvas() {
             counter++;
         }, 100);
 
-        console.log(`draw useCallback ends`);
-    }, [first.amount, second.amount]);
+        console.log(`draw callback ends`);
+    }, [first.amount, second.amount, canvasSize]);
 
     const drawManual = useCallback(() => {
         console.log(`draw useCallback runs`);
@@ -340,7 +401,6 @@ function WealthDisplayCanvas() {
             ctx.current.canvas.width / 2,
             ctx.current.canvas.height * 0.8,
             0.2);
-        return;
 
         drawBillStackAtScale(ctx.current, 10, canvasSize.width / 3, canvasSize.height / 2);
 
@@ -410,10 +470,6 @@ function WealthDisplayCanvas() {
     }, []);
 
     useEffect(() => {
-        draw();
-    }, [first.amount, second.amount, draw]);
-
-    useEffect(() => {
         function handleResize() {
             console.log(`handleResize runs\nwidth: ${canvasContainerRef.current.offsetWidth}\nheight: ${canvasContainerRef.current.offsetHeight}`);
             setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: canvasContainerRef.current.offsetHeight });
@@ -429,78 +485,11 @@ function WealthDisplayCanvas() {
         });
     }, []);
 
+    useEffect(() => {
+        draw();
+    }, [first.amount, second.amount, draw]);
+
     // Functions
-
-    function drawOld() {
-        // Clears canvas
-        ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-
-        // Check for zero amounts
-        if (!first.amount && !second.amount) return;
-
-        drawBillStackAtScale(ctx.current, 10, canvasSize.width / 3, canvasSize.height / 2);
-
-        //ctx.current.fillStyle = 'rgb(200, 0, 0)';
-        //ctx.current.fillRect(10, 10, 50, 50);
-
-        //ctx.current.fillStyle = 'rgba(0, 0, 200, 0.5)';
-        //ctx.current.fillRect(30, 30, 50, 50);
-
-        // Custom Bill Stack
-        //drawBillStack(ctx.current, 10, 150, 200, 100, 100, 30, 50);
-        //drawBillStack(ctx.current, 10, 150, { x: 200, y: 100 }, { x: 100, y: 30 }, 50, 50);
-        //drawBillStackAtScale(ctx.current, 5, 300, 150);
-
-        //let sep = 27;
-        //for (let counter = 0, pos = { x: 150, y: 300 }; counter < 10; counter++ , pos.y -= sep) {
-        //    drawBillStackAtScale(ctx.current, 5, pos.x, pos.y);
-        //}
-        //sep = 12;
-        //for (let counter = 0, pos = { x: 500, y: 270 }; counter < 20; counter++ , pos.y -= sep) {
-        //    drawBillStackAtScale(ctx.current, 2, pos.x, pos.y);
-        //}
-        let counter = 1;
-        let pos = { x: canvasSize.height - 50, y: canvasSize.height - 50 };
-        let xDist = [Math.floor(canvasSize.width / 3), Math.floor(2 * canvasSize.width / 3)];
-        const n = 20; // max number of bill stacks in column
-        let firstStackAmount = Math.ceil(first.amount / 10000);
-        let secondstackAmount = Math.ceil(second.amount / 10000);
-        if (firstStackAmount > secondstackAmount) {
-            firstStackAmount = n;
-            secondstackAmount = Math.round(n * second.amount / first.amount);
-        } else {
-            secondstackAmount = n;
-            firstStackAmount = Math.round(n * first.amount / second.amount);
-        }
-        let sep = 12; // Distance between stacks of bills
-        let interval = setInterval(() => {
-            if (counter > firstStackAmount && counter > secondstackAmount)
-                clearInterval(interval);
-            // First stack
-            if (counter <= firstStackAmount)
-                drawBillStackAtScale(ctx.current, 2, xDist[0], pos.y);
-            // Second stack
-            if (counter <= secondstackAmount)
-                drawBillStackAtScale(ctx.current, 2, xDist[1], pos.y);
-            counter++;
-            pos.y -= sep;
-        }, 100);
-
-        //setTimeout(() => {
-        //    let interval = setInterval(() => {
-        //        if (counter > firstStackAmount && counter > secondstackAmount)
-        //            clearInterval(interval);
-        //        // First stack
-        //        if (counter <= firstStackAmount)
-        //            drawBillStackAtScale(ctx.current, 2, xDist[0], pos.y);
-        //        // Second stack
-        //        if (counter <= secondstackAmount)
-        //            drawBillStackAtScale(ctx.current, 2, xDist[1], pos.y);
-        //        counter++;
-        //        pos.y -= sep;
-        //    }, 100);
-        //}, 300);
-    }
 
     function handleClickShowAnimation() {
         draw();
