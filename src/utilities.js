@@ -111,12 +111,36 @@ export function convertNumToSimplifiedString(num) {
 
 /**
  * Clamps val between min and max
- * @param {any} val
- * @param {any} min
- * @param {any} max
+ * @param {Number} val
+ * @param {Number} min
+ * @param {Number} max
  */
 export function clampValue(val, min, max) {
     if (val < min) return min;
     if (val > max) return max;
     return val;
+}
+
+/**
+ * 
+ * @param {MouseEvent} event
+ */
+export function checkMouseCoords(event) {
+    event = event || window.event; // IE-ism
+
+    // If pageX/Y aren't available and clientX/Y are,
+    // calculate pageX/Y - logic taken from jQuery.
+    // (This is to support old IE)
+    if (event.pageX == null && event.clientX != null) {
+        const eventDoc = (event.target && event.target.ownerDocument) || document;
+        const doc = eventDoc.documentElement;
+        const body = eventDoc.body;
+
+        event.pageX = event.clientX +
+            ((doc && doc.scrollLeft) || (body && body.scrollLeft) || 0) -
+            ((doc && doc.clientLeft) || (body && body.clientLeft) || 0);
+        event.pageY = event.clientY +
+            ((doc && doc.scrollTop) || (body && body.scrollTop) || 0) -
+            ((doc && doc.clientTop) || (body && body.clientTop) || 0);
+    }
 }

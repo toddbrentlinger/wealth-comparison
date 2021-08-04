@@ -249,10 +249,30 @@ function WealthDisplayCanvas() {
         return arr;
     }
 
-    function drawNStacks(nColumns, nBillStacks) {
+    /**
+     * 
+     * @param {Number} nColumns Number of columns of individual bill stacks
+     * @param {Number} nBillStacks Total number of individual bill stacks to put into columns
+     * @param {Number} startX Canvas x-position of origin of stack. Bottom-middle of set of columns
+     * @param {Number} startY Canvas y-position of origin of stack. Bottom-middle of set of columns
+     * @param {Number} width Width of canvas to fit set of columns
+     * 
+     * Next stack to the side, long edges touching - dx:0.30 dy:0.24
+     * Next stack to the side, short edges touching - dx:0.725 dy:0.575
+     * Next stack on top - dy:0.21
+     */
+    function drawNStacks(nColumns, nBillStacks, startX, startY, width) { // 2 10
+        // Values to position next bill stack along all three axes
+        // x-axis: short side, y-axis: long side, z-axis: height
+        const nextStackShifts = {
+            dx: { x: 0.30, y: 0.24},
+            dy: { x: 0.72, y: 0.57},
+            dz: { x: 0, y: 0.21}
+        };
+
         // Distribute total number of bills to each column stack
         let stackCountsArr = new Array(nColumns);
-        distributeStacks(stackCountsArr, nBillStacks);
+        distributeStacks(stackCountsArr.fill(0), nBillStacks);
 
         const scale = 0.5;
         let x = ctx.current.canvas.width / 3;
@@ -264,12 +284,19 @@ function WealthDisplayCanvas() {
             scale * billStackImg.current.width,
             scale * billStackImg.current.height
         );
-        x += 0.30 * scale * billStackImg.current.width;
-        y += 0.24 * scale * billStackImg.current.height;
+        // Next bill stack to the side, long edges touching
         ctx.current.drawImage(
             billStackImg.current,
-            x,
-            y,
+            x + nextStackShifts.dx.x * scale * billStackImg.current.width,
+            y + nextStackShifts.dx.y * scale * billStackImg.current.height,
+            scale * billStackImg.current.width,
+            scale * billStackImg.current.height
+        );
+        // Next bill stack to the side, short edges touching
+        ctx.current.drawImage(
+            billStackImg.current,
+            x - nextStackShifts.dy.x * scale * billStackImg.current.width,
+            y + nextStackShifts.dy.y * scale * billStackImg.current.height,
             scale * billStackImg.current.width,
             scale * billStackImg.current.height
         );
@@ -331,7 +358,7 @@ function WealthDisplayCanvas() {
             setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: fullHeight });
             return;
         }
-        //drawNStacks(2, 10);
+        //drawNStacks(2, 10, ctx.current.canvas.width / 3, ctx.current.canvas.height / 2, ctx.current.canvas.width / 2);
         //return;
         ctx.current.strokeRect(
             xStack[0], ctx.current.canvas.height - fullHeight,

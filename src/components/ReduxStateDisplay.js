@@ -1,10 +1,82 @@
 import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { clampValue } from '../utilities.js';
+import { clampValue, checkMouseCoords } from '../utilities.js';
 import './ReduxStateDisplay.css';
 
-// TODO: Send state as property so can re-use component for any Redux state/store
 function ReduxStateDisplay() {
+    // Redux
+
+    const reduxState = useSelector(state => state);
+
+    // States
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    // Refs
+
+    const draggableNodeRef = useRef(null);
+    const mouseRelativePosition = useRef({ x: 0, y: 0 });
+
+    // Functions
+
+    function handleMouseMove(event) {
+        checkMouseCoords(event);
+        draggableNodeRef.current.style.top = `${event.pageY - mouseRelativePosition.current.y}px`;
+        draggableNodeRef.current.style.left = `${event.pageX - mouseRelativePosition.current.x}px`;
+    }
+
+    function handleMouseUp() {
+        // Remove event listener that moves element with the mouse
+        document.removeEventListener('mousemove', handleMouseMove);
+    }
+
+    function handleMouseDown(event) {
+        checkMouseCoords(event);
+        const clickDragRect = draggableNodeRef.current.getBoundingClientRect();
+        mouseRelativePosition.current = {
+            x: event.pageX - clickDragRect.left,
+            y: event.pageY - clickDragRect.top
+        };
+        // Add event listener that moves element with the mouse position
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseup', handleMouseUp, { once: true });
+    }
+
+    function createTable() {
+        return (
+            <table className={isOpen ? null : 'hide'}>
+                <tbody>
+                    {
+                        Object.entries(reduxState).map(entry =>
+                            <React.Fragment key={entry[0]}>
+                                <PropertyDisplay title={entry[0]} value={entry[1]} />
+                            </React.Fragment>
+                        )
+                    }
+                </tbody>
+            </table>
+        );
+    }
+
+    return (
+        <div
+            className="redux-state-display-container"
+            ref={draggableNodeRef}
+        >
+            <div
+                className="title-bar"
+                onMouseDown={handleMouseDown}
+            >
+                Redux
+                <button onClick={() => setIsOpen(!isOpen)}>{isOpen ? '-' : '+'}</button>
+            </div>
+            {createTable()}
+        </div>
+    );
+}
+/*
+// TODO: Send state as property so can re-use component for any Redux state/store
+function ReduxStateDisplayOld() {
     // Redux
     const reduxState = useSelector(state => state);
 
@@ -12,68 +84,9 @@ function ReduxStateDisplay() {
 
     const [isOpen, setIsOpen] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
-    const [position, setPosition] = useState({top: 0, left: 0});
-    
-    //const propertyStyle = {
-    //    display: "flex"
-    //};
+    const [position, setPosition] = useState({ top: 0, left: 0 });
 
-    /**
-     * Recursive function to display each property in Redux state store
-     * TODO: Include button to display state in console for arrays, objects, etc.
-     * @param {String} key
-     * @param {any} value
-     */
-    /*
-    function createPropertyDisplay(key, value) {
-        // String
-        if (typeof value === 'string') {
-
-        }
-        // Number
-        if (typeof value === 'number') {
-
-        }
-        // Array
-        if (Array.isArray(value)) {
-
-        }
-        // Object
-        if (typeof value === 'object' && value !== null) {
-            return (
-                <div className="property" style={propertyStyle}>
-                    <div className="key">{key}</div>
-                    <div className="value">
-                        {
-                            'Object'
-                            //Object.entries(value).map(entry => createPropertyDisplay(entry[0], entry[1]))
-                        }
-                    </div>
-                    <button
-                        className="show-property-btn"
-                        //onClick={() => console.log(value)}
-                        onClick={(e) => e.target.append(<div>FOO</div>)}
-                    >
-                        Show
-                    </button>
-                </div>
-            );
-        }
-        // Other
-        return (
-            <div className="property" style={propertyStyle}>
-                <div className="key">{key}</div>
-                <div className="value">{value}</div>
-                <button
-                    className="show-property-btn"
-                    onClick={() => console.log(value)}
-                >
-                    Show
-                    </button>
-            </div>
-        );
-    }
-    */
+    // Refs
 
     const draggableNodeRef = useRef(null);
     const cornerDiff = useRef(null);
@@ -171,15 +184,14 @@ function ReduxStateDisplay() {
             {createTable()}
         </div>
     );
-    /*
-    return (
-        <div className="redux-state-display-container" style={displayStyle}>
-            {Object.entries(reduxState).map(entry => createPropertyDisplay(entry[0], entry[1]))}
-        </div>
-    );
-    */
+    
+    //return (
+    //    <div className="redux-state-display-container" style={displayStyle}>
+    //        {Object.entries(reduxState).map(entry => createPropertyDisplay(entry[0], entry[1]))}
+    //    </div>
+    //);
 }
-
+*/
 /**
  * 
  * @param {Object} props
@@ -359,7 +371,6 @@ function PropertyDisplay(props) {
             </div>
         );
     }
-
     // Other
     return (
         <div className="property" style={propertyStyle}>
