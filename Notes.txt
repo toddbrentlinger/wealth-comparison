@@ -1,6 +1,46 @@
+Wealth Comparison Notes:
+
+Start utilizing image of bill stack inside canvas
+
+Strongest Currencies In The World:
+KWD - Kuwait dinar
+BHD - Bahrain dinar
+OMR - Omani rial
+JOD - Jordan dinar
+GBP - Great British pound, the pound sterling - \u00a3
+GIP - Gibraltar pound - \u00a3
+KYD - Cayman Islands dollar - C\u0024
+EUR - Euro - 20ac
+CHF - Swiss franc - 43,48,46
+USD - US dollar - \u0024
+CAD - Canadian dollar - \u0024
+LYD - Libyan dinar
+BND - Brunei dollar - B\u0024
+SGD - Singapore dollar - S\u0024
+AUD - Australian dollar - AU\u0024
+NZD - New Zealand dollar - NZ\u0024
+
+7/16/21
+
+- Create new Image object with drawing function inside the Image onload method.
+var img = new Image();
+img.onload = function() { 
+	ctx.drawImage(img, 0, 0);
+	drawing instructions 
+};
+img.src = 'background-image';
+
+7/5/21
+
+- When nothing is being displayed on the canvas (if one amount is undefined), hide the canvas.
+Only show when both amounts have value.
+
+- Reference: What does one TRILLION dollars look like?
+http://www.pagetutor.com/trillion/index.html
+
 6/21/21
 
-- Could add symbol and color of currency specified in slider. Ex. show dollar sign with green
+- Could add unicode symbol and color of currency specified in slider. Ex. show dollar sign with green
 bills for US, 
 	- https://www.money.co.uk/guides/colour-of-currency.htm#:~:text=The%20colour%20of%20currency%20map,photographic%20knockoffs%20in%20the%201860s.
 - OR could use database of images for different currency bills to distort and appear as stack.
@@ -49,8 +89,7 @@ Create separate component:
 
 6/7/21
 
-- ISSUE: MinMaxRangeSlider component has own min/max states AND use function sent as property
-to change global min/max state values. 
+- ISSUE: MinMaxRangeSlider component has own min/max states AND use function sent as property to change global min/max state values. 
 - SOLUTION: Remove min/max state from MinMaxRangeSlider component. Use properties on component:
 	min/max = manually set
 	initialMin/Max = initial value from redux state using dispatch (limit values between min/max)

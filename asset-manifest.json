@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/wealth-comparison/static/css/main.61bfa412.chunk.css",
-    "main.js": "/wealth-comparison/static/js/main.4fec0bf1.chunk.js",
-    "main.js.map": "/wealth-comparison/static/js/main.4fec0bf1.chunk.js.map",
+    "main.css": "/wealth-comparison/static/css/main.612cad21.chunk.css",
+    "main.js": "/wealth-comparison/static/js/main.e65cf0d9.chunk.js",
+    "main.js.map": "/wealth-comparison/static/js/main.e65cf0d9.chunk.js.map",
     "runtime-main.js": "/wealth-comparison/static/js/runtime-main.b460071a.js",
     "runtime-main.js.map": "/wealth-comparison/static/js/runtime-main.b460071a.js.map",
     "static/js/2.cfa5158f.chunk.js": "/wealth-comparison/static/js/2.cfa5158f.chunk.js",
@@ -10,13 +10,14 @@
     "static/js/3.bb2380ab.chunk.js": "/wealth-comparison/static/js/3.bb2380ab.chunk.js",
     "static/js/3.bb2380ab.chunk.js.map": "/wealth-comparison/static/js/3.bb2380ab.chunk.js.map",
     "index.html": "/wealth-comparison/index.html",
-    "static/css/main.61bfa412.chunk.css.map": "/wealth-comparison/static/css/main.61bfa412.chunk.css.map",
-    "static/js/2.cfa5158f.chunk.js.LICENSE.txt": "/wealth-comparison/static/js/2.cfa5158f.chunk.js.LICENSE.txt"
+    "static/css/main.612cad21.chunk.css.map": "/wealth-comparison/static/css/main.612cad21.chunk.css.map",
+    "static/js/2.cfa5158f.chunk.js.LICENSE.txt": "/wealth-comparison/static/js/2.cfa5158f.chunk.js.LICENSE.txt",
+    "static/media/bill_stack_alpha_800w.b64f8e4e.png": "/wealth-comparison/static/media/bill_stack_alpha_800w.b64f8e4e.png"
   },
   "entrypoints": [
     "static/js/runtime-main.b460071a.js",
     "static/js/2.cfa5158f.chunk.js",
-    "static/css/main.61bfa412.chunk.css",
-    "static/js/main.4fec0bf1.chunk.js"
+    "static/css/main.612cad21.chunk.css",
+    "static/js/main.e65cf0d9.chunk.js"
   ]
 }
