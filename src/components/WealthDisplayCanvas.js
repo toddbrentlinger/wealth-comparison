@@ -203,6 +203,102 @@ function getHeightOfStack(image, scale, deltaHeightPercentage, n) {
     return Math.ceil(scale * image.height * (1 + deltaHeightPercentage * (n - 1)));
 }
 
+function getHeightOfColumnSet(nBillStacks, billStackImg, scale, canvasWidth) {
+    // Values to position next bill stack along all three axes
+    // x-axis: short side, y-axis: long side, z-axis: height
+    const nextStackShifts = {
+        dx: { x: 0.30, y: 0.24 },
+        dy: { x: 0.72, y: 0.57 },
+        dz: { x: 0, y: 0.21 }
+    };
+
+    // Find how many columns fit in canvas width
+    const nColumns = Math.min(
+        getNumberOfColumns(billStackImg, scale, nextStackShifts.dx.x, canvasWidth),
+        nBillStacks
+    );
+
+    // Distribute total number of bills to each column stack
+    let stackCountsArr = new Array(nColumns);
+    distributeStacks(stackCountsArr.fill(0), nBillStacks);
+
+    //return stackCountsArr.reduce((a, b) => Math.max(a, b)) * nextStackShifts.dz.y * scale * billStackImg.height
+    //    + nColumns * nextStackShifts.dx.y * scale * billStackImg.height;
+    //console.log(`Max Height: ${stackCountsArr.reduce((a, b) => Math.max(a, b))}`);
+    const maxColumnSize = stackCountsArr.reduce((a, b) => Math.max(a, b));
+    console.log(`Max Column Height: ${maxColumnSize}`);
+    return Math.ceil(
+        scale * billStackImg.height * (1 + nextStackShifts.dz.y * (maxColumnSize - 2))
+        + scale * billStackImg.height * (1 + nextStackShifts.dx.y * (nColumns - 2))
+    );
+}
+
+function getNumberOfColumns(image, scale, deltaXRatio, canvasWidth) {
+    /*
+     * image: w x h
+     * s: scale applied to base image
+     * n: total number of columns (left-to-right)
+     * d: adjacent stack shifted to the side as ratio of image width
+     * C: width of canvas to fit set of columns in
+     * 
+     * N    Width
+     * 1    sw
+     * 2    sw + sdw
+     * 3    sw + sdw + sdw
+     * n    sw + (n-1)sdw
+     * 
+     * Solve for n:
+     * sw + (n-1)sdw <= C
+     * sdw(n-1) <= C-sw
+     * (n-1) <= (C-sw)/sdw
+     * n <= [(C-sw)/sdw] + 1
+     */
+    return Math.floor(((canvasWidth - scale * image.width) / (scale * deltaXRatio * image.width)) + 1);
+}
+
+/**
+ * Create array of x-positions on canvas for each column stack centered
+ * @param {any} n
+ * @param {any} scaledImageWidth
+ * @param {any} deltaXRatio
+ * @param {any} centerX
+ */
+function getStackXPositions(n, scaledImageWidth, deltaXRatio, centerX) {
+    const columnSetWidth = scaledImageWidth * (1 + deltaXRatio * (n - 1));
+    let stackXPositionArr = new Array(n);
+
+    for (let i = 0, x = centerX - columnSetWidth / 2;
+        i < stackXPositionArr.length;
+        i++, x += deltaXRatio * scaledImageWidth) {
+        stackXPositionArr[i] = x;
+    }
+    return stackXPositionArr;
+}
+
+function distributeStacks(arr, n, start = 0, end = arr.length - 1) {
+    const addPerStack = Math.floor(n / (end - start + 1));
+    // Check if n is less than the number of column stacks to add it to (addPerStack = 0)
+    if (!addPerStack && n) {
+        distributeStacks(arr, n, start, --end);
+        return arr;
+    }
+    // Check that start is less than end
+    if (start >= end) {
+        arr[end] += n;
+        return arr;
+    }
+
+    let newTotal = n;
+    for (let i = start; i <= end; i++) {
+        arr[i] += addPerStack;
+        newTotal -= addPerStack;
+    }
+    if (newTotal > 0) {
+        distributeStacks(arr, newTotal, ++start, --end);
+    }
+    return arr;
+}
+
 function WealthDisplayCanvas() {
     // Redux
     const first = useSelector(state => state.first);
@@ -220,48 +316,18 @@ function WealthDisplayCanvas() {
 
     // Callbacks
 
-    // arr - [2, 2, 2, 2, 2]
-    // start - 1
-    // end - 3
-    // n = 6
-    // new arr - [2, 4, 4, 4, 2]
-    function distributeStacks(arr, n, start = 0, end = arr.length - 1) {
-        const addPerStack = Math.floor(n / (end - start + 1));
-        // Check if n is less than the number of column stacks to add it to (addPerStack = 0)
-        if (!addPerStack && n) {
-            distributeStacks(arr, n, start, --end);
-            return arr;
-        }
-        // Check that start is less than end
-        if (start >= end) {
-            arr[end] += n;
-            return arr;
-        }
-
-        let newTotal = n;
-        for (let i = start; i <= end; i++) {
-            arr[i] += addPerStack;
-            newTotal -= addPerStack;
-        }
-        if (newTotal > 0) {
-            distributeStacks(arr, newTotal, ++start, --end);
-        }
-        return arr;
-    }
-
     /**
      * 
-     * @param {Number} nColumns Number of columns of individual bill stacks
      * @param {Number} nBillStacks Total number of individual bill stacks to put into columns
      * @param {Number} startX Canvas x-position of origin of stack. Bottom-middle of set of columns
-     * @param {Number} startY Canvas y-position of origin of stack. Bottom-middle of set of columns
      * @param {Number} width Width of canvas to fit set of columns
+     * @param {Number} scale Scale applied to base image
      * 
      * Next stack to the side, long edges touching - dx:0.30 dy:0.24
-     * Next stack to the side, short edges touching - dx:0.725 dy:0.575
+     * Next stack to the side, short edges touching - dx:0.72 dy:0.57
      * Next stack on top - dy:0.21
      */
-    function drawNStacks(nColumns, nBillStacks, startX, startY, width) { // 2 10
+    function drawNStacks(nBillStacks, startX, width, scale) {
         // Values to position next bill stack along all three axes
         // x-axis: short side, y-axis: long side, z-axis: height
         const nextStackShifts = {
@@ -270,13 +336,60 @@ function WealthDisplayCanvas() {
             dz: { x: 0, y: 0.21}
         };
 
+        // Find how many columns fit in canvas width
+        const nColumns = Math.min(
+            getNumberOfColumns(billStackImg.current, scale, nextStackShifts.dx.x, width),
+            nBillStacks
+        );
+
         // Distribute total number of bills to each column stack
         let stackCountsArr = new Array(nColumns);
         distributeStacks(stackCountsArr.fill(0), nBillStacks);
 
-        const scale = 0.5;
+        let stackXPositionArr = getStackXPositions(nColumns, scale * billStackImg.current.width, nextStackShifts.dx.x, startX);
+
+        let currentLevelInitialHeight = ctx.current.canvas.height - scale * billStackImg.current.height * (1 + nextStackShifts.dx.y * (nColumns - 1));
+        for (let i = 0, currY = currentLevelInitialHeight;
+            i < stackXPositionArr.length;
+            i++, currY += nextStackShifts.dx.y * scale * billStackImg.current.height) {
+            ctx.current.drawImage(
+                billStackImg.current,
+                stackXPositionArr[i],
+                currY,
+                scale * billStackImg.current.width,
+                scale * billStackImg.current.height
+            );
+        }
+        
+        const maxLevel = stackCountsArr.reduce((a, b) => Math.max(a, b));
+        let currentLevel = 0;
+        let currY = ctx.current.canvas.height - scale * billStackImg.current.height * (1 + nextStackShifts.dx.y * (nColumns - 1));
+        while (currentLevel < maxLevel) {
+            stackCountsArr.forEach((stackCount, columnIndex) => {
+                if (stackCount > currentLevel) {
+                    ctx.current.drawImage(
+                        billStackImg.current,
+                        stackXPositionArr[columnIndex],
+                        currY,
+                        scale * billStackImg.current.width,
+                        scale * billStackImg.current.height
+                    );
+                }
+                currY += nextStackShifts.dx.y * scale * billStackImg.current.height;
+            });
+            ++currentLevel;
+            currY -= nColumns * nextStackShifts.dx.y * scale * billStackImg.current.height + nextStackShifts.dz.y * scale * billStackImg.current.height;
+        }
+        /*
+        ctx.current.strokeRect(
+            startX - width / 2, 0,
+            width, ctx.current.canvas.height
+        );
+        return;
+
         let x = ctx.current.canvas.width / 3;
         let y = ctx.current.canvas.height / 2;
+        // First bill stack
         ctx.current.drawImage(
             billStackImg.current,
             x,
@@ -300,6 +413,7 @@ function WealthDisplayCanvas() {
             scale * billStackImg.current.width,
             scale * billStackImg.current.height
         );
+        */
     }
 
     const draw = useCallback(() => {
@@ -319,47 +433,47 @@ function WealthDisplayCanvas() {
         if (!first.amount && !second.amount) {
             if (!ctx.current.hidden) {
                 ctx.current.hidden = true;
-                console.log('Hide Canvas');
             }
             return;
         }
 
+        // Check if canvas is still hidden
         if (ctx.current.hidden) {
             ctx.current.hidden = false;
-            console.log('Show Canvas');
         }
 
         let firstStackAmount = Math.ceil(first.amount / 10000);
         let secondstackAmount = Math.ceil(second.amount / 10000);
-        //const n = 10; // max number of bill stacks in column
-        //if (firstStackAmount > secondstackAmount) {
-        //    firstStackAmount = n;
-        //    secondstackAmount = Math.round(n * second.amount / first.amount);
-        //} else {
-        //    secondstackAmount = n;
-        //    firstStackAmount = Math.round(n * first.amount / second.amount);
-        //}
 
         const scale = 0.1;
-        const xStack = [
-            Math.floor(ctx.current.canvas.width / 3) - scale * billStackImg.current.width / 2,
-            Math.floor(2 * ctx.current.canvas.width / 3) - scale * billStackImg.current.width / 2
-        ];
-        let yStack = ctx.current.canvas.height - scale * billStackImg.current.height;
-        let counter = 1;
+        //const xStack = [
+        //    Math.floor(ctx.current.canvas.width / 3) - scale * billStackImg.current.width / 2,
+        //    Math.floor(2 * ctx.current.canvas.width / 3) - scale * billStackImg.current.width / 2
+        //];
+        //let yStack = ctx.current.canvas.height - scale * billStackImg.current.height;
+        //let counter = 1;
 
         // TEMP START
 
-        const fullHeight = getHeightOfStack(
-            billStackImg.current, scale, .21,
-            Math.max(firstStackAmount, secondstackAmount)
-        );
+        //const fullHeight = getHeightOfStack(
+        //    billStackImg.current, scale, .21,
+        //    Math.max(firstStackAmount, secondstackAmount)
+        //);
+        //if (canvasSize.height !== fullHeight) {
+        //    setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: fullHeight });
+        //    return;
+        //}
+
+        const fullHeight = getHeightOfColumnSet(Math.max(firstStackAmount, secondstackAmount), billStackImg.current, scale, ctx.current.canvas.width / 2);
         if (canvasSize.height !== fullHeight) {
             setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: fullHeight });
             return;
         }
-        //drawNStacks(2, 10, ctx.current.canvas.width / 3, ctx.current.canvas.height / 2, ctx.current.canvas.width / 2);
-        //return;
+
+        drawNStacks(firstStackAmount, ctx.current.canvas.width * .25, ctx.current.canvas.width / 2, scale);
+        drawNStacks(secondstackAmount, ctx.current.canvas.width * .75, ctx.current.canvas.width / 2, scale);
+        /*return;
+        
         ctx.current.strokeRect(
             xStack[0], ctx.current.canvas.height - fullHeight,
             billStackImg.current.width / 2, fullHeight
@@ -398,7 +512,7 @@ function WealthDisplayCanvas() {
             yStack -= scale * billStackImg.current.height * 0.21;
             counter++;
         }, 100);
-
+        */
         console.log(`draw callback ends`);
     }, [first.amount, second.amount, canvasSize]);
 
@@ -498,7 +612,7 @@ function WealthDisplayCanvas() {
 
     useEffect(() => {
         function handleResize() {
-            console.log(`handleResize runs\nwidth: ${canvasContainerRef.current.offsetWidth}\nheight: ${canvasContainerRef.current.offsetHeight}`);
+            console.log(`handleResize runs\nW: ${canvasContainerRef.current.offsetWidth} - H: ${canvasContainerRef.current.offsetHeight}`);
             setCanvasSize({ width: canvasContainerRef.current.offsetWidth, height: canvasContainerRef.current.offsetHeight });
         }
 
